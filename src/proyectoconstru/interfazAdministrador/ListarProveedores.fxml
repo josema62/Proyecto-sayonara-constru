@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="678.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="proyectoconstru.interfazAdministrador.ListarProveedoresController">
+   <children>
+      <VBox prefHeight="402.0" prefWidth="678.0">
+         <children>
+            <TableView fx:id="tablaProveedor" prefHeight="398.0" prefWidth="637.0">
+               <columns>
+                  <TableColumn fx:id="columnaRut" prefWidth="75.0" text="rut" />
+                  <TableColumn fx:id="columnaRazonSocial" prefWidth="125.0" text="razon Social" />
+                  <TableColumn fx:id="columnaNombre" prefWidth="82.0" text="nombre" />
+                  <TableColumn fx:id="columnaDireccion" prefWidth="97.0" text="Direccion" />
+                  <TableColumn fx:id="columnaTelefono" prefWidth="66.0" text="telefono" />
+                  <TableColumn fx:id="columnaTelefonoOpcional" prefWidth="74.0" text="telefono op." />
+                  <TableColumn fx:id="columnaCorreo" prefWidth="155.0" text="correo" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -21,7 +21,7 @@ import javafx.scene.control.TableView;
 public class ListarProductosController implements Initializable {
 
     @FXML
-    private ComboBox<?> comboBoxFiltro;
+    private ComboBox<String> comboBoxFiltro;
     @FXML
     private TableView<?> tablaProducto;
     @FXML
@@ -42,7 +42,7 @@ public class ListarProductosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        comboBoxFiltro.getItems().addAll("Agrupar por categoria","Agrupar ascendente(Stock)", "Agrupar descendente(Stock)");
     }    
     
 }

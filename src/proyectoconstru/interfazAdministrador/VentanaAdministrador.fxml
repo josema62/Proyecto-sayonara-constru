@@ -7,21 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="567.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.VentanaAdministradorController">
+<AnchorPane id="AnchorPane" prefHeight="569.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.VentanaAdministradorController">
    <children>
-      <BorderPane prefHeight="568.0" prefWidth="712.0">
-         <center>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox prefHeight="498.0" prefWidth="203.0">
-                     <children>
-                        <TreeView fx:id="raiz" prefHeight="502.0" prefWidth="203.0" />
-                     </children>
-                  </VBox>
-                  <BorderPane fx:id="paneDinamico" prefHeight="498.0" prefWidth="514.0" />
-               </children>
-            </HBox>
-         </center>
+      <BorderPane prefHeight="569.0" prefWidth="776.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <Label fx:id="LabelTitulo" text="Nombre Minimarket" BorderPane.alignment="TOP_LEFT">
                <font>
@@ -29,6 +17,16 @@
                </font>
             </Label>
          </top>
+         <center>
+            <AnchorPane>
+               <children>
+                  <StackPane fx:id="paneDinamico" prefHeight="499.0" prefWidth="660.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+               </children>
+            </AnchorPane>
+         </center>
+         <left>
+            <TreeView fx:id="raiz" prefHeight="497.0" prefWidth="168.0" BorderPane.alignment="CENTER" />
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>

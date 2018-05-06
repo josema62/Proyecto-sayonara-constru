@@ -6,10 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="678.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="proyectoconstru.interfazAdministrador.ListarProveedoresController">
+<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarProveedoresController">
    <children>
-      <VBox prefHeight="402.0" prefWidth="678.0">
+      <VBox prefHeight="402.0" prefWidth="678.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <TableView fx:id="tablaProveedor" prefHeight="398.0" prefWidth="637.0">
                <columns>

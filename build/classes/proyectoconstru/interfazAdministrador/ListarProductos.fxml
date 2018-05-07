@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="proyectoconstru.interfazAdministrador.ListarProductosController">
+   <children>
+      <VBox layoutX="-2.0" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Seleccionar Filtro:" />
+                  <ComboBox fx:id="comboBoxFiltro" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <TableView fx:id="tablaProducto" prefHeight="303.0" prefWidth="600.0">
+              <columns>
+                <TableColumn fx:id="columnaCodigo" prefWidth="75.0" text="codigo" />
+                <TableColumn fx:id="columnaNombre" prefWidth="125.0" text="nombre" />
+                  <TableColumn fx:id="columnaStockDisponible" prefWidth="107.0" text="stock disponible" />
+                  <TableColumn fx:id="columnaStockMinimo" prefWidth="92.0" text="stock minimo" />
+                  <TableColumn fx:id="columnaPrecio" prefWidth="71.0" text="precio" />
+                  <TableColumn fx:id="columnaCategoria" prefWidth="129.0" text="categoria" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

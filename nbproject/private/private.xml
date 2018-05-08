@@ -3,7 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/Users/Gabriel/Documents/Universidad/Construccion%20y%20Validacion%20de%20Software/Proyectos/Proyecto%201/Proyecto-sayonara-constru/src/proyectoconstru/conexion/ConsultaCajero.java</file>
+=======
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Boleta.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/DetalleProducto.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/BD.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/proyectoconstru/ProyectoConstru.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Producto.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Proveedor.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Usuario.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Factura.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/FuncionDeReporte.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Cajero.java</file>
+            <file>file:/C:/Users/Benjamin/Documents/Repos/Proyecto-sayonara-constru/src/modelodedatos/Administrador.java</file>
+>>>>>>> ModeloDeDatos
         </group>
     </open-files>
 </project-private>

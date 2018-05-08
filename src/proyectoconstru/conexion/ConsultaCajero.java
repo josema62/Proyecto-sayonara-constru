@@ -28,17 +28,16 @@ public class ConsultaCajero {
      *
      * @param conexion La conexion a la base de datos.
      */
-    public ConsultaCajero(Connection conexion) {
-        this.conexion = conexion;
+    public ConsultaCajero() {
+        this.conexion = BD.obtenerBD();
     }
 
     /**
      * Devuelve un lista con los cajeros
      */
     public List<Cajero> listarCajeros() {
-        String consulta = "SELECT usuario.rut, nombre, contrasena, "
-                          + "telefono, direccion , estado FROM usuario, cajero "
-                          + "WHERE usuario.rut = cajero.rut;";
+        String consulta = "SELECT rut, nombre, telefono, direccion, "
+                                  + "contrasenia, estado FROM cajero;";
         ArrayList<Cajero> cajerosNuevos = new ArrayList<Cajero>();
 
         try (Statement consultaST = this.conexion.createStatement()) {
@@ -46,11 +45,11 @@ public class ConsultaCajero {
             while (resultado.next()) {
                 String rut = resultado.getString("rut");
                 String nombre = resultado.getString("nombre");
-                String contrasena = resultado.getString("contrasena");
                 String telefono = resultado.getString("telefono");
                 String direccion = resultado.getString("direccion");
+                String contrasenia = resultado.getString("contrasenia");
                 String estado = resultado.getString("estado");
-                Cajero cajero = new Cajero(rut, nombre, contrasena, telefono,
+                Cajero cajero = new Cajero(rut, nombre, contrasenia, telefono,
                                            direccion, estado);
                 cajerosNuevos.add(cajero);
             }
@@ -71,30 +70,31 @@ public class ConsultaCajero {
      *
      * @param rutCajero Cadena que contiene el rut del cajero
      *
-     * @return La entidad que representa al cajero, null en caso de que no 
+     * @return La entidad que representa al cajero, null en caso de que no
      * exista.
      */
     public Cajero buscarCajero(String rutCajero) {
 
-        String consulta = "SELECT usuario.rut, nombre, contrasena, "
-                                  + "telefono, direccion , estado FROM usuario, cajero "
-                          + "WHERE usuario.rut = cajero.rut and usuario.rut = ?;";
+        String consulta = "SELECT rut, nombre, telefono, direccion, "
+                                  + "contrasenia, estado FROM cajero "
+                                  + "WHERE rut = ?;";
         Cajero cajero = null;
         try (PreparedStatement consultaST = this.conexion.prepareStatement(
                 consulta)) {
-            consultaST.setString(0, rutCajero);
+            consultaST.setString(1, rutCajero);
             ResultSet resultado = consultaST.executeQuery(consulta);
             if (resultado.next()) {
                 String rut = resultado.getString("rut");
                 String nombre = resultado.getString("nombre");
-                String contrasena = resultado.getString("contrasena");
                 String telefono = resultado.getString("telefono");
                 String direccion = resultado.getString("direccion");
-                String estado = resultado.getString("estado");
+                String contrasenia = resultado.getString("contrasenia");
+                boolean estado = resultado.getBoolean("estado");
                 /*Aqui deberia llenarse una lista con los cajeros y crear los
                     *objetos cajeros
                  */
-                cajero = new Cajero(rut, nombre, contrasena, telefono, direccion,
+                cajero = new Cajero(rut, nombre, contrasenia, telefono,
+                                    direccion,
                                     estado);
             }
         }
@@ -113,23 +113,25 @@ public class ConsultaCajero {
      *
      * @param rut Cadena con el rut del cajero
      * @param nombre Cadena con el nombre del cajero
-     * @param contrasena Cadena que contiene la contrasena del cajero
+     * @param contrasenia Cadena que contiene la contrasenia del cajero
      * @param telefono Cadena con el numero de telefono del cajero
      * @param direccion Cadena con la direccion del cajero
      */
-    public void insertarCajero(String rut, String nombre, String contrasena,
-                               String telefono, String direccion) {
+    public void insertarCajero(String rut, String nombre, String contrasenia,
+                               String telefono, String direccion, boolean estado) {
 
-        String consulta = "INSERT INTO usuario (rut, nombre, contrasena, "
-                                  + "telefono, direccion) "
-                                  + "values (?, ?, ?, ?, ?)";
+        String consulta = "INSERT INTO cajero (rut, nombre, telefono, "
+                                  + "direccion, contrasenia, estado) "
+                                  + "values (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement declaracion = this.conexion
                 .prepareStatement(consulta)) {
             declaracion.setString(1, rut);
             declaracion.setString(2, nombre);
-            declaracion.setString(3, contrasena);
-            declaracion.setString(4, telefono);
-            declaracion.setString(5, direccion);
+            declaracion.setString(3, telefono);
+            declaracion.setString(4, direccion);
+            declaracion.setString(5, contrasenia);
+            declaracion.setBoolean(6, estado);
+
             declaracion.execute();
         }
 
@@ -144,59 +146,37 @@ public class ConsultaCajero {
      *
      * @param rut Cadena con el rut del cajero
      * @param nombre Cadena con el nombre del cajero
-     * @param contrasena Cadena con el contrasena del cajero
+     * @param contrasenia Cadena con el contrasenia del cajero
      * @param telefono Cadena con el telefono del cajero
      * @param direccion Cadena con el direccion del cajero
      * @param estado Cadena con el estado del cajero
      */
-    public void modificarCajero(String rut, String nombre, String contrasena,
+    public void modificarCajero(String rut, String nombre, String contrasenia,
                                 String telefono, String direccion,
                                 boolean estado) {
 
-        String consultaUsuario = "UPDATE usuario set "
-                                         + "nombre = ?,"
-                                         + "contrasena = ?,"
-                                         + "telefono = ?,"
-                                         + "direccion = ? "
-                                         + "WHERE rut = ?";
         String consultaCajero = "UPDATE cajero set "
+                                        + "nombre = ?,"
+                                        + "telefono = ?,"
+                                        + "direccion = ? "
+                                        + "contrasenia = ?,"
                                         + "estado = ? "
                                         + "WHERE rut = ?";
-        try (PreparedStatement declaracionConsultaUsuario = this.conexion
-                .prepareStatement(consultaUsuario)) {
-            declaracionConsultaUsuario.setString(0, nombre);
-            declaracionConsultaUsuario.setString(1, contrasena);
-            declaracionConsultaUsuario.setString(2, telefono);
-            declaracionConsultaUsuario.setString(3, direccion);
-            declaracionConsultaUsuario.setString(4, rut);
-            declaracionConsultaUsuario.execute();
-            modificarEstadoCajero(rut, estado);
+
+        try (PreparedStatement declaracionConsultaCajero = this.conexion
+                .prepareStatement(consultaCajero)) {
+            declaracionConsultaCajero.setString(1, nombre);
+            declaracionConsultaCajero.setString(2, telefono);
+            declaracionConsultaCajero.setString(3, direccion);
+            declaracionConsultaCajero.setString(4, contrasenia);
+            declaracionConsultaCajero.setBoolean(5, estado);
+            declaracionConsultaCajero.setString(6, rut);
+            
+            declaracionConsultaCajero.execute();
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaCajero.class.getName()).log(Level.SEVERE,
                                                                  null, ex);
-        }
-
-    }
-
-    /**
-     * Modifica el estado del cajero en la base de datos
-     *
-     * @param rut El identificador del cajero a modificar
-     * @param estado Si es false el cajero estara desactivado, en caso contrario
-     * esta activado
-     *
-     * @throws SQLException
-     */
-    private void modificarEstadoCajero(String rut, boolean estado) throws SQLException {
-
-        String consulta = "UPDATE cajero set "
-                                  + "estado = ? "
-                                  + "WHERE rut = ?";
-        try (PreparedStatement declaracionConsultaCajero = this.conexion
-                .prepareStatement(consulta)) {
-            declaracionConsultaCajero.setBoolean(0, estado);
-            declaracionConsultaCajero.setString(1, rut);
         }
     }
 }

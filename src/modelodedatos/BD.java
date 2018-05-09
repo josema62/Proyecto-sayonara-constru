@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class BD {
 
     private static BD bd;
-    
+
     /**
      * La base de datos esta en localhost y se llama proyectosayonaracontru
      * "jdbc:mysql://localhost/proyectosayonaracontru"
@@ -49,33 +49,53 @@ public class BD {
 
     /**
      * Inicia la coneccion a la base de datos
-     * @return Devuelve la coneccion si fue exitosa y null en caso contrario
+     *
+     * @return Devuelve true si la coneccion fue exitosa, false en caso
+     * contario
      */
-    public Connection iniciarConexion() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conexion = DriverManager.getConnection(url, usuario,
-                                                        contrasenia);
-            System.out.println("base de datos conectada");
+    public boolean iniciarConexion() {
+        if (this.conexion == null) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                this.conexion = DriverManager.getConnection(url, usuario,
+                                                            contrasenia);
+                System.out.println("base de datos conectada");
+            }
+            catch (Exception ex) {
+                System.out.println("Error al conectar a la base de datos");
+                return false;
+            }
         }
-        catch (Exception ex) {
-            System.out.println("Error al conectar a la base de datos");
-            return null;
-        }
-        return this.conexion;
+        return true;
     }
-    
+
+    /**
+     * Devuelve la conexion a la base de datos
+     *
+     * @return El objeto que representa la conexion a la base de datos
+     */
+    public Connection obtenerConexion() {
+        if (this.conexion != null) {
+            return this.conexion;
+        }
+        return null;
+    }
+
     /**
      * Cierra la coneccion con la base de datos
+     *
      * @return Devuelve false si hubo algun problema y true en caso contrario
      */
     public boolean cerrarConexion() {
-        try {
-            this.conexion.close();
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        if (this.conexion != null) {
+            try {
+                this.conexion.close();
+                this.conexion = null;
+            }
+            catch (SQLException ex) {
+                Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
         }
         return true;
     }

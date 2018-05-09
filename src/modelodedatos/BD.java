@@ -5,31 +5,79 @@
  */
 package modelodedatos;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Benjamin
  */
 public class BD {
-    private BD bd;
+
+    private static BD bd;
+    
+    /**
+     * La base de datos esta en localhost y se llama proyectosayonaracontru
+     * "jdbc:mysql://localhost/proyectosayonaracontru"
+     * Si se necesita que sea remota entonces
+     * "jdbc:mysql://ip:port/proyectosayonaracontru"
+     */
+    private String url = "jdbc:mysql://localhost/proyectosayonaracontru";
     private String usuario;
     private String contrasenia;
     private String puerto;
+    private Connection conexion;
 
     private BD(String usuario, String contrasenia, String puerto) {
-        
+
         this.usuario = usuario;
         this.contrasenia = contrasenia;
         this.puerto = puerto;
-        
+
+    }
+
+    public static BD obtenerBD(String usuario, String contrasenia, String puerto) {
+        if (BD.bd == null) {
+            BD.bd = new BD(usuario, contrasenia, puerto);
+        }
+
+        return BD.bd;
+    }
+
+    /**
+     * Inicia la coneccion a la base de datos
+     * @return Devuelve la coneccion si fue exitosa y null en caso contrario
+     */
+    public Connection iniciarConexion() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            this.conexion = DriverManager.getConnection(url, usuario,
+                                                        contrasenia);
+            System.out.println("base de datos conectada");
+        }
+        catch (Exception ex) {
+            System.out.println("Error al conectar a la base de datos");
+            return null;
+        }
+        return this.conexion;
     }
     
-    public BD obtenerBD(String usuario, String contrasenia, String puerto) {
-        if(bd == null) this.bd = new BD(usuario, contrasenia, puerto); 
-        
-        return this.bd;
+    /**
+     * Cierra la coneccion con la base de datos
+     * @return Devuelve false si hubo algun problema y true en caso contrario
+     */
+    public boolean cerrarConexion() {
+        try {
+            this.conexion.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
     }
-    
-    //public boolean iniciarConexion() {}
-    //public boolean cerrarConexion() {}
-    
+
 }

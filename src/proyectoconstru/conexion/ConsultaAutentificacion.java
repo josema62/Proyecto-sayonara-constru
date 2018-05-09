@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelodedatos.BD;
 
 /**
  *
@@ -27,7 +28,7 @@ public class ConsultaAutentificacion {
      * @param conexion La conexion a la base de datos.
      */
     public ConsultaAutentificacion() {
-        this.bd = BD.obtenerBD();
+        this.bd = BD.obtenerBD("root","","3306");
         this.conexion = this.bd.obtenerConexion();
     }
     
@@ -38,7 +39,7 @@ public class ConsultaAutentificacion {
      * administrador
      */
     public String obtenerContaseniaAdministrador(String rut){
-        String consulta = "SELECT contrasenia FROM admin WHERE rut = ?";
+        String consulta = "SELECT contrasenia FROM administrador WHERE rut = ?";
         try (PreparedStatement consultaST = this.conexion.prepareStatement(consulta)){
             consultaST.setString(1, rut);
             ResultSet resultado = consultaST.executeQuery();

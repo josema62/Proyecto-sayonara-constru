@@ -26,7 +26,7 @@ public class BD {
      * Si se necesita que sea remota entonces
      * "jdbc:mysql://ip:port/proyectosayonaracontru"
      */
-    private String url = "jdbc:mysql://localhost:3306/proyectosayonaracontru";
+    private String url = "jdbc:mysql://localhost:3306/bd";
     private String usuario;
     private String contrasenia;
     private String puerto;

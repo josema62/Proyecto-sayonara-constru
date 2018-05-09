@@ -92,7 +92,7 @@ public class VentanaLoginController implements Initializable {
                        
                        Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
                        stageActual.close();
-                       
+                       stageVentanaAdmin.setTitle("Ventana Administrador");
                        stageVentanaAdmin.show();
                    }
                    catch (IOException ex) {
@@ -128,6 +128,7 @@ public class VentanaLoginController implements Initializable {
                         Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
                         stageActual.close();
 
+                        stageVentanaCajero.setTitle("ventana Cajero");
                         stageVentanaCajero.show();
                     }
                     catch (IOException ex) {

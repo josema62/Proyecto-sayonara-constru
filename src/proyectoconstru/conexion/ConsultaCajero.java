@@ -21,7 +21,7 @@ import modelodedatos.Cajero;
  * @author Gabriel
  */
 public class ConsultaCajero {
-
+    private final BD bd;
     private final Connection conexion;
 
     /**
@@ -30,7 +30,7 @@ public class ConsultaCajero {
      * @param conexion La conexion a la base de datos.
      */
     public ConsultaCajero() {
-        this.conexion = BD.obtenerBD();
+        this.bd = BD.obtenerBD();
     }
 
     /**
@@ -49,7 +49,7 @@ public class ConsultaCajero {
                 String telefono = resultado.getString("telefono");
                 String direccion = resultado.getString("direccion");
                 String contrasenia = resultado.getString("contrasenia");
-                String estado = resultado.getString("estado");
+                boolean estado = resultado.getBoolean("estado");
                 Cajero cajero = new Cajero(rut, nombre, contrasenia, telefono,
                                            direccion, estado);
                 cajerosNuevos.add(cajero);
@@ -117,8 +117,10 @@ public class ConsultaCajero {
      * @param contrasenia Cadena que contiene la contrasenia del cajero
      * @param telefono Cadena con el numero de telefono del cajero
      * @param direccion Cadena con la direccion del cajero
+     * @return regresa false si no se pudo realizar la operacion de insercion
+     * true en caso contrario.
      */
-    public void insertarCajero(String rut, String nombre, String contrasenia,
+    public boolean insertarCajero(String rut, String nombre, String contrasenia,
                                String telefono, String direccion, boolean estado) {
 
         String consulta = "INSERT INTO cajero (rut, nombre, telefono, "
@@ -139,7 +141,9 @@ public class ConsultaCajero {
         catch (SQLException ex) {
             Logger.getLogger(ConsultaCajero.class.getName()).log(Level.SEVERE,
                                                                  null, ex);
+            return false;
         }
+        return true;
     }
 
     /**
@@ -151,8 +155,11 @@ public class ConsultaCajero {
      * @param telefono Cadena con el telefono del cajero
      * @param direccion Cadena con el direccion del cajero
      * @param estado Cadena con el estado del cajero
+     * @return Devuelve false si no se pudo hacer la modificacion,
+     * true en caso contrario
+     * 
      */
-    public void modificarCajero(String rut, String nombre, String contrasenia,
+    public boolean modificarCajero(String rut, String nombre, String contrasenia,
                                 String telefono, String direccion,
                                 boolean estado) {
 
@@ -178,6 +185,8 @@ public class ConsultaCajero {
         catch (SQLException ex) {
             Logger.getLogger(ConsultaCajero.class.getName()).log(Level.SEVERE,
                                                                  null, ex);
+            return false;
         }
+        return true;
     }
 }

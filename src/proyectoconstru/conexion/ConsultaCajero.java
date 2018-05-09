@@ -85,7 +85,7 @@ public class ConsultaCajero {
         try (PreparedStatement consultaST = this.conexion.prepareStatement(
                 consulta)) {
             consultaST.setString(1, rutCajero);
-            ResultSet resultado = consultaST.executeQuery(consulta);
+            ResultSet resultado = consultaST.executeQuery();
             if (resultado.next()) {
                 String rut = resultado.getString("rut");
                 String nombre = resultado.getString("nombre");

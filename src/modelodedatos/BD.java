@@ -5,7 +5,8 @@
  */
 package modelodedatos;
 
-import java.sql.Connection;
+
+import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -59,7 +60,7 @@ public class BD {
         if (this.conexion == null) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                this.conexion = DriverManager.getConnection(url, usuario,
+                this.conexion = (Connection) DriverManager.getConnection(url, usuario,
                                                             contrasenia);
                 System.out.println("base de datos conectada");
             }

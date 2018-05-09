@@ -31,6 +31,7 @@ public class ConsultaCajero {
      */
     public ConsultaCajero() {
         this.bd = BD.obtenerBD();
+        this.conexion = this.bd.obtenerConexion();
     }
 
     /**

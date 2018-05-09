@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelodedatos.BD;
 import modelodedatos.Cajero;
 
 /**
@@ -30,7 +31,7 @@ public class ConsultaCajero {
      * @param conexion La conexion a la base de datos.
      */
     public ConsultaCajero() {
-        this.bd = BD.obtenerBD();
+        this.bd = BD.obtenerBD("root","","3306");
         this.conexion = this.bd.obtenerConexion();
     }
 

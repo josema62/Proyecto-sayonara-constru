@@ -19,10 +19,12 @@ public class CajeroTest {
         this.consulta = new ConsultaCajero();
     }
     
+    @Test
     public void agregarConsultaCajero()
     {
-        this.consulta.insertarCajero(rut, nombre, contrasenia, telefono,
-                                     direccion, true);
+          boolean resultado = this.consulta.insertarCajero("19.008.993-5", "Matias Acevedo", "6520", "(09)87534512",
+                                     "Villa Prat Los Aromos 45", true);
+        assertTrue(resultado);
     }
     
    

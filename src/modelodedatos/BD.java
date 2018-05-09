@@ -25,7 +25,7 @@ public class BD {
      * Si se necesita que sea remota entonces
      * "jdbc:mysql://ip:port/proyectosayonaracontru"
      */
-    private String url = "jdbc:mysql://localhost/proyectosayonaracontru";
+    private String url = "jdbc:mysql://localhost:3306/proyectosayonaracontru";
     private String usuario;
     private String contrasenia;
     private String puerto;
@@ -42,7 +42,9 @@ public class BD {
     public static BD obtenerBD(String usuario, String contrasenia, String puerto) {
         if (BD.bd == null) {
             BD.bd = new BD(usuario, contrasenia, puerto);
+           
         }
+         BD.bd.iniciarConexion();
 
         return BD.bd;
     }
@@ -63,6 +65,8 @@ public class BD {
             }
             catch (Exception ex) {
                 System.out.println("Error al conectar a la base de datos");
+                System.out.println("Exepcion: " + ex);
+                System.out.println("Conexion: " + conexion);
                 return false;
             }
         }

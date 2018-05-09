@@ -5,9 +5,11 @@
  */
 package proyectoconstru.interfazAdministrador;
 
-import proyectoconstru.logicaCajero.Lista;
-import proyectoconstru.logicaCajero.Cajero;
+
+import modelodedatos.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import proyectoconstru.conexion.ConsultaCajero;
 
 /**
  * FXML Controller class
@@ -37,7 +40,9 @@ public class ListarCajerosController implements Initializable {
     
     private final ObservableList<Cajero> listaCajeros = FXCollections.observableArrayList();
     
-    //private ConsultaCajero conexionbd = new ConsultaCajero();
+    private ConsultaCajero consulta = new ConsultaCajero();
+    
+   
 
     /**
      * Initializes the controller class.
@@ -54,13 +59,11 @@ public class ListarCajerosController implements Initializable {
      * a la ObservableList listaCajeros.
      */
     private void agregarCajeroEnLista(){
-        /*List<Cajero> lista = conexionbd.listarCajeros();
+        List<Cajero> lista = consulta.listarCajeros();
         for (int i = 0; i < lista.size(); i++) {
             listaCajeros.add(lista.get(i));
-        }*/
-        for (int i = 0; i < Lista.size(); i++) {
-            listaCajeros.add(Lista.get(i));
         }
+        
     }
     
     /**

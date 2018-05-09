@@ -13,8 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import proyectoconstru.logicaCajero.Cajero;
-import proyectoconstru.logicaCajero.Lista;
+import proyectoconstru.conexion.ConsultaCajero;
 
 /**
  * FXML Controller class
@@ -37,6 +36,7 @@ public class FormularioAgregarCajeroController implements Initializable {
     private TextField campoTextoDireccion;
     @FXML
     private Button botonCancelar;
+    private ConsultaCajero consulta = new ConsultaCajero();
     
     //private ConsultaCajero conexionbd = new ConsultaCajero();
     
@@ -56,19 +56,13 @@ public class FormularioAgregarCajeroController implements Initializable {
      */
     @FXML
     private void agregarCajero(ActionEvent event){
-        /*conexionbd.insertarCajero(campoTextoRut.getText(), 
+        consulta.insertarCajero(campoTextoRut.getText(), 
                 campoTextoNombre.getText(),
                 campoContrasena.getText(),
                 campoTextoTelefono.getText(), 
                 campoTextoDireccion.getText(),
-                true);*/
-        Lista.add(new Cajero(campoTextoRut.getText(), 
-                campoTextoNombre.getText(),
-                campoContrasena.getText(),
-                campoTextoTelefono.getText(), 
-                campoTextoDireccion.getText(),
-                true)
-        );
+                true);
+        
         
         limpiarCamposdeTexto();
     }

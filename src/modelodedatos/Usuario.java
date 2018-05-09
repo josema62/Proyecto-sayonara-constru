@@ -20,7 +20,7 @@ public class Usuario {
     private StringProperty direccion;
     private StringProperty telefono;
 
-    public Usuario(String rut, String nombre, String contraseña, String direccion, String telefono) {
+    public Usuario(String rut, String nombre, String contraseña, String telefono, String direccion) {
         this.rut = new SimpleStringProperty(rut);
         this.nombre = new SimpleStringProperty(nombre);
         this.contrasenia = new SimpleStringProperty(contraseña);

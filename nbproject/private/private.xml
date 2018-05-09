@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< Updated upstream
 <<<<<<< HEAD
             <file>file:/C:/Users/Diego%20Matus/Documents/Construcccion%20de%20Software/PruebaDeCreacionRepositorio/Proyecto-Sayonara-Contru/Proyecto-sayonara-constru/test/CajeroTest.java</file>
             <file>file:/C:/Users/Diego%20Matus/Documents/Construcccion%20de%20Software/PruebaDeCreacionRepositorio/Proyecto-Sayonara-Contru/Proyecto-sayonara-constru/src/proyectoconstru/conexion/ConsultaCajero.java</file>
@@ -17,6 +18,11 @@
             <file>file:/C:/Users/Roberto%20Ureta/Desktop/Repo/Proyecto-sayonara-constru/src/proyectoconstru/interfazAdministrador/ListarProductosController.java</file>
             <file>file:/C:/Users/Roberto%20Ureta/Desktop/Repo/Proyecto-sayonara-constru/src/proyectoconstru/interfazAdministrador/VentanaAdministradorController.java</file>
 >>>>>>> Roberto
+=======
+            <file>file:/C:/Users/Ariel/Desktop/Git/Proyecto-sayonara-constru/src/modelodedatos/BD.java</file>
+            <file>file:/C:/Users/Ariel/Desktop/Git/Proyecto-sayonara-constru/src/proyectoconstru/conexion/ConsultaCajero.java</file>
+            <file>file:/C:/Users/Ariel/Desktop/Git/Proyecto-sayonara-constru/test/CajeroTest.java</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>

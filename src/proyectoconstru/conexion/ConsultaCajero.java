@@ -168,7 +168,7 @@ public class ConsultaCajero {
         String consultaCajero = "UPDATE cajero set "
                                         + "nombre = ?,"
                                         + "telefono = ?,"
-                                        + "direccion = ? "
+                                        + "direccion = ?, "
                                         + "contrasenia = ?,"
                                         + "estado = ? "
                                         + "WHERE rut = ?";

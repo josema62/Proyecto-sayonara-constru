@@ -5,7 +5,6 @@
  */
 package proyectoconstru.VentanaLogin;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import proyectoconstru.VentanaCajero.InterfazcajeroController;
+import proyectoconstru.conexion.ConsultaAutentificacion;
 
 /**
  * FXML Controller class
@@ -32,6 +32,7 @@ import proyectoconstru.VentanaCajero.InterfazcajeroController;
  * @author Unknown
  */
 public class VentanaLoginController implements Initializable {
+
     private String contraseniaCorrecta;
     @FXML
     private Button botonAcceder;
@@ -47,6 +48,7 @@ public class VentanaLoginController implements Initializable {
     private TextField campoDeTextoRUT;
     @FXML
     private TextField campoDeTextoContrasenia;
+    private ConsultaAutentificacion consulta = new ConsultaAutentificacion();
 
     /**
      * Initializes the controller class.
@@ -54,77 +56,89 @@ public class VentanaLoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void accionBotonAcceder(ActionEvent event) {
         String rut = this.campoDeTextoRUT.getText();
         //AQUI FALTARIA CORROBORAR QUE ES UN INGRESO CORRECTO
         String contraseniaVentana = this.campoDeTextoContrasenia.getText();
-        
-        //Es solo para probar
-        this.contraseniaCorrecta ="123";
-        
-        if(rut.isEmpty())
+
+        if (rut.isEmpty()) {
             this.warning("El campo RUN está vacío");
-        
-        else if (contraseniaVentana.isEmpty())
+        }
+
+        else if (contraseniaVentana.isEmpty()) {
             this.warning("El campo contraseña está vacío");
-        else{
-            if(this.selectorAdmin.isSelected()){
+        }
+        else {
+            if (this.selectorAdmin.isSelected()) {
                 //OBTENER CONTRASEÑA DEL ADMIN VIA CONSULTAAUTENTICACION
-                
-                //this.contraseniaCorrecta = obtenerContraseniaAdmin(rut);
-                
-                if(this.contraseniaCorrecta ==null) this.warning("El RUN ingresado NO esta registrado");
-                
-                else if(this.contraseniaCorrecta.equals(contraseniaVentana)){
-                    //ABRIR VENTANA ADMIN
-                    /*
-                    Stage stageVentanaAdmin = new Stage();
-                        Parent root = FXMLLoader.load(getClass().getResource("/proyectoconstru/VentanaAdministrador/VentanaAdministrador.fxml"));
-                        Scene scene = new Scene(root);
-                        stageVentanaAdmin.setScene(scene);
-                        
-                        Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
-                        stageActual.close();
-                        
-                        stageVentanaAdmin.show();
-                        */
+
+               this.contraseniaCorrecta = this.consulta.obtenerContaseniaAdministrador(
+                       rut);
+                if (this.contraseniaCorrecta == null) {
+                    this.warning("El RUN ingresado NO esta registrado");
                 }
-                else{
-                    this.warning("La contraseña ingresada es incorrecta");
-                }
-            }
-            else if (this.selectorCajero.isSelected()){
-                //this.contraseniaCorrecta = obtenerContraseniaCajero(rut);
-                
-                if(this.contraseniaCorrecta ==null) this.warning("El RUN ingresado NO esta registrado");
-                
-                else if(this.contraseniaCorrecta.equals(contraseniaVentana)){
+
+                else if (this.contraseniaCorrecta.equals(contraseniaVentana)) {
                    try {
-                        //ABRIR VENTANA CAJERO
-                        
-                        Stage stageVentanaCajero = new Stage();
-                
-                        Parent root = FXMLLoader.load(getClass().getResource("/proyectoconstru/VentanaCajero/interfazcajero.fxml"));
-                        Scene scene = new Scene(root);
-                        stageVentanaCajero.setScene(scene);
-                        
-                        Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
-                        stageActual.close();
-                        
-                        stageVentanaCajero.show();  
+                       //ABRIR VENTANA ADMIN
+                       
+                       Stage stageVentanaAdmin = new Stage();
+                       Parent root = FXMLLoader.load(getClass().getResource("/proyectoconstru/interfazAdministrador/VentanaAdministrador.fxml"));
+                       Scene scene = new Scene(root);
+                       stageVentanaAdmin.setScene(scene);
+                       
+                       Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
+                       stageActual.close();
+                       
+                       stageVentanaAdmin.show();
                    }
                    catch (IOException ex) {
-                       
+                       Logger.getLogger(VentanaLoginController.class.getName()).log(Level.SEVERE,
+                                                                                    null,
+                                                                                    ex);
                    }
+                     
                 }
-                else{
+                else {
                     this.warning("La contraseña ingresada es incorrecta");
                 }
             }
-            else{
+            else if (this.selectorCajero.isSelected()) {
+               this.contraseniaCorrecta = this.consulta.obtenerContraseniaCajero(
+                       rut);
+
+                if (this.contraseniaCorrecta == null) {
+                    this.warning("El RUN ingresado NO esta registrado");
+                }
+
+                else if (this.contraseniaCorrecta.equals(contraseniaVentana)) {
+                    try {
+                        //ABRIR VENTANA CAJERO
+
+                        Stage stageVentanaCajero = new Stage();
+
+                        Parent root = FXMLLoader.load(getClass().getResource(
+                                "/proyectoconstru/VentanaCajero/interfazcajero.fxml"));
+                        Scene scene = new Scene(root);
+                        stageVentanaCajero.setScene(scene);
+
+                        Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
+                        stageActual.close();
+
+                        stageVentanaCajero.show();
+                    }
+                    catch (IOException ex) {
+
+                    }
+                }
+                else {
+                    this.warning("La contraseña ingresada es incorrecta");
+                }
+            }
+            else {
                 this.warning("Debe seleccionar el tipo de usuario!");
             }
         }
@@ -145,13 +159,12 @@ public class VentanaLoginController implements Initializable {
     private void accionSelectorCajero(ActionEvent event) {
         this.selectorAdmin.setSelected(false);
     }
-    
-     private void warning(String text){
+
+    private void warning(String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Error en Ingreso");
         alert.setContentText(text);
         alert.showAndWait();
     }
-     
-     
+
 }

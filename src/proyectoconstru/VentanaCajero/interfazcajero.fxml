@@ -13,8 +13,21 @@
   <children>
     <BorderPane minHeight="63.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
-        <VBox prefHeight="81.0" prefWidth="800.0" styleClass="hbox">
+        <VBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="800.0" styleClass="hbox">
           <children>
+            <HBox id="HBox" alignment="TOP_RIGHT" spacing="5.0">
+              <children>
+                <Label alignment="CENTER" contentDisplay="LEFT" text="TOTAL:">
+                  <font>
+                    <Font name="System Bold" size="18.0" fx:id="x1" />
+                  </font>
+                </Label>
+                <Label fx:id="etiquetaTotal" font="$x1" text="" />
+              </children>
+              <padding>
+                <Insets right="60.0" />
+              </padding>
+            </HBox>
             <VBox id="VBox" alignment="CENTER" spacing="5.0">
               <children>
                 <HBox prefHeight="22.0" prefWidth="785.0" spacing="10.0">
@@ -36,14 +49,14 @@
             </HBox>
           </children>
           <padding>
-            <Insets left="15.0" top="10.0" />
+            <Insets left="15.0" />
           </padding>
         </VBox>
       </bottom>
       <center>
         <GridPane styleClass="hbox">
           <children>
-            <TableView fx:id="tablaBoleta" editable="false" minWidth="-1.0" mouseTransparent="false" pickOnBounds="false" prefHeight="395.0" prefWidth="614.0" tableMenuButtonVisible="false" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS">
+            <TableView fx:id="tablaBoleta" editable="false" minWidth="-1.0" mouseTransparent="false" pickOnBounds="false" prefHeight="381.0" prefWidth="623.0" tableMenuButtonVisible="false" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS">
               <columns>
                 <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="144.0" resizable="false" sortable="false" text="Código" visible="true" fx:id="columnaCodigo" />
                 <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="316.0" resizable="false" sortable="false" text="Producto" fx:id="columnaProducto" />

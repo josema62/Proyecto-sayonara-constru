@@ -12,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -47,6 +48,10 @@ public class InterfazcajeroController implements Initializable {
     private TableColumn<?, ?> columnaCantidad;
     @FXML
     private TableColumn<?, ?> columnaSubtotal;
+    @FXML
+    private Font x1;
+    @FXML
+    private Label etiquetaTotal;
 
    
     @Override
@@ -107,6 +112,11 @@ public class InterfazcajeroController implements Initializable {
             codigoProducto = buscarCodigoProducto(codigoPuro);
             //despues de hacer todo hay que setear el texto y dejarlo en blanco
             this.campoDeTextoCodigo.setText("");
+            
+            //HAY QUE RECALCULAR EL VALOR TOTAL
+            String valorTotal ="";
+            //String valorTotal = calcularTotal();
+            this.etiquetaTotal.setText(valorTotal);
         }
     }
     /*

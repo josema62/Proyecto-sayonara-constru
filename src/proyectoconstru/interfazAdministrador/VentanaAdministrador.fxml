@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="569.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.VentanaAdministradorController">
+   <children>
+      <BorderPane prefHeight="569.0" prefWidth="776.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Label fx:id="LabelTitulo" text="Nombre Minimarket" BorderPane.alignment="TOP_LEFT">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+         </top>
+         <center>
+            <AnchorPane>
+               <children>
+                  <StackPane fx:id="paneDinamico" prefHeight="499.0" prefWidth="660.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+               </children>
+            </AnchorPane>
+         </center>
+         <left>
+            <TreeView fx:id="raiz" prefHeight="497.0" prefWidth="168.0" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>

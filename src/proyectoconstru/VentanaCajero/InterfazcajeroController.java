@@ -93,18 +93,48 @@ public class InterfazcajeroController implements Initializable {
     Se obtiene el codigo del producto, se debe recepcionar los datos del mismo
     (nombre, valor) y calcular segun la cantidad. Se debe actualizar las etiquetas (nombre y valor)
     y la tabla con la info.
+    OJO: HAY QUE VALIDAR QUE EL CODIGO SEAN NUMEROS O "6X129038182" QUE CONTIENE SOLO UNA X
+    QUE SIMBOLIZA LA CANTIDAD DE ESE PRODUCTO... TODAS LAS DEMAS POSIBILIDADES ESTAN DESCARTADAS
     */
     @FXML
     private void accionIngresoCodigo(KeyEvent event) {
-        
+        int cantidadProducto;
+        long codigoProducto;
         if(event.getCode().ENTER==event.getCode()){
             //HACER TODO
-            
+            String codigoPuro = this.campoDeTextoCodigo.getText();
+            cantidadProducto = buscarCantidadProducto(codigoPuro);
+            codigoProducto = buscarCodigoProducto(codigoPuro);
             //despues de hacer todo hay que setear el texto y dejarlo en blanco
             this.campoDeTextoCodigo.setText("");
         }
     }
-
+    /*
+    Lo que hace es:
+        Si se ingresa en el text field un codigo de la siguiente forma:
+    "6x0800485" se debe obtener el valor 6 que es la cantidad de productos
+    */
+    private int buscarCantidadProducto(String texto){
+        char[] arregloCodigo = texto.toCharArray();
+        for (int i = 0; i < arregloCodigo.length; i++) {
+            char c = arregloCodigo[i];
+            if(c == 'x'|| c=='X'){
+                return Integer.parseInt(texto.substring(0, i));
+            }
+        }
+        return 1;
+    }
+    
+    private long buscarCodigoProducto(String texto){
+        char[] arregloCodigo = texto.toCharArray();
+        for (int i = 0; i < arregloCodigo.length; i++) {
+            char c = arregloCodigo[i];
+            if(c == 'x' || c == 'X'){
+                return Integer.parseInt(texto.substring(i+1,arregloCodigo.length));
+            }
+        }
+        return Integer.parseInt(texto);
+    }
   
 
    

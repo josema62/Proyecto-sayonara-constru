@@ -31,7 +31,7 @@ public class ConsultaCajero {
      * @param conexion La conexion a la base de datos.
      */
     public ConsultaCajero() {
-        this.bd = BD.obtenerBD("root","","3306");
+        this.bd = BD.obtenerBD();
         this.conexion = this.bd.obtenerConexion();
     }
 

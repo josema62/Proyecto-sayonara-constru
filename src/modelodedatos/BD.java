@@ -26,27 +26,28 @@ public class BD {
      * Si se necesita que sea remota entonces
      * "jdbc:mysql://ip:port/proyectosayonaracontru"
      */
-    private String url = "jdbc:mysql://localhost:3306/proyectosayonaracontru";
+    private String url;
     private String usuario;
     private String contrasenia;
     private String puerto;
     private Connection conexion;
 
-    private BD(String usuario, String contrasenia, String puerto) {
+    private BD(String ip ,String usuario, String contrasenia, String puerto) {
 
         this.usuario = usuario;
         this.contrasenia = contrasenia;
         this.puerto = puerto;
+        this.url = String.format("jdbc:mysql://%s:%s/proyectosayonaraconstru",
+                                 ip,puerto);
+        iniciarConexion();
 
     }
 
-    public static BD obtenerBD(String usuario, String contrasenia, String puerto) {
+    public static BD obtenerBD() {
         if (BD.bd == null) {
-            BD.bd = new BD(usuario, contrasenia, puerto);
+            BD.bd = new BD("200.27.120.172","sayonarateam", "sayonara123", "3306");
            
         }
-         BD.bd.iniciarConexion();
-
         return BD.bd;
     }
 

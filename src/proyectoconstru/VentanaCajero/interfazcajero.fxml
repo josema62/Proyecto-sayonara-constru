@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="proyectoconstru.VentanaCajero.InterfazcajeroController">
+  <children>
+    <BorderPane minHeight="63.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <bottom>
+        <VBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="800.0" styleClass="hbox">
+          <children>
+            <HBox id="HBox" alignment="TOP_RIGHT" spacing="5.0">
+              <children>
+                <Label alignment="CENTER" contentDisplay="LEFT" text="TOTAL:">
+                  <font>
+                    <Font name="System Bold" size="18.0" fx:id="x1" />
+                  </font>
+                </Label>
+                <Label fx:id="etiquetaTotal" font="$x1" text="" />
+              </children>
+              <padding>
+                <Insets right="60.0" />
+              </padding>
+            </HBox>
+            <VBox id="VBox" alignment="CENTER" spacing="5.0">
+              <children>
+                <HBox prefHeight="22.0" prefWidth="785.0" spacing="10.0">
+                  <children>
+                    <Label text="Nombre Cajero:" />
+                    <Label id="textoNombreCajero" fx:id="etiquetaNombreCajero" text="" />
+                  </children>
+                </HBox>
+              </children>
+            </VBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+              <children>
+                <Button fx:id="botonIngresar" mnemonicParsing="false" onAction="#accionIngresar" prefHeight="27.0" prefWidth="84.0" text="Ingresar" />
+                <Button fx:id="botonCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="27.0" prefWidth="84.0" text="Cancelar" />
+              </children>
+              <padding>
+                <Insets right="30.0" top="10.0" />
+              </padding>
+            </HBox>
+          </children>
+          <padding>
+            <Insets left="15.0" />
+          </padding>
+        </VBox>
+      </bottom>
+      <center>
+        <GridPane styleClass="hbox">
+          <children>
+            <TableView fx:id="tablaBoleta" editable="false" minWidth="-1.0" mouseTransparent="false" pickOnBounds="false" prefHeight="381.0" prefWidth="623.0" tableMenuButtonVisible="false" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS">
+              <columns>
+                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="144.0" resizable="false" sortable="false" text="Código" visible="true" fx:id="columnaCodigo" />
+                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="316.0" resizable="false" sortable="false" text="Producto" fx:id="columnaProducto" />
+                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="65.0" resizable="false" sortable="false" text="Cantidad" fx:id="columnaCantidad" />
+                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="118.0" resizable="false" sortable="false" text="Subtotal" fx:id="columnaSubtotal" />
+              </columns>
+            </TableView>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <padding>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+          </padding>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </center>
+      <left>
+        <VBox prefHeight="487.0" prefWidth="157.0" spacing="10.0" styleClass="hbox" BorderPane.alignment="CENTER">
+          <children>
+            <HBox id="HBox" alignment="CENTER" prefWidth="382.0" spacing="5.0">
+              <children>
+                <Label fx:id="etiquetaNombreProducto" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="5.0" mouseTransparent="false" prefHeight="64.0" prefWidth="143.0" text="" textAlignment="CENTER" textOverrun="ELLIPSIS" underline="false" visible="true" wrapText="false">
+                  <font>
+                    <Font name="Book Antiqua Negrita" size="20.0" />
+                  </font>
+                </Label>
+              </children>
+            </HBox>
+            <HBox id="HBox" alignment="CENTER" spacing="5.0">
+              <children>
+                <Label fx:id="etiquetaValorProducto" text="">
+                  <font>
+                    <Font name="Comic Sans MS" size="20.0" />
+                  </font>
+                </Label>
+              </children>
+            </HBox>
+            <VBox prefHeight="144.0" prefWidth="157.0" spacing="10.0">
+              <children>
+                <Label fx:id="borrar" text="Código">
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                </Label>
+                <TextField fx:id="campoDeTextoCodigo" onKeyPressed="#accionIngresoCodigo" prefHeight="27.0" prefWidth="117.0" />
+              </children>
+              <padding>
+                <Insets left="20.0" right="20.0" top="50.0" />
+              </padding>
+            </VBox>
+            <HBox id="HBox" alignment="CENTER" disable="false" prefHeight="39.0" prefWidth="157.0" spacing="5.0">
+              <children>
+                <Button fx:id="botonEditarProducto" disable="false" mnemonicParsing="false" onAction="#accionBotonEditarProducto" prefHeight="30.0" prefWidth="136.0" text="Editar n° productos" textOverrun="CENTER_WORD_ELLIPSIS" underline="false" />
+              </children>
+            </HBox>
+          </children>
+          <padding>
+            <Insets top="40.0" />
+          </padding>
+        </VBox>
+      </left>
+      <top>
+        <AnchorPane blendMode="SRC_OVER" cache="false" depthTest="ENABLE" mouseTransparent="false" prefHeight="114.0" prefWidth="800.0" style="" styleClass="banner" />
+      </top>
+    </BorderPane>
+  </children>
+  <stylesheets>
+    <URL value="@theme.css" />
+  </stylesheets>
+</AnchorPane>

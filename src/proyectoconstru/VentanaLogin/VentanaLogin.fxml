@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="211.0" prefWidth="400.0" styleClass="fondoLogin" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="proyectoconstru.VentanaLogin.VentanaLoginController">
+<AnchorPane id="AnchorPane" prefHeight="266.0" prefWidth="400.0" styleClass="fondoLogin" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.VentanaLogin.VentanaLoginController">
   <children>
     <BorderPane prefHeight="300.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
@@ -26,10 +31,10 @@
       <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
           <bottom>
-            <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER_RIGHT">
+            <HBox alignment="TOP_RIGHT" prefHeight="38.0" prefWidth="400.0" spacing="20.0" BorderPane.alignment="CENTER_RIGHT">
               <children>
-                <RadioButton fx:id="selectorAdmin" mnemonicParsing="false" onAction="#accionSelectorAdmin" text="Administrador" textFill="WHITE" />
-                <RadioButton fx:id="selectorCajero" mnemonicParsing="false" onAction="#accionSelectorCajero" text="Cajero" textFill="WHITE" />
+                <RadioButton fx:id="selectorAdmin" mnemonicParsing="false" onAction="#accionSelectorAdmin" text="Administrador" />
+                <RadioButton fx:id="selectorCajero" mnemonicParsing="false" onAction="#accionSelectorCajero" text="Cajero" />
               </children>
               <padding>
                 <Insets right="35.0" />
@@ -37,19 +42,37 @@
             </HBox>
           </bottom>
           <right>
-            <VBox prefHeight="129.0" prefWidth="400.0" spacing="5.0">
+            <VBox prefHeight="170.0" prefWidth="400.0" spacing="5.0">
               <children>
-                <Label text="RUN:" textFill="WHITE" textOverrun="CLIP" wrapText="false">
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <Label text="Login" textFill="#000000a2">
+                                 <font>
+                                    <Font name="System Bold" size="27.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                <Label styleClass="letras" text="RUN:" textFill="#000000b4" textOverrun="CLIP" wrapText="false">
                   <font>
                     <Font size="13.0" fx:id="x1" />
                   </font>
                 </Label>
-                <TextField fx:id="campoDeTextoRUT" prefHeight="27.0" prefWidth="340.0" promptText="12345678-1" text="" />
+                <TextField fx:id="campoDeTextoRUT" prefHeight="34.0" prefWidth="340.0" promptText="12.345.678-1" text="">
+                           <effect>
+                              <DropShadow color="#00000034" height="1.5" offsetX="1.0" offsetY="2.0" radius="0.125" width="1.0" />
+                           </effect></TextField>
                 <VBox prefHeight="64.0" prefWidth="340.0" spacing="5.0">
                   <children>
-                    <Label font="$x1" text="Contraseña:" textFill="WHITE" />
-                    <PasswordField id="cam" fx:id="campoDeTextoContrasenia" prefHeight="27.0" prefWidth="340.0" />
+                    <Label font="$x1" styleClass="letras" text="Contraseña:" textFill="#000000c1" />
+                    <PasswordField id="cam" fx:id="campoDeTextoContrasenia" prefHeight="27.0" prefWidth="340.0">
+                                 <effect>
+                                    <DropShadow color="#00000033" height="1.0" offsetX="1.0" offsetY="2.0" radius="5.0" />
+                                 </effect></PasswordField>
                   </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
                 </VBox>
               </children>
               <padding>

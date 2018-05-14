@@ -20,7 +20,7 @@ public class BoletaTest {
        this.consulta = new ConsultaBoleta();
     }
     
-    
+    @Test
     public void pruebaAgregarBoleta()
     {  
         HashMap<String,DetalleProducto> detallesProducto = new HashMap<>();
@@ -40,19 +40,6 @@ public class BoletaTest {
         assertEquals(resultado, 15);
     }
 
-    @Test
-    public void consultaAgregarBoleta()
-    {
-       DetalleProducto detalle1 = new DetalleProducto(3,"Cereal Estrellitas 500g",2,2190,4380);
-       DetalleProducto detalle2 = new DetalleProducto(349844,"Salchichas PF",3,610,1230);
-       HashMap<String,DetalleProducto> muestras = new HashMap<>();
-       muestras.put("349844", detalle2);
-       muestras.put("3",detalle1);
-       Boleta prueba = new Boleta(5610,muestras,true,"13-05-2018","23:51",123,"marcos","1234");
-       
-       boolean resultado = this.consulta.registrarBoleta(prueba);
-       assertTrue(resultado);
-    }
     
     @Test
     public void existeBoletaTrue()
@@ -78,7 +65,8 @@ public class BoletaTest {
     @Test
     public void consultVerificarPrecioNoExiste()
     {
-        long resultado = this.consulta.verificarPrecio("-2");
+        long resultado = this.consulta.verificarPrecio("20");
+        System.out.println("error " + resultado);
         assertEquals(-1,resultado);
     }
     

@@ -95,6 +95,10 @@ public class ConsultaBoleta extends Consulta {
             consultaST.setString(1, codigoProducto);
             ResultSet respuesta = consultaST.executeQuery();
             while (respuesta.next()) {
+                int precio = respuesta.getInt(1);
+                if(respuesta.wasNull()){
+                    break;
+                }
                 return respuesta.getInt(1);
             }
             respuesta.close();

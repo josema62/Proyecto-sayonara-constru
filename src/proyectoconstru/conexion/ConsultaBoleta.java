@@ -151,12 +151,13 @@ public class ConsultaBoleta extends Consulta {
         try (CallableStatement consultaST
                                = conexion.prepareCall(consulta)) {
             while (it.hasNext()) {
-                codigoProducto = it.next().getKey();
-                detalle = it.next().getValue();
+                Entry<String, DetalleProducto> par = it.next();
+                codigoProducto = par.getKey();
+                detalle = par.getValue();
                 
                 consultaST.setInt(1, detalle.getCantidad());
                 consultaST.setInt(2, detalle.getSubtotal());
-                consultaST.setInt(3, Integer.valueOf(codigoProducto));
+                consultaST.setString(3, codigoProducto);
                 consultaST.setInt(4, codigoBoleta);
                 consultaST.setInt(5, detalle.getPrecioUnitario());
                 consultaST.execute();

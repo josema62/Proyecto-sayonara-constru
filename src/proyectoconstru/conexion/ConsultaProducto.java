@@ -46,11 +46,9 @@ public class ConsultaProducto extends Consulta{
     public boolean registrarProducto(String codigo, String nombre, String categoria, boolean estado, 
                                   int precio, int stockInicial, int stockMinimo) {
         String consulta = "{CALL registrar_producto(?,?,?,?,?,?,?)}";
-        try {
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
             
-            //Se prepara la consulta para ser ejecutada.    
-            CallableStatement declaracion = this.conexion.prepareCall(consulta);
-            
+         
             //Se le pasan los parámetros de entrada al procedimiento.
             declaracion.setString(1, codigo);
             declaracion.setString(2, nombre);
@@ -81,9 +79,10 @@ public class ConsultaProducto extends Consulta{
     public List<Producto> listarProductos() {
         String consulta = "{CALL listar_productos()}";
         ArrayList<Producto> productos = null;
-        try {
-            CallableStatement declaracion = this.conexion.prepareCall(consulta);
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
+            
             ResultSet listado = declaracion.executeQuery();
+            
             
             productos = new ArrayList<Producto>();
             Producto producto;
@@ -111,6 +110,8 @@ public class ConsultaProducto extends Consulta{
                 
                 productos.add(producto);
             }
+            
+            listado.close();
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaProducto.class.getName()).log(Level.SEVERE,
@@ -127,10 +128,11 @@ public class ConsultaProducto extends Consulta{
      */
     public boolean darDeBajaProducto(String codigo) {
         String consulta = "{CALL dar_de_baja_producto(?)}";
-        try {
-            CallableStatement declaracion = this.conexion.prepareCall(consulta);
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
+            
             declaracion.setString(1, codigo);
             declaracion.executeQuery();
+            
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaProducto.class.getName()).log(Level.SEVERE,
@@ -157,8 +159,7 @@ public class ConsultaProducto extends Consulta{
     public boolean modificarDatosDeProducto(String codigo, String nombre, int stockMinimo, String categoria, boolean estado, int stock, int precio) {
         String consulta = "{CALL modificar_datos_de_producto(?,?,?,?,?,?,?)}";
         //nombre, stock mínimo, categoría, estado, stock, y precio
-        try {        
-            CallableStatement declaracion = this.conexion.prepareCall(consulta);
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){        
             
             //Se pasan los parámetros al procedimiento.
             declaracion.setString(1, codigo);
@@ -195,8 +196,8 @@ public class ConsultaProducto extends Consulta{
         //La rutina almacenada en la base de datos retornará verdadero o falso dependiendo si 
         //existe o no un producto ya registrado con ese código.
         String consulta = "{? = call existe_producto(?)}";
-        try {
-            CallableStatement declaracion = this.conexion.prepareCall(consulta);
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
+            
             declaracion.registerOutParameter(1, java.sql.Types.BOOLEAN);
             declaracion.setString(2, codigo);
             declaracion.execute();

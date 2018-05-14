@@ -15,34 +15,34 @@ import javafx.beans.property.StringProperty;
 public class DetalleProducto {
 
     
-    private IntegerProperty codigoProducto;
+    private StringProperty codigoProducto;
     private StringProperty nombre;
     private IntegerProperty cantidad;
     private IntegerProperty precioUnitario;
     private IntegerProperty subtotal;
     
 
-    public DetalleProducto(int codigoProducto, String nombre, int cantidad, int precioUnitario, int subtotal) {
-        this.codigoProducto = new SimpleIntegerProperty(codigoProducto);
+    public DetalleProducto(String codigoProducto, String nombre, int cantidad, int precioUnitario, int subtotal) {
+        this.codigoProducto = new SimpleStringProperty(codigoProducto);
         this.nombre = new SimpleStringProperty(nombre);
         this.cantidad = new SimpleIntegerProperty(cantidad);
         this.precioUnitario = new SimpleIntegerProperty(precioUnitario);
         this.subtotal = new SimpleIntegerProperty(subtotal);
     }
 
-    public int getCodigoProducto() {
+    public String getCodigoProducto() {
         return this.codigoProducto.getValue();
     }
 
-    public void setCodigoProducto(int codigoProducto) {
+    public void setCodigoProducto(String codigoProducto) {
         this.codigoProducto.setValue(codigoProducto);
     }
 
-    public IntegerProperty getCodigoProductoProperty() {
+    public StringProperty getCodigoProductoProperty() {
         return this.codigoProducto;
     }
 
-    public void setCodigoProductoProperty(IntegerProperty codigoProductoProperty) {
+    public void setCodigoProductoProperty(StringProperty codigoProductoProperty) {
         this.codigoProducto = codigoProductoProperty;
     }
     

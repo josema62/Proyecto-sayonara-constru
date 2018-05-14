@@ -26,7 +26,9 @@ public class ConsultaBoleta extends Consulta {
 
     /**
      * Registra la boleta en la base de datos.
+     *
      * @param boleta La boleta que sera ingresada.
+     *
      * @return true si la boleta se ingreso correctamente.
      */
     public boolean registrarBoleta(Boleta boleta) {
@@ -39,7 +41,8 @@ public class ConsultaBoleta extends Consulta {
             consultaST.setInt(4, boleta.getTotal());
             consultaST.setString(5, boleta.getRutCajero());
             consultaST.execute();
-            insertarProductoBoleta(boleta.getCodigo(), boleta.getDetalleProductos());
+            insertarProductoBoleta(boleta.getCodigo(),
+                                   boleta.getDetalleProductos());
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaBoleta.class.getName()).log(Level.SEVERE,
@@ -51,7 +54,9 @@ public class ConsultaBoleta extends Consulta {
 
     /**
      * Sirve para ver si existe la boleta en la base de datos.
+     *
      * @param codigoBoleta El codigo de la boleta.
+     *
      * @return true si existe, false en otro caso.
      */
     public boolean existeBoleta(int codigoBoleta) {
@@ -77,8 +82,10 @@ public class ConsultaBoleta extends Consulta {
 
     /**
      * Obtiene el precio de un producto de la base de datos.
+     *
      * @param codigoProducto Codigo del producto del cual se quiere tener el
      * precio.
+     *
      * @return el precio del producto .
      */
     public int verificarPrecio(String codigoProducto) {
@@ -104,7 +111,9 @@ public class ConsultaBoleta extends Consulta {
 
     /**
      * Da de baja la boleta cambiando el estado.
+     *
      * @param codigoBoleta El codigo de la boleta.
+     *
      * @return true si la operacion se llevo a cabo sin problemas, false en caso
      * contrario.
      */
@@ -124,26 +133,27 @@ public class ConsultaBoleta extends Consulta {
 
     /**
      * Permite insertar los productos de la boleta
+     *
      * @param codigoBoleta El codigo de la boleta insertada.
      * @param productos Los productos a insertar de esta boleta.
+     *
      * @return true si la operacion se llevo a cabo sin problemas, false en caso
      * contrario.
      */
-    private boolean insertarProductoBoleta(int codigoBoleta, 
-                                           HashMap<String, DetalleProducto>
-                                           productos) {
+    private boolean insertarProductoBoleta(int codigoBoleta,
+                                           HashMap<String, 
+                                                   DetalleProducto> productos) {
         Iterator<Entry<String, DetalleProducto>> it = productos.entrySet()
                 .iterator();
         String codigoProducto;
         DetalleProducto detalle;
-        
-        while(it.hasNext()){
-            codigoProducto = it.next().getKey();
-            detalle = it.next().getValue();
-            
-            String consulta = "{call insertar_producto_boleta(?, ?, ?, ?, ?)}";
-            try (CallableStatement consultaST
-                                   = conexion.prepareCall(consulta)) {
+        String consulta = "{call insertar_producto_boleta(?, ?, ?, ?, ?)}";
+        try (CallableStatement consultaST
+                               = conexion.prepareCall(consulta)) {
+            while (it.hasNext()) {
+                codigoProducto = it.next().getKey();
+                detalle = it.next().getValue();
+                
                 consultaST.setInt(1, detalle.getCantidad());
                 consultaST.setInt(2, detalle.getSubtotal());
                 consultaST.setInt(3, Integer.valueOf(codigoProducto));
@@ -151,23 +161,24 @@ public class ConsultaBoleta extends Consulta {
                 consultaST.setInt(5, detalle.getPrecioUnitario());
                 consultaST.execute();
             }
-            catch (SQLException ex) {
-                Logger.getLogger(ConsultaBoleta.class.getName()).log(
-                        Level.SEVERE,
-                        null, ex);
-            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ConsultaBoleta.class.getName()).log(
+                    Level.SEVERE,
+                    null, ex);
         }
         return true;
     }
-    
+
     /**
      * Obtiene el codigo de la ultima boleta agregada
+     *
      * @return El codigo de la ultima boleta agregada.
      */
-    public int obtenerCodigoUltimaBoleta(){
+    public int obtenerCodigoUltimaBoleta() {
         String consulta = "select ultimo_id_boleta();";
         try (Statement consultaST
-                               = conexion.createStatement()) {
+                       = conexion.createStatement()) {
             ResultSet respuesta = consultaST.executeQuery(consulta);
             while (respuesta.next()) {
                 return respuesta.getInt(1);

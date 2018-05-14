@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarCajerosController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarCajerosController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -15,8 +13,10 @@
                <columns>
                   <TableColumn fx:id="columnaRut" prefWidth="106.0" text="rut" />
                   <TableColumn fx:id="columnaNombre" prefWidth="134.0" text="nombre" />
-                  <TableColumn fx:id="columnaDireccion" prefWidth="205.0" text="direccion" />
-                  <TableColumn fx:id="columnaTelefono" prefWidth="154.0" text="telefono" />
+                  <TableColumn fx:id="columnaDireccion" prefWidth="83.0" text="direccion" />
+                  <TableColumn fx:id="columnaTelefono" prefWidth="72.0" text="telefono" />
+                  <TableColumn fx:id="columnaContrasena" prefWidth="72.0" text="contraseña" />
+                  <TableColumn fx:id="columnaEstado" prefWidth="75.0" text="estado" />
                </columns>
             </TableView>
          </children>

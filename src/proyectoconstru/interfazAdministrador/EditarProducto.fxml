@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarProductoController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.EditarProductoController">
    <children>
-      <HBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="132.0">
                <children>
@@ -30,13 +30,18 @@
                         <Label text="Categoria:" />
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonHabilitar" mnemonicParsing="false" onAction="#botonHabilitarProducto" text="Habilitar" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <VBox prefHeight="400.0" prefWidth="150.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoCodigo">
+                        <TextField fx:id="campoTextoCodigo" disable="true">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -61,14 +66,17 @@
                         </ComboBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonDarDeBaja" mnemonicParsing="false" onAction="#botonDarBaja" text="Dar de Baja" />
+                     </children></HBox>
                </children>
             </VBox>
             <VBox prefHeight="400.0" prefWidth="150.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Stock Inicial:" />
+                        <Label text="Stock Actual:" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -83,7 +91,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar" />
+                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#botonEditarProducto" text="Editar" />
                      </children>
                   </HBox>
                </children>

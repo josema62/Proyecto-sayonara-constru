@@ -1,8 +1,8 @@
 package modelodedatos;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -17,6 +17,7 @@ public class DetalleProducto {
     
     private StringProperty codigoProducto;
     private StringProperty nombre;
+    private LongProperty codigo;
     private IntegerProperty cantidad;
     private IntegerProperty precioUnitario;
     private IntegerProperty subtotal;

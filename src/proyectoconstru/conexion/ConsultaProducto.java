@@ -213,4 +213,56 @@ public class ConsultaProducto extends Consulta{
         
         return existe;
     }
+    
+    
+    /**
+     * A partir del código de un producto, obtiene los datos de un producto registrdo en la base de datos.
+     * @param codigo El codigo del producto cuya información se debe extraer.
+     * @return Un objeto de clase Producto que incluye la información correspondiente al producto. Retorna null en caso de que no encuentre el producto.
+     */
+    public Producto obtenerDatosProducto(String codigo) { 
+        String consulta = "{CALL obtener_datos_producto(?)}";
+        
+        //El producto que se va a retornar.
+        Producto producto = null;
+        
+        //Los atributos del producto que se va a retornar.
+        String codigoProducto;
+        String nombre;
+        String categoria;
+        Boolean estado;
+        int precio;
+        int stockActual;
+        int stockMinimo;
+            
+        
+	 
+        try(CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
+            declaracion.setString(1, codigo);
+            ResultSet listado = declaracion.executeQuery();
+            
+            //Se extraen los datos del resultado devuelto por la base de datos.
+            if(listado.next()) {
+                codigoProducto = listado.getString("codigo");
+                nombre = listado.getString("nombre");
+                categoria = listado.getString("categoria");
+                estado = listado.getBoolean("estado");
+                precio = listado.getInt("precio");
+                stockActual = listado.getInt("stock");
+                stockMinimo = listado.getInt("stockminimo");
+                producto = new Producto(nombre, stockActual, codigoProducto, categoria, estado,
+                                        stockMinimo, precio);
+            }
+            
+            
+            listado.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ConsultaProducto.class.getName()).log(Level.SEVERE,
+                                                                   null, ex);
+        }
+        
+        return producto;
+        
+    }
 }

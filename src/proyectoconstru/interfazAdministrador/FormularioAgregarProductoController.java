@@ -7,11 +7,13 @@ package proyectoconstru.interfazAdministrador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import proyectoconstru.conexion.ConsultaProducto;
 
 /**
  * FXML Controller class
@@ -25,7 +27,7 @@ public class FormularioAgregarProductoController implements Initializable {
     @FXML
     private TextField campoTextoNombre;
     @FXML
-    private ComboBox<?> comboBoxCategoria;
+    private ComboBox<String> comboBoxCategoria;
     @FXML
     private TextField campoTextoStockInicial;
     @FXML
@@ -36,13 +38,63 @@ public class FormularioAgregarProductoController implements Initializable {
     private Button botonAgregar;
     @FXML
     private Button botonCancelar;
+    private ConsultaProducto consulta = new ConsultaProducto();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        comboBoxCategoria.getItems().addAll(
+                "Abarrotes",
+                "Lacteos",
+                "Cecinas",
+                "Carnes",
+                "Bebidas",
+                "Frutas",
+                "Verduras",
+                "Confites",
+                "Utiles de Aseo",
+                "Articulos de escritorio",
+                "Otros"
+        );
+        comboBoxCategoria.setValue("Abarrotes");
+    }  
+    /**
+     * agrega el producto a la base de datos gracias a la consulta 
+     * de registrarProducto.
+     * @param event 
+     */
+    @FXML
+    private void agregarProducto(ActionEvent event){
+        consulta.registrarProducto(campoTextoCodigo.getText(), 
+                campoTextoNombre.getText(),
+                comboBoxCategoria.getValue(),
+                true,
+                Integer.parseInt(campoTextoPrecio.getText()),
+                Integer.parseInt(campoTextoStockInicial.getText()), 
+                Integer.parseInt(campoTextoStockMinimo.getText()));            
+        limpiarCamposdeTexto();
+    }
     
+    /**
+     * limpia los campos de texto de la interfaz agregar Producto
+     */
+    private void limpiarCamposdeTexto() {
+        campoTextoCodigo.clear();
+        campoTextoNombre.clear();
+        campoTextoPrecio.clear();
+        campoTextoStockInicial.clear();
+        campoTextoStockMinimo.clear();
+    }
+    
+    /**
+     * elimina todos los datos escritos en la ventana agregarProducto
+     * @param event 
+     */
+    @FXML
+    private void botonCancelar(ActionEvent event) {
+        limpiarCamposdeTexto();
+        comboBoxCategoria.setValue("Abarrotes");
+    }
 }

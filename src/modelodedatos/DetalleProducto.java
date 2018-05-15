@@ -1,6 +1,8 @@
 package modelodedatos;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -12,18 +14,38 @@ import javafx.beans.property.StringProperty;
  */
 public class DetalleProducto {
 
+    
+    private StringProperty codigoProducto;
     private StringProperty nombre;
     private IntegerProperty cantidad;
     private IntegerProperty precioUnitario;
     private IntegerProperty subtotal;
+    
 
-    public DetalleProducto(StringProperty nombre, IntegerProperty cantidad, IntegerProperty precioUnitario, IntegerProperty subtotal) {
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = subtotal;
+    public DetalleProducto(String codigoProducto, String nombre, int cantidad, int precioUnitario, int subtotal) {
+        this.codigoProducto = new SimpleStringProperty(codigoProducto);
+        this.nombre = new SimpleStringProperty(nombre);
+        this.cantidad = new SimpleIntegerProperty(cantidad);
+        this.precioUnitario = new SimpleIntegerProperty(precioUnitario);
+        this.subtotal = new SimpleIntegerProperty(subtotal);
     }
 
+    public String getCodigoProducto() {
+        return this.codigoProducto.getValue();
+    }
+
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto.setValue(codigoProducto);
+    }
+
+    public StringProperty getCodigoProductoProperty() {
+        return this.codigoProducto;
+    }
+
+    public void setCodigoProductoProperty(StringProperty codigoProductoProperty) {
+        this.codigoProducto = codigoProductoProperty;
+    }
+    
     public String getNombre() {
         return this.nombre.getValue();
     }
@@ -44,6 +66,8 @@ public class DetalleProducto {
         return this.cantidad.getValue();
     }
 
+    
+    
     public void setCantidad(int cantidad) {
         this.cantidad.setValue(cantidad);
     }

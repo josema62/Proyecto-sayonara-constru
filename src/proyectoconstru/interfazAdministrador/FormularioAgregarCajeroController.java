@@ -78,6 +78,9 @@ public class FormularioAgregarCajeroController implements Initializable {
         campoTextoDireccion.clear();
     }
     
-   
+   @FXML
+    private void botonCancelar(ActionEvent event) {
+        limpiarCamposdeTexto();
+    }
     
 }

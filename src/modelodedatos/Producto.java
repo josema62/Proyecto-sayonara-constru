@@ -22,16 +22,16 @@ public class Producto {
 
     private StringProperty nombre;
     private IntegerProperty stockActual;
-    private LongProperty codigo;
+    private StringProperty codigo;
     private StringProperty categoria;
     private BooleanProperty estado;
     private IntegerProperty stockMinimo;
     private IntegerProperty precio;
 
-    public Producto(String nombre, int stockActual, long codigo, String categoria, boolean estado, int stockMinimo, int precio) {
+    public Producto(String nombre, int stockActual, String codigo, String categoria, boolean estado, int stockMinimo, int precio) {
         this.nombre = new SimpleStringProperty(nombre);
         this.stockActual = new SimpleIntegerProperty(stockActual);
-        this.codigo = new SimpleLongProperty(codigo);
+        this.codigo = new SimpleStringProperty(codigo);
         this.categoria = new SimpleStringProperty(categoria);
         this.estado = new SimpleBooleanProperty(estado);
         this.stockMinimo = new SimpleIntegerProperty(stockMinimo);
@@ -70,19 +70,19 @@ public class Producto {
         this.stockActual = stockActualProperty;
     }
 
-    public long getCodigo() {
+    public String getCodigo() {
         return this.codigo.getValue();
     }
 
-    public void setCodigo(long codigo) {
+    public void setCodigo(String codigo) {
         this.codigo.setValue(codigo);
     }
 
-    public LongProperty getCodigoProperty() {
+    public StringProperty getCodigoProperty() {
         return this.codigo;
     }
 
-    public void setCodigoProperty(LongProperty codigoProperty) {
+    public void setCodigoProperty(StringProperty codigoProperty) {
         this.codigo = codigoProperty;
     }
 

@@ -37,6 +37,10 @@ public class ListarCajerosController implements Initializable {
     private TableColumn<Cajero, String> columnaDireccion;
     @FXML
     private TableColumn<Cajero, String> columnaTelefono;
+    @FXML
+    private TableColumn<Cajero, String> columnaContrasena;
+    @FXML
+    private TableColumn<Cajero, String> columnaEstado;
     
     private final ObservableList<Cajero> listaCajeros = FXCollections.observableArrayList();
     
@@ -78,6 +82,10 @@ public class ListarCajerosController implements Initializable {
                 new PropertyValueFactory<Cajero, String>("direccion"));
         columnaTelefono.setCellValueFactory(
                 new PropertyValueFactory<Cajero, String>("telefono"));
+        columnaContrasena.setCellValueFactory(
+                new PropertyValueFactory<Cajero, String>("contrasenia"));
+        columnaEstado.setCellValueFactory(
+                new PropertyValueFactory<Cajero, String>("estado"));
     
     }
 }

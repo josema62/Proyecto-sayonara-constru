@@ -104,7 +104,7 @@ public class ListarProductosController implements Initializable {
      * @param event 
      */
     @FXML
-    private void botonEditarProducto(ActionEvent event) {
+    private void botonEditarProducto(ActionEvent event) throws IOException {
         mostrarStageSecundario("EditarProducto.fxml");
     }
     
@@ -112,13 +112,16 @@ public class ListarProductosController implements Initializable {
      * genera un stage para mostrar una ventana secundaria
      * @param ruta string con el nombre del archivo fxml que se va abrir.
      */
-    private void mostrarStageSecundario(String ruta) {
-        Stage stage2 = new Stage();
-        Parent root = obtenerFXML(ruta);
+    private void mostrarStageSecundario(String ruta) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = obtenerFXML(ruta);
+        Parent root = loader.load();  
+        EditarProductoController controlador = loader.getController();
+        controlador.cargarProducto(obtenerProductoDesdeLista());
         Scene scene = new Scene(root);
-        stage2.setScene(scene);
-        stage2.showAndWait();
-        stage2.close();
+        stage.setScene(scene);
+        stage.showAndWait();
+        stage.close();
     }
     
     /**
@@ -126,19 +129,10 @@ public class ListarProductosController implements Initializable {
      * @param ruta contiene un string con el nombre del archivo fxml.
      * @return AnchorPane usado para ser agregado a otro Pane.
      */
-    private AnchorPane obtenerFXML(String ruta) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("EditarProducto.fxml"));
-            AnchorPane rootPane = (AnchorPane) loader.load();
-            EditarProductoController controlador = loader.getController();
-            controlador.cargarProducto(obtenerProductoDesdeLista());
-            return rootPane;
-        }
-        catch (IOException e) {
-            System.out.println("fallo:" + e);
-            return null;
-        }
+    private FXMLLoader obtenerFXML(String ruta) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(ruta));
+        return loader;
     }
     
     private Producto obtenerProductoDesdeLista(){

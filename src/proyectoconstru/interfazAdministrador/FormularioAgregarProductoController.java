@@ -69,7 +69,7 @@ public class FormularioAgregarProductoController implements Initializable {
     private void agregarProducto(ActionEvent event){
         consulta.registrarProducto(campoTextoCodigo.getText(), 
                 campoTextoNombre.getText(),
-                comboBoxCategoria.getAccessibleText(),
+                comboBoxCategoria.getValue(),
                 true,
                 Integer.parseInt(campoTextoPrecio.getText()),
                 Integer.parseInt(campoTextoStockInicial.getText()), 

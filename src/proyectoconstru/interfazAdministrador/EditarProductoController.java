@@ -54,8 +54,6 @@ public class EditarProductoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        campoTextoCodigo.setText(Long.toString(producto.getCodigo()));
-        campoTextoNombre.setText(producto.getNombre());
         comboBoxCategoria.getItems().addAll(
                 "Abarrotes",
                 "Lacteos",
@@ -68,21 +66,21 @@ public class EditarProductoController implements Initializable {
                 "Utiles de Aseo",
                 "Articulos de escritorio",
                 "Otros"
-        );
+        );     
+    }  
+    
+    public void cargarProducto(Producto pr){
+        producto = pr;
+        campoTextoCodigo.setText(producto.getCodigo());
+        campoTextoNombre.setText(producto.getNombre());
         comboBoxCategoria.setValue(producto.getCategoria());
         campoTextoStockInicial.setText(Integer.toString(producto.getStockActual()));
         campoTextoStockMinimo.setText(Integer.toString(producto.getStockMinimo()));
         campoTextoPrecio.setText(Integer.toString(producto.getPrecio()));
-        
         if (producto.getEstado())
             botonHabilitar.setDisable(true);
         else
             botonDarDeBaja.setDisable(true);
-        
-    }  
-    
-    public void cargarProducto(Producto producto){
-        this.producto = producto;
     }
 /**
  * Le da funcionalidad al boton Editar de la ventana Editar Producto.
@@ -101,6 +99,8 @@ public class EditarProductoController implements Initializable {
                                           Integer.parseInt(campoTextoStockInicial.getText()),
                                           Integer.parseInt(campoTextoPrecio.getText())
                                           );
+            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+            stage.close();
         }catch (Exception ex) {
             System.out.println("error boton EditarProducto:"+ex);
         }
@@ -128,7 +128,7 @@ public class EditarProductoController implements Initializable {
     @FXML
     private void botonDarBaja(ActionEvent event) {
        try {
-           consulta.darDeBajaProducto(producto.getCodigo());
+           producto.setEstado(false);
            botonDarDeBaja.setDisable(true);
            botonHabilitar.setDisable(false);
        }catch (Exception ex) {
@@ -142,13 +142,7 @@ public class EditarProductoController implements Initializable {
     @FXML
     private void botonHabilitarProducto(ActionEvent event){
         try{
-            consulta.modificarProducto(producto.getCodigo(),
-                                       producto.getNombre(),
-                                       producto.getStockMinimo(),
-                                       producto.getCategoria(),
-                                       true,
-                                       producto.getStockActual(),
-                                       producto.getPrecio());
+            producto.setEstado(true);
             botonHabilitar.setDisable(true);
             botonDarDeBaja.setDisable(false);
         }catch (Exception ex) {

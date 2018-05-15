@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="proyectoconstru.VentanaCajero.InterfazcajeroController">
+<AnchorPane id="AnchorPane" prefHeight="591.0" prefWidth="900.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.VentanaCajero.InterfazcajeroController">
   <children>
     <BorderPane minHeight="63.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
@@ -56,12 +63,13 @@
       <center>
         <GridPane styleClass="hbox">
           <children>
-            <TableView fx:id="tablaBoleta" editable="false" minWidth="-1.0" mouseTransparent="false" pickOnBounds="false" prefHeight="381.0" prefWidth="623.0" tableMenuButtonVisible="false" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS">
+            <TableView fx:id="tablaBoleta" editable="false" minWidth="-1.0" mouseTransparent="false" onKeyPressed="#accionEliminarFila" onMouseClicked="#accionClickTabla" pickOnBounds="false" prefHeight="381.0" prefWidth="623.0" tableMenuButtonVisible="false" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS">
               <columns>
-                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="144.0" resizable="false" sortable="false" text="Código" visible="true" fx:id="columnaCodigo" />
-                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="316.0" resizable="false" sortable="false" text="Producto" fx:id="columnaProducto" />
-                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="65.0" resizable="false" sortable="false" text="Cantidad" fx:id="columnaCantidad" />
-                <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="118.0" resizable="false" sortable="false" text="Subtotal" fx:id="columnaSubtotal" />
+                <TableColumn fx:id="columnaCodigo" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="144.0" resizable="false" sortable="false" text="Código" visible="true" />
+                <TableColumn fx:id="columnaProducto" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="316.0" resizable="false" sortable="false" text="Producto" />
+                <TableColumn fx:id="columnaCantidad" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="65.0" resizable="false" sortable="false" text="Cantidad" />
+                        <TableColumn fx:id="columnaPrecioUnitario" prefWidth="75.0" text="Precio Unit." />
+                <TableColumn fx:id="columnaSubtotal" editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="118.0" resizable="false" sortable="false" text="Subtotal" />
               </columns>
             </TableView>
           </children>
@@ -77,13 +85,13 @@
         </GridPane>
       </center>
       <left>
-        <VBox prefHeight="487.0" prefWidth="157.0" spacing="10.0" styleClass="hbox" BorderPane.alignment="CENTER">
+        <VBox prefHeight="377.0" prefWidth="178.0" spacing="10.0" styleClass="hbox" BorderPane.alignment="CENTER">
           <children>
             <HBox id="HBox" alignment="CENTER" prefWidth="382.0" spacing="5.0">
               <children>
-                <Label fx:id="etiquetaNombreProducto" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="5.0" mouseTransparent="false" prefHeight="64.0" prefWidth="143.0" text="" textAlignment="CENTER" textOverrun="ELLIPSIS" underline="false" visible="true" wrapText="false">
+                <Label fx:id="etiquetaNombreProducto" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="5.0" mouseTransparent="false" prefHeight="64.0" prefWidth="143.0" textAlignment="CENTER" textOverrun="ELLIPSIS" underline="false" visible="true" wrapText="false">
                   <font>
-                    <Font name="Book Antiqua Negrita" size="20.0" />
+                    <Font name="Arial" size="20.0" />
                   </font>
                 </Label>
               </children>
@@ -112,7 +120,7 @@
             </VBox>
             <HBox id="HBox" alignment="CENTER" disable="false" prefHeight="39.0" prefWidth="157.0" spacing="5.0">
               <children>
-                <Button fx:id="botonEditarProducto" disable="false" mnemonicParsing="false" onAction="#accionBotonEditarProducto" prefHeight="30.0" prefWidth="136.0" text="Editar n° productos" textOverrun="CENTER_WORD_ELLIPSIS" underline="false" />
+                <Button fx:id="botonEditarProducto" disable="false" mnemonicParsing="false" onAction="#accionBotonEditarProducto" prefHeight="30.0" prefWidth="136.0" text="Editar Producto" textOverrun="CENTER_WORD_ELLIPSIS" underline="false" />
               </children>
             </HBox>
           </children>

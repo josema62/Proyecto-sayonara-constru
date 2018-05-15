@@ -25,6 +25,9 @@
 }
 .simbolo2{
     -fx-translate-y: 30;
-    -fx-translate-x: -15;
+    -fx-translate-x: -15; 
+}
+.fondotab{
+    -fx-background-color: rgb(255, 255, 255);
     
 }

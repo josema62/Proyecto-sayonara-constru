@@ -33,6 +33,8 @@ import javafx.stage.Stage;
 import modelodedatos.Boleta;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Producto;
+import proyectoconstru.conexion.ConsultaBoleta;
+import proyectoconstru.conexion.ConsultaProducto;
 
 /**
  * FXML Controller class
@@ -60,7 +62,7 @@ public class InterfazcajeroController implements Initializable {
     @FXML
     private Button botonCancelar;
     @FXML
-    private TableColumn<DetalleProducto, Long> columnaCodigo;
+    private TableColumn<DetalleProducto, String> columnaCodigo;
     @FXML
     private TableColumn<DetalleProducto, String> columnaProducto;
     @FXML
@@ -92,7 +94,7 @@ public class InterfazcajeroController implements Initializable {
         columnaProducto.setMaxWidth(40000);
         columnaSubtotal.setMaxWidth(20000);
 
-        columnaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        columnaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoProducto"));
         columnaCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         columnaProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         columnaPrecioUnitario.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
@@ -112,7 +114,6 @@ public class InterfazcajeroController implements Initializable {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                                     "/proyectoconstru/VentanaCajero/VentanaEdicion.fxml"));
-            System.out.println(loader);
             Parent root = loader.load();
 
             VentanaEdicionController in = loader.<VentanaEdicionController>getController();
@@ -141,8 +142,8 @@ public class InterfazcajeroController implements Initializable {
     @FXML
     private void accionIngresar(ActionEvent event) {
         Date date = new Date();
-        DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyy");
+        DateFormat formatoHora = new SimpleDateFormat("HH:mm");
+        DateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyy");
         
         String hora = formatoHora.format(date).toString();
         String fecha = formatoFecha.format(date).toString();
@@ -154,12 +155,16 @@ public class InterfazcajeroController implements Initializable {
                                  this.etiquetaNombreCajero.getText(), this.rutCajero);
         
         for (DetalleProducto dato : datos) {
-            boleta.agregardetalles(dato.getCodigo()+"", dato);
+            boleta.agregardetalles(dato.getCodigoProducto(), dato);
             }
         
-        //actualizarBD(boleta);
-        //this.warning("Se ha ingresado la boleta "+boleta.getCodigo() + " con Exito!");
-        this.warning("Se ha ingresado la boleta con Exito!","");
+        ConsultaBoleta consultaBoleta = new ConsultaBoleta();
+        
+        int codigo = consultaBoleta.obtenerCodigoUltimaBoleta()+1;
+        boleta.setCodigoProperty(new SimpleIntegerProperty(codigo));
+        
+        consultaBoleta.registrarBoleta(boleta);
+        this.warning("Boleta ingresada Exitosamente","Se ha ingresado la boleta "+boleta.getCodigo());
         
         this.limpiarVentana();
 
@@ -186,51 +191,49 @@ public class InterfazcajeroController implements Initializable {
     @FXML
     private void accionIngresoCodigo(KeyEvent event) {
         int cantidadProducto;
-        long codigoProducto;
+        String codigoProducto;
         if(event.getCode().ENTER==event.getCode()){
             //HACER TODO
             String codigoPuro = this.campoDeTextoCodigo.getText();
             cantidadProducto = buscarCantidadProducto(codigoPuro);
             codigoProducto = buscarCodigoProducto(codigoPuro);
             
-            //Producto producto = obtenerProducto(condigoproducto);
-            //ESTO ES PARA PROBAR... ELIMINARR!!!!!
-            Producto producto = new Producto("Mantequilla de maní Soprole", 200,
-                                        1234, "Lacteos", true,
-                                        10, 550);
-            
-            if(!producto.getEstado()){
-                //EMITIR ALERTA DE QUE ESTA DESHABILITADO
-            }
-            else{
-                this.etiquetaNombreProducto.setText(producto.getNombre());
-                this.etiquetaValorProducto.setText("$"+producto.getPrecio());
-                
-                int calcularSubtotal = cantidadProducto * producto.getPrecio();
-                
-                //SIYA ESTA EN LA "BOLETA" SOLO DEBO AUMENTAR SU CANTIDAD Y SUBTOTAL
-                if(buscarProductoBoleta(codigoProducto)){
-                    this.modificarFila(codigoProducto, cantidadProducto,
-                                       calcularSubtotal,false);
-                    
+            ConsultaProducto consultaProducto = new ConsultaProducto();
+            Producto producto = consultaProducto.obtenerDatosProducto(codigoProducto);
+            if(producto!=null){
+                if(!producto.getEstado()){
+                    //EMITIR ALERTA DE QUE ESTA DESHABILITADO
                 }
                 else{
-                    LongProperty codigoProducto2 = new SimpleLongProperty((long)codigoProducto);
-                    IntegerProperty cantidadProducto2 = new SimpleIntegerProperty(cantidadProducto);
-                    IntegerProperty calcularSubtotal2 = new SimpleIntegerProperty(calcularSubtotal);
+                    this.etiquetaNombreProducto.setText(producto.getNombre());
+                    this.etiquetaValorProducto.setText("$"+producto.getPrecio());
 
-                    DetalleProducto detalle = new DetalleProducto(codigoProducto2, producto.getNombreProperty(),
-                                                                  cantidadProducto2,
-                                                                  producto.getPrecioProperty(),calcularSubtotal2
-                                                                  );
-                    this.datos.add(detalle);
-                    this.tablaBoleta.setItems(datos);
+                    int calcularSubtotal = cantidadProducto * producto.getPrecio();
+
+                    //SIYA ESTA EN LA "BOLETA" SOLO DEBO AUMENTAR SU CANTIDAD Y SUBTOTAL
+                    if(buscarProductoBoleta(codigoProducto)){
+                        this.modificarFila(codigoProducto, cantidadProducto,
+                                           calcularSubtotal,false);
+
+                    }
+                    else{
+                        DetalleProducto detalle = new DetalleProducto(codigoProducto, producto.getNombre(),
+                                                                      cantidadProducto,
+                                                                      producto.getPrecio(),calcularSubtotal
+                                                                      );
+                        this.datos.add(detalle);
+                        this.tablaBoleta.setItems(datos);
+                    }
+                    //Se actualiza el valor total
+                    actualizarTotal();
+
+                     //despues de hacer todo hay que setear el texto y dejarlo en blanco
+                    this.campoDeTextoCodigo.setText("");
                 }
-                //Se actualiza el valor total
-                actualizarTotal();
-                
-                 //despues de hacer todo hay que setear el texto y dejarlo en blanco
-                this.campoDeTextoCodigo.setText("");
+            }
+            else{
+                this.warning("El producto no existe!", "El producto con código "+ 
+                             this.campoDeTextoCodigo.getText()+" no esta registrado en el sistema");
             }
         }
     }
@@ -250,15 +253,15 @@ public class InterfazcajeroController implements Initializable {
         return 1;
     }
     
-    private long buscarCodigoProducto(String texto){
+    private String buscarCodigoProducto(String texto){
         char[] arregloCodigo = texto.toCharArray();
         for (int i = 0; i < arregloCodigo.length; i++) {
             char c = arregloCodigo[i];
             if(c == 'x' || c == 'X'){
-                return Integer.parseInt(texto.substring(i+1,arregloCodigo.length));
+                return texto.substring(i+1,arregloCodigo.length);
             }
         }
-        return Integer.parseInt(texto);
+        return texto;
     }
   
     public void setearNombreCajero(String nombre){
@@ -277,9 +280,9 @@ public class InterfazcajeroController implements Initializable {
        this.etiquetaTotal.setText(total+"");
    }
     
-   private boolean buscarProductoBoleta(long codigo){
+   private boolean buscarProductoBoleta(String codigo){
        for (DetalleProducto dato : datos) {
-           if(codigo==dato.getCodigo()){
+           if(codigo.equals(dato.getCodigoProducto())){
                return true;
            }
        }
@@ -290,9 +293,9 @@ public class InterfazcajeroController implements Initializable {
    flag true: Edito con los datos ingresados
    flag false: Edito calculando los datos
    */
-    public void modificarFila(long codigo, int cantidad, int subtotal, boolean flag){
+    public void modificarFila(String codigo, int cantidad, int subtotal, boolean flag){
         for (DetalleProducto dato : datos) {
-            if(codigo==dato.getCodigo()){
+            if(codigo.equals(dato.getCodigoProducto())){
                 if(flag){
                     dato.setCantidad(cantidad);
                     dato.setSubtotal(subtotal);
@@ -336,13 +339,12 @@ public class InterfazcajeroController implements Initializable {
             }
             
         }
-        System.out.println(event.getCode());
     }
     
     public void eliminarProductoLista(DetalleProducto pro){
         
         for (DetalleProducto dato : datos) {
-            if(dato.getCodigo() == pro.getCodigo()){
+            if(dato.getCodigoProducto().equals(pro.getCodigoProducto())){
                 datos.remove(dato);
                 this.etiquetaNombreProducto.setText("");
                 this.etiquetaValorProducto.setText("");

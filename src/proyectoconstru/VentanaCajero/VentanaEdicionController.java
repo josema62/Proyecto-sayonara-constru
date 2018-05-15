@@ -68,7 +68,7 @@ public class VentanaEdicionController implements Initializable {
         //FALTA VERIFICAR QUE SE INGRESE UN NUMERO CORRECTO
         int cantidadNueva = Integer.parseInt(this.campoDeTextoCantidad.getText());
         int valorSubtotal = cantidadNueva * producto.getPrecioUnitario();
-        this.padre.modificarFila(producto.getCodigo(), cantidadNueva, valorSubtotal,true);
+        this.padre.modificarFila(producto.getCodigoProducto(), cantidadNueva, valorSubtotal,true);
         Stage stage = (Stage) this.botonEditar.getScene().getWindow();
         stage.close();
     }

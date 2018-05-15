@@ -17,7 +17,6 @@ public class DetalleProducto {
     
     private StringProperty codigoProducto;
     private StringProperty nombre;
-    private LongProperty codigo;
     private IntegerProperty cantidad;
     private IntegerProperty precioUnitario;
     private IntegerProperty subtotal;

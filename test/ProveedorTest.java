@@ -44,4 +44,47 @@ public class ProveedorTest {
         boolean resultado = this.consulta.darDeBajaProveedor("1");
         assertTrue(resultado);
     }
+    
+     @Test
+    public void pruebaAgregarProveedor()
+    {
+        boolean resultado = this.consulta.registrarProveedor("79.608.923-5","Kelogs", "kelogs@gmail.com",
+                                                             "Nestle LTDA",
+                                                             "Mackena 901",
+                                                             "901823456",
+                                                             "86734521",
+                                                             true);
+        assertTrue(resultado);
+    }
+    
+    @Test
+     public void pruebaModificarDatosProveedor()
+     {
+         boolean resultado = this.consulta.modificarDatosProveedor("81.221.989-9","Colun Del Sur",
+                                                                   "ventascolun@outlook.com",
+                                                                   "Av. Pedro Mackena 345",
+                                                                   "89071234",
+                                                                   "89876541",
+                                                                   true);
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaDarDeBajaProveedor()
+     {
+         boolean resultado = this.consulta.darDeBajaProveedor("76.432.692-k");
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaObtenerDatosProveedor()
+     {
+         Proveedor proveedor = this.consulta.obtenerDatosProveedor("81.221.989-9");
+         assertNotNull(proveedor);
+         
+         System.out.println(proveedor.getRut()+","+proveedor.getNombre()+","+
+                            proveedor.getRazonSocial()+","+proveedor.getDireccion()+","+proveedor.getCorreo()+
+                            ","+proveedor.getTelefonoObligatorio()+","+proveedor.getTelefonoOpcional());
+         
+     }
 }

@@ -32,7 +32,7 @@ public class ConsultaProveedor extends Consulta {
      * @param telefonoOpcional Un número de teléfono de contacto opcional del nuevo proveedor. Puede estar "en blanco".
      * @param estado El estado del nuevo proveedor. DEBERÍA SER true, pues ésto indica la vigencia del servicio que le presta sl minimarket.
      *
-     * @return true si el nuevo proveedor se logró registrar con éxito en la base de datos. false en caso contrario.
+     * @return true si la CONSULTA SE EJECUTÓ CON ÉXITO. NO indica necesariamente que haya podido modificar los datos. Puede no haber encontrado al proveedor pero aún así, la consulta se hizo con éxito. false si es que hubo algún error.
      */
     public boolean registrarProveedor(String rut, String nombre, String correo, String razonSocial, String direccion,
                                       String telefonoObligatorio, String telefonoOpcional, Boolean estado) {
@@ -50,7 +50,7 @@ public class ConsultaProveedor extends Consulta {
             declaracion.setString(7, telefonoOpcional);
             declaracion.setBoolean(8, estado);
 
-            if(declaracion.execute()) exitoConsulta = true;
+            declaracion.execute();
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaProveedor.class.getName()).log(Level.SEVERE,
@@ -58,7 +58,8 @@ public class ConsultaProveedor extends Consulta {
             return false;
         }
         
-        return exitoConsulta;
+        return true;
+      
 
     }
 
@@ -74,14 +75,13 @@ public class ConsultaProveedor extends Consulta {
      * @param telefonoOpcional El nuevo número de teléfono opcional del proveedor.
      * @param estado El nuevo estado del proveedor.
      *
-     * @return true si se logró con éxito modificar los datos del proveedor. false en caso contrario.
+     * @return Retorna true si la CONSULTA SE EJECUTÓ CON ÉXITO. NO indica necesariamente que haya registrar con éxito. Retorna false si es que hubo algún error.
      */
     public boolean modificarDatosProveedor(String rut, String nombre, String correo, String direccion,
                                            String telefonoObligatorio, String telefonoOpcional, Boolean estado) {
 
         String consulta = "{CALL modificar_datos_de_proveedor(?,?,?,?,?,?,?)}";
 
-        boolean exitoConsulta = false;
         
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
 
@@ -93,7 +93,7 @@ public class ConsultaProveedor extends Consulta {
             declaracion.setString(6, telefonoOpcional);
             declaracion.setBoolean(7, estado);
 
-            exitoConsulta = declaracion.execute();
+            declaracion.execute();
 
         }
         catch (SQLException ex) {
@@ -103,7 +103,7 @@ public class ConsultaProveedor extends Consulta {
             return false;
         }
         
-        return exitoConsulta;
+        return true;
     }
 
     /**
@@ -112,19 +112,16 @@ public class ConsultaProveedor extends Consulta {
      *
      * @param rut El rut del proveedor que se quiere dar de baja.
      *
-     * @return true en caso de que logre dar de baja con éxito al proveedor. false en caso contrario.
+     * @return Retorna true si la CONSULTA SE EJECUTÓ CON ÉXITO. NO indica necesariamente que haya podido dar de baja al proveedor. Puede no haber encontrado al proveedor pero aún así, la consulta se hizo con éxito. Retorna false si es que hubo algún error.
      */
     public boolean darDeBajaProveedor(String rut) {
         String consulta = "{CALL dar_de_baja_proveedor(?)}";
 
-        boolean exitoConsulta = false;
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
 
             declaracion.setString(1, rut);
 
-            exitoConsulta = declaracion.execute();
-                
-
+            declaracion.execute();
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaProveedor.class.getName()).log(Level.SEVERE,
@@ -132,7 +129,7 @@ public class ConsultaProveedor extends Consulta {
             return false;
         }
         
-        return exitoConsulta;
+        return true;
        
     }
 
@@ -142,7 +139,7 @@ public class ConsultaProveedor extends Consulta {
      *
      * @param rut El rut del proveedor del cual se quiere obtener sus datos.
      *
-     * @return Los datos del proveedor envueltos un objeto de tipo Proveedor. null si es que no se encontró el proveedor
+     * @return Retorna los datos del proveedor envueltos un objeto de tipo Proveedor. null si es que no se encontró el proveedor
      * o bien si hubo algun error.
      */
     public Proveedor obtenerDatosProveedor(String rut) {
@@ -199,7 +196,7 @@ public class ConsultaProveedor extends Consulta {
      * Para ello obtiene los datos de todos los proveedores (y además los de los productos asociados a éstos)
      * haciendo llamadas a procedimientos almacenados en la base de datos.
      *
-     * @return Una lista con los proveedores. null en caso de que no haya ningún proveedor registrado.
+     * @return Retorna una lista con los proveedores. null en caso de que no haya ningún proveedor registrado.
      */
     public List<Proveedor> listarProveedores() {
 

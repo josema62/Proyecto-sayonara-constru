@@ -39,6 +39,7 @@ public class ConsultaProveedor extends Consulta {
 
         String consulta = "{CALL registrar_proveedor(?,?,?,?,?,?,?,?)}";
 
+        boolean exitoConsulta = false;
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
             declaracion.setString(1, rut);
             declaracion.setString(2, nombre);
@@ -49,13 +50,15 @@ public class ConsultaProveedor extends Consulta {
             declaracion.setString(7, telefonoOpcional);
             declaracion.setBoolean(8, estado);
 
-            return declaracion.execute();
+            if(declaracion.execute()) exitoConsulta = true;
         }
         catch (SQLException ex) {
             Logger.getLogger(ConsultaProveedor.class.getName()).log(Level.SEVERE,
                                                                     null, ex);
             return false;
         }
+        
+        return exitoConsulta;
 
     }
 
@@ -78,6 +81,8 @@ public class ConsultaProveedor extends Consulta {
 
         String consulta = "{CALL modificar_datos_de_proveedor(?,?,?,?,?,?,?)}";
 
+        boolean exitoConsulta = false;
+        
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
 
             declaracion.setString(1, rut);
@@ -88,7 +93,7 @@ public class ConsultaProveedor extends Consulta {
             declaracion.setString(6, telefonoOpcional);
             declaracion.setBoolean(7, estado);
 
-            return declaracion.execute();
+            exitoConsulta = declaracion.execute();
 
         }
         catch (SQLException ex) {
@@ -97,6 +102,8 @@ public class ConsultaProveedor extends Consulta {
 
             return false;
         }
+        
+        return exitoConsulta;
     }
 
     /**
@@ -110,11 +117,13 @@ public class ConsultaProveedor extends Consulta {
     public boolean darDeBajaProveedor(String rut) {
         String consulta = "{CALL dar_de_baja_proveedor(?)}";
 
+        boolean exitoConsulta = false;
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
 
             declaracion.setString(1, rut);
 
-            return declaracion.execute();
+            exitoConsulta = declaracion.execute();
+                
 
         }
         catch (SQLException ex) {
@@ -122,6 +131,9 @@ public class ConsultaProveedor extends Consulta {
                                                                     null, ex);
             return false;
         }
+        
+        return exitoConsulta;
+       
     }
 
     /**

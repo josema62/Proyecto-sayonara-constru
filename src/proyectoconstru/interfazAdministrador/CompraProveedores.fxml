@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.CompraProveedoresController">
+<AnchorPane id="AnchorPane" prefHeight="183.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.CompraProveedoresController">
    <children>
-      <VBox prefHeight="300.0" prefWidth="300.0">
+      <VBox prefHeight="188.0" prefWidth="300.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="77.0" prefWidth="300.0">
                <children>
                   <Label text="Fecha Inicio:" />
                   <DatePicker fx:id="datePickerInicio">
@@ -22,7 +22,7 @@
                   </DatePicker>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="78.0" prefWidth="300.0">
                <children>
                   <Label text="Fecha Termino:" />
                   <DatePicker fx:id="datePickerTermino">
@@ -32,14 +32,14 @@
                   </DatePicker>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="66.0" prefWidth="300.0">
                <children>
-                  <Button fx:id="botonGenerarReporte" mnemonicParsing="false" text="Generar Reporte">
+                  <Button fx:id="botonGenerarReporte" mnemonicParsing="false" onAction="#accionGenerarReporte" text="Generar Reporte">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="botonCancelar" mnemonicParsing="false" text="Cancelar">
+                  <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#accionBotonCancelar" text="Cancelar">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

@@ -126,7 +126,7 @@ public class InterfazcajeroController implements Initializable {
 
             Scene scene = new Scene(root);
             stageVentanaEdicion.setScene(scene);
-            stageVentanaEdicion.setTitle("EdiatProducto");
+            stageVentanaEdicion.setTitle("Editar Producto");
             stageVentanaEdicion.show();
         }catch(Exception e){
         

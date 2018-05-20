@@ -203,6 +203,7 @@ public class InterfazcajeroController implements Initializable {
             if(producto!=null){
                 if(!producto.getEstado()){
                     //EMITIR ALERTA DE QUE ESTA DESHABILITADO
+                    this.warning("ERROR DE INGRESO", "El producto ingresado se encuentra deshabilitado");
                 }
                 else{
                     this.etiquetaNombreProducto.setText(producto.getNombre());

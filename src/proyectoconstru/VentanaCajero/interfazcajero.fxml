@@ -48,7 +48,7 @@
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
               <children>
                 <Button fx:id="botonIngresar" mnemonicParsing="false" onAction="#accionIngresar" prefHeight="27.0" prefWidth="84.0" text="Ingresar" />
-                <Button fx:id="botonCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="27.0" prefWidth="84.0" text="Cancelar" />
+                <Button fx:id="botonCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="27.0" prefWidth="84.0" text="Cerrar" />
               </children>
               <padding>
                 <Insets right="30.0" top="10.0" />

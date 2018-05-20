@@ -47,7 +47,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TableView prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="tablaCompraProveedores" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="columnaProveedor" prefWidth="204.0" text="Proveedor" />
                       <TableColumn fx:id="columnaNFactura" prefWidth="149.0" text="n° Factura" />

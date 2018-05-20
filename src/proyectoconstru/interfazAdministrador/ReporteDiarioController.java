@@ -6,12 +6,21 @@
 package proyectoconstru.interfazAdministrador;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import modelodedatos.DetalleReporteDeVentas;
+import modelodedatos.ReporteDeVentas;
+import proyectoconstru.conexion.ConsultaReporte;
 
 /**
  * FXML Controller class
@@ -23,15 +32,18 @@ public class ReporteDiarioController implements Initializable {
     @FXML
     private Label fechaVenta;
     @FXML
-    private TableColumn<?, ?> columnaCodigo;
+    private TableColumn<DetalleReporteDeVentas, String> columnaCodigo;
     @FXML
-    private TableColumn<?, ?> columnaNombre;
+    private TableColumn<DetalleReporteDeVentas, String> columnaNombre;
     @FXML
-    private TableColumn<?, ?> columnaCantidad;
+    private TableColumn<DetalleReporteDeVentas, Integer> columnaCantidad;
     @FXML
-    private TableColumn<?, ?> columnaSubtotal;
+    private TableColumn<DetalleReporteDeVentas, Integer> columnaSubtotal;
     @FXML
-    private TableView<?> tablaProductosVendidos;
+    private TableView<DetalleReporteDeVentas> tablaProductosVendidos;
+    
+    private LocalDate fechaConsulta;
+    private ObservableList<DetalleReporteDeVentas> datos = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -43,9 +55,28 @@ public class ReporteDiarioController implements Initializable {
         columnaCantidad.setMaxWidth(10000);
         columnaNombre.setMaxWidth(40000);
         columnaSubtotal.setMaxWidth(20000);
+        
+        columnaCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoProducto"));
+        columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
+        columnaCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidadDeProductosVendidos"));
+        columnaSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+
     }    
     
-    public void modificarFecha(String fecha){
+    public void llenarTabla(){
+        ConsultaReporte consulta = new ConsultaReporte();
+        ReporteDeVentas reporte = consulta.obtenerReporteDeVentas(this.fechaConsulta);
+        ArrayList<DetalleReporteDeVentas> detallesReporte = reporte.obtenerDetallesDeReporte();
+        for (DetalleReporteDeVentas detalleReporte : detallesReporte) {
+            datos.add(detalleReporte);
+        }
+        this.tablaProductosVendidos.setItems(datos);
+    }
+    
+    
+    public void modificarFecha(LocalDate fechaPicker){
+        this.fechaConsulta = fechaPicker;
+        String fecha = fechaPicker.format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
         this.fechaVenta.setText(fecha);
     }
     

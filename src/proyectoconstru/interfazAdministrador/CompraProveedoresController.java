@@ -13,8 +13,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -39,7 +42,23 @@ public class CompraProveedoresController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Callback<DatePicker,DateCell> celdaDia = new Callback<DatePicker, DateCell>()
+        {
+            public DateCell call(final DatePicker datePicker){
+            return new DateCell(){
+                @Override
+                public void updateItem(LocalDate item, boolean empty){
+                    super.updateItem(item, empty);
+                    if(item.isAfter(LocalDate.now())){
+                        this.setDisable(true);
+                    }
+                    }
+                };
+            }
+        };
+        //se actualiza el pickerDate con las celdas deshabilitadas
+        datePickerInicio.setDayCellFactory(celdaDia);
+        datePickerTermino.setDisable(true);
     }    
     
     public void recibirControlador(VentanaAdministradorController controlador){
@@ -55,6 +74,9 @@ public class CompraProveedoresController implements Initializable {
         String fechaT = fechaTermino.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"));
         
         controlador.modificarPaneDinamicoCompra("ReporteCompraProveedores.fxml", fechaI, fechaT);
+        
+        Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -62,5 +84,30 @@ public class CompraProveedoresController implements Initializable {
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();
     }
-    
+
+    @FXML
+    private void accionFecha(ActionEvent event) {
+        this.datePickerTermino.setDisable(false);
+        LocalDate value = this.datePickerInicio.getValue();
+        
+        Callback<DatePicker,DateCell> celdaDia = new Callback<DatePicker, DateCell>()
+        {
+            public DateCell call(final DatePicker datePicker){
+            return new DateCell(){
+                @Override
+                public void updateItem(LocalDate item, boolean empty){
+                    super.updateItem(item, empty);
+                    if(item.isBefore(value)){
+                        this.setDisable(true);
+                    }
+                    if(item.isAfter(LocalDate.now())){
+                        this.setDisable(true);
+                    }
+                    }
+                };
+            }
+        };
+        this.datePickerTermino.setDayCellFactory(celdaDia);
+    }
+
 }

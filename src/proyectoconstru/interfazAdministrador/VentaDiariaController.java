@@ -61,9 +61,7 @@ public class VentaDiariaController implements Initializable {
      @FXML
     private void accionBotonGenerarReporte(ActionEvent event) {
         LocalDate date = this.datePickerFecha.getValue();
-        String fecha = date.format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
-      
-        controlador.modificarPaneDinamico2("ReporteDiario.fxml",fecha);
+        controlador.modificarPaneDinamico2("ReporteDiario.fxml",date);
         
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();

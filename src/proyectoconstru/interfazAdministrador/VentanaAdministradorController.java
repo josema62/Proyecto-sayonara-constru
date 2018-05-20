@@ -7,6 +7,7 @@ package proyectoconstru.interfazAdministrador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -217,7 +218,7 @@ public class VentanaAdministradorController implements Initializable {
         paneDinamico.getChildren().add(obtenerFXML(ruta));
     }
     
-    protected void modificarPaneDinamico2(String ruta, String fecha) {
+    protected void modificarPaneDinamico2(String ruta, LocalDate fecha) {
         paneDinamico.getChildren().clear();
         AnchorPane pane =null;
         try {
@@ -225,6 +226,7 @@ public class VentanaAdministradorController implements Initializable {
            pane = load.load();
            ReporteDiarioController r =load.<ReporteDiarioController>getController();
             r.modificarFecha(fecha);
+            r.llenarTabla();
         }
         catch (IOException e) {
             System.out.println("fallo:" + e);

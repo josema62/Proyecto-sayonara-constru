@@ -15,7 +15,7 @@
             <HBox alignment="CENTER" prefHeight="77.0" prefWidth="300.0">
                <children>
                   <Label text="Fecha Inicio:" />
-                  <DatePicker fx:id="datePickerInicio">
+                  <DatePicker fx:id="datePickerInicio" onAction="#accionFecha">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

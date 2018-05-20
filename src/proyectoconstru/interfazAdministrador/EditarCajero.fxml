@@ -3,14 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarProveedorController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.EditarCajeroController">
    <children>
-      <HBox layoutY="-2.0" prefHeight="400.0" prefWidth="600.0">
+      <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="135.0">
                <children>
@@ -21,17 +22,17 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Razon Social:" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
                         <Label text="Nombre:" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Direccion:" />
+                        <Label text="Contraseña:" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonHabilitar" mnemonicParsing="false" onAction="#botonHabilitarCajero" text="Habilitar" />
                      </children>
                   </HBox>
                </children>
@@ -48,17 +49,17 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoRazonSocial" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
                         <TextField fx:id="campoTextoNombre" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoDireccion" />
+                        <PasswordField fx:id="campoContrasena" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonDarDeBaja" mnemonicParsing="false" onAction="#botonDarBaja" text="Dar de baja" />
                      </children>
                   </HBox>
                </children>
@@ -72,17 +73,13 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Telefono opcional:" />
+                        <Label text="Direccion:" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Correo opcional:" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar" />
+                        <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#botonEditarCajero" text="Editar" />
                      </children>
                   </HBox>
                </children>
@@ -96,14 +93,10 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoTelefonoOpcional" />
+                        <TextField fx:id="campoTextoDireccion" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="campoTextoCorreoOpcional" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#botonCancelar" text="Cancelar" />

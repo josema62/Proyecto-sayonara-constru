@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarProveedorController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.EditarProveedorController">
    <children>
-      <HBox layoutY="-2.0" prefHeight="400.0" prefWidth="600.0">
+      <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="135.0">
                <children>
@@ -34,6 +34,11 @@
                         <Label text="Direccion:" />
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonHabilitar" mnemonicParsing="false" onAction="#botonHabilitarProveedor" text="Habilitar" />
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets />
@@ -48,7 +53,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoRazonSocial" />
+                        <TextField fx:id="campoTextoRazonSocial" disable="true" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -59,6 +64,11 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="campoTextoDireccion" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonDarDeBaja" mnemonicParsing="false" onAction="#botonDarBaja" text="Dar de baja" />
                      </children>
                   </HBox>
                </children>
@@ -82,7 +92,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar" />
+                        <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#botonEditarProveedor" text="Editar" />
                      </children>
                   </HBox>
                </children>

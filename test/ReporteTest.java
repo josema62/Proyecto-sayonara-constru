@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,10 +7,8 @@
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.format.FormatStyle;
-import java.util.Date;
-import javafx.util.converter.LocalDateStringConverter;
 import modelodedatos.DetalleReporteDeVentas;
+import modelodedatos.ReporteDeComprasProveedores;
 import modelodedatos.ReporteDeVentas;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -38,32 +36,7 @@ public class ReporteTest {
                                ","+detalle.getCantidadDeProductosVendidos()+","+detalle.getSubtotal());
         }
     }
-    
-}
-=======
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-import java.time.LocalDate;
-import java.time.Month;
-import modelodedatos.ReporteDeComprasProveedores;
-import static org.junit.Assert.*;
-import org.junit.Test;
-import proyectoconstru.conexion.ConsultaReporte;
 
-/**
- *
- * @author Ariel
- */
-public class ReporteTest {
-    private ConsultaReporte consulta;
-    
-    public ReporteTest()
-    {
-        this.consulta = new ConsultaReporte();
-    }
     @Test
     public void consultaobtenerReporteDeComprasAProveedoresNoVacio()
     {
@@ -86,4 +59,4 @@ public class ReporteTest {
     }
     
 }
->>>>>>> Stashed changes
+

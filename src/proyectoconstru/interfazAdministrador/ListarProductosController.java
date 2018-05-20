@@ -34,8 +34,6 @@ import proyectoconstru.conexion.ConsultaProducto;
 public class ListarProductosController implements Initializable {
 
     @FXML
-    private ComboBox<String> comboBoxFiltro;
-    @FXML
     private TableView<Producto> tablaProducto;
     @FXML
     private TableColumn<Producto, String> columnaCodigo;
@@ -61,8 +59,6 @@ public class ListarProductosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        comboBoxFiltro.getItems().addAll("Agrupar por categoria","Agrupar ascendente(Stock)", "Agrupar descendente(Stock)","Agrupar por defecto");
-        comboBoxFiltro.setValue("Agrupar por defecto");
         setearValorCeldas();
         agregarProductosEnLista();
         tablaProducto.setItems(listaProductos);
@@ -77,7 +73,15 @@ public class ListarProductosController implements Initializable {
         for (int i = 0; i < lista.size(); i++) {
             listaProductos.add(lista.get(i));
         }
-        
+    
+    }
+    
+    public void cargarLista(List<Producto> lista){
+        listaProductos.clear();
+        for (int i = 0; i < lista.size(); i++) {
+            listaProductos.add(lista.get(i));
+        }
+        tablaProducto.setItems(listaProductos);
     }
     
     /**
@@ -105,7 +109,12 @@ public class ListarProductosController implements Initializable {
      */
     @FXML
     private void botonEditarProducto(ActionEvent event) throws IOException {
-        mostrarStageSecundario("EditarProducto.fxml");
+        if(tablaProducto.getSelectionModel().getSelectedItem()!=null){
+            mostrarStageSecundario("EditarProducto.fxml");
+            listaProductos.clear();         
+            agregarProductosEnLista();         
+            tablaProducto.setItems(listaProductos);
+        }
     }
     
     /**

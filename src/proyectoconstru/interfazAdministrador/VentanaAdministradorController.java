@@ -19,11 +19,12 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
  *
- * @author Roberto Ureta
+ * @author Roberto Ureta & Jose Nunnez
  */
 public class VentanaAdministradorController implements Initializable {
 
@@ -162,11 +163,11 @@ public class VentanaAdministradorController implements Initializable {
     }
     
       /**
-     * genera un stage para mostrar una ventana secundaria de ventas
+     * Genera un stage para mostrar una ventana secundaria de ventas
      * @param ruta string con el nombre del archivo fxml que se va abrir.
      */
     private void mostrarStageSecundarioVentas() {
-        Stage stageVentanaEdicion = new Stage();
+        Stage stageVentanaVentas = new Stage();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                                     "VentaDiaria.fxml"));
@@ -176,20 +177,21 @@ public class VentanaAdministradorController implements Initializable {
             controlador.recibirControlador(this);
 
             Scene scene = new Scene(root);
-            stageVentanaEdicion.setScene(scene);
-            stageVentanaEdicion.setTitle("Fecha Venta");
-            stageVentanaEdicion.show();
+            stageVentanaVentas.setScene(scene);
+            stageVentanaVentas.setTitle("Fecha Venta");
+            stageVentanaVentas.initStyle(StageStyle.UTILITY);
+            stageVentanaVentas.show();
             
         }catch(Exception e){
             System.out.println("ERROR: "+e);
         }
     }
     /**
-     * genera un stage para mostrar una ventana secundaria de ventas
+     * genera un stage para mostrar una ventana secundaria de compras a proveedores
      * @param ruta string con el nombre del archivo fxml que se va abrir.
      */
     private void mostrarStageSecundarioCompra() {
-        Stage stageVentanaEdicion = new Stage();
+        Stage stageVentanaCompraProveedores = new Stage();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                                     "CompraProveedores.fxml"));
@@ -199,9 +201,10 @@ public class VentanaAdministradorController implements Initializable {
             controlador.recibirControlador(this);
 
             Scene scene = new Scene(root);
-            stageVentanaEdicion.setScene(scene);
-            stageVentanaEdicion.setTitle("Fecha Venta");
-            stageVentanaEdicion.show();
+            stageVentanaCompraProveedores.setScene(scene);
+            stageVentanaCompraProveedores.initStyle(StageStyle.UTILITY);
+            stageVentanaCompraProveedores.setTitle("Fecha Venta");
+            stageVentanaCompraProveedores.show();
             
         }catch(Exception e){
             System.out.println("ERROR: "+e);
@@ -218,7 +221,7 @@ public class VentanaAdministradorController implements Initializable {
         paneDinamico.getChildren().add(obtenerFXML(ruta));
     }
     
-    protected void modificarPaneDinamico2(String ruta, LocalDate fecha) {
+    protected void modificarPaneDinamicoVentas(String ruta, LocalDate fecha) {
         paneDinamico.getChildren().clear();
         AnchorPane pane =null;
         try {

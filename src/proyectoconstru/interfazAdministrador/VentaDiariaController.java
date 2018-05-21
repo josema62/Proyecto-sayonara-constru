@@ -66,7 +66,7 @@ public class VentaDiariaController implements Initializable {
             this.MostrarMensajeAlerta("ERROR DE INGRESO", "Por favor, ingrese una fecha");
         }
         else{
-        controlador.modificarPaneDinamico2("ReporteDiario.fxml",date);
+        controlador.modificarPaneDinamicoVentas("ReporteDiario.fxml",date);
         
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();

@@ -22,7 +22,7 @@
                   </DatePicker>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="300.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="70.0" prefWidth="300.0">
                <children>
                   <Button fx:id="botonGenerarReporte" mnemonicParsing="false" onAction="#accionBotonGenerarReporte" text="Generar Reporte">
                      <HBox.margin>
@@ -35,6 +35,9 @@
                      </HBox.margin>
                   </Button>
                </children>
+               <padding>
+                  <Insets right="25.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>

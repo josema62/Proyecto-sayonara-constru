@@ -7,10 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,9 +34,9 @@ import proyectoconstru.conexion.ConsultaBoleta;
 import proyectoconstru.conexion.ConsultaProducto;
 
 /**
- * FXML Controller class
+ * Controlador de la interfaz de VentanaCajero
  *
- * @author Unknown
+ * @author Jose Nunnez
  */
 public class InterfazcajeroController implements Initializable {
 
@@ -104,9 +101,11 @@ public class InterfazcajeroController implements Initializable {
         // TODO
     }    
 
-    /*
-    Debe abrir una nueva pestaña con los datos del articulo seleccionado
-    */
+/**
+ * Corresponde a la accion del boton Editar Producto. Aqui se abre una nueva
+ * ventana (VentanaEdicion.fxml)
+ * @param event 
+ */
     @FXML
     private void accionBotonEditarProducto(ActionEvent event) {
         try{
@@ -135,10 +134,12 @@ public class InterfazcajeroController implements Initializable {
         
     }
 
-    /*
-    Cuando se termime la compra, se debe ingresar la boleta con los datos de la tabla
-    Posteriormente setear en blanco la tabla y las etiquetas que puedan quedar
-    */
+/**
+ * Es la accion del boton Ingresar. Aqui se crea el objeto Boleta, el cual recibe
+ * todos los datos que estan en pantalla, posteriormente, se llama a la consulta
+ * que la inserta en la base de datos, mostrando un mensaje si fue exitoso o no.
+ * @param event 
+ */
     @FXML
     private void accionIngresar(ActionEvent event) {
         Date date = new Date();
@@ -175,25 +176,31 @@ public class InterfazcajeroController implements Initializable {
         }
     }
 
+    /**
+     * Accion correspondiente al boton cancelar.
+     * Solo se encarga de cerrar la actual ventana.
+     * @param event 
+     */
     @FXML
     private void accionCancelar(ActionEvent event) {
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();
     }
 
-    /*
-    Se obtiene el codigo del producto, se debe recepcionar los datos del mismo
-    (nombre, valor) y calcular segun la cantidad. Se debe actualizar las etiquetas (nombre y valor)
-    y la tabla con la info.
-    OJO: HAY QUE VALIDAR QUE EL CODIGO SEAN NUMEROS O "6X129038182" QUE CONTIENE SOLO UNA X
-    QUE SIMBOLIZA LA CANTIDAD DE ESE PRODUCTO... TODAS LAS DEMAS POSIBILIDADES ESTAN DESCARTADAS
-    */
+
+    /**
+     * Corresponde a la accion de ingreso de un codigo de un producto. 
+     * Aqui se procede a obtener dicho codigo y corroborar la existencia del mismo
+     * en la base de datos o si se encuentra deshabilitado. Si ninguno de estos casos
+     * ocurre, se procede a obtener los datos del mismo para mostrarlos en la tabla
+     * y actualizar el total de la venta
+     * @param event 
+     */
     @FXML
     private void accionIngresoCodigo(KeyEvent event) {
         int cantidadProducto;
         String codigoProducto;
         if(event.getCode().ENTER==event.getCode()){
-            //HACER TODO
             String codigoPuro = this.campoDeTextoCodigo.getText();
             cantidadProducto = buscarCantidadProducto(codigoPuro);
             codigoProducto = buscarCodigoProducto(codigoPuro);
@@ -202,7 +209,7 @@ public class InterfazcajeroController implements Initializable {
             Producto producto = consultaProducto.obtenerDatosProducto(codigoProducto);
             if(producto!=null){
                 if(!producto.getEstado()){
-                    //EMITIR ALERTA DE QUE ESTA DESHABILITADO
+                    //Emite alerta que está deshabilitado
                     this.mostrarMensajeAlerta("ERROR DE INGRESO", "El producto ingresado se encuentra deshabilitado");
                 }
                 else{
@@ -211,7 +218,7 @@ public class InterfazcajeroController implements Initializable {
 
                     int calcularSubtotal = cantidadProducto * producto.getPrecio();
 
-                    //SIYA ESTA EN LA "BOLETA" SOLO DEBO AUMENTAR SU CANTIDAD Y SUBTOTAL
+                    //SI YA ESTA EN LA "BOLETA" SOLO DEBO AUMENTAR SU CANTIDAD Y SUBTOTAL
                     if(buscarProductoBoleta(codigoProducto)){
                         this.modificarFila(codigoProducto, cantidadProducto,
                                            calcularSubtotal,false);
@@ -228,7 +235,6 @@ public class InterfazcajeroController implements Initializable {
                     //Se actualiza el valor total
                     actualizarTotal();
 
-                     //despues de hacer todo hay que setear el texto y dejarlo en blanco
                     this.campoDeTextoCodigo.setText("");
                 }
             }
@@ -238,11 +244,15 @@ public class InterfazcajeroController implements Initializable {
             }
         }
     }
-    /*
-    Lo que hace es:
-        Si se ingresa en el text field un codigo de la siguiente forma:
-    "6x0800485" se debe obtener el valor 6 que es la cantidad de productos
-    */
+
+    /**
+     * Metodo que se encarga de obtener la cantidad ingresada de un determinado producto.
+     * Lo que hace es verificar si se ingresó la cantidad en el campo codigo, es decir,
+     * si hay un codigo del tipo "2x12312" donde 2 sería la cantidad del producto
+     * con codigo 12312. Sino, es un codigo simple, es decir, 12312.
+     * @param texto el codigo 'puro'
+     * @return La cantidad de un determinado producto
+     */
     private int buscarCantidadProducto(String texto){
         char[] arregloCodigo = texto.toCharArray();
         for (int i = 0; i < arregloCodigo.length; i++) {
@@ -254,6 +264,14 @@ public class InterfazcajeroController implements Initializable {
         return 1;
     }
     
+    /**
+     * Metodo que se encarga de obtener el codigo de un producto.
+     * Lo que hace es verificar si el codigo es simple o compuesto, es decir,
+     * si hay un codigo del tipo "2x12312" donde 2 sería la cantidad del producto
+     * con codigo 12312. Sino, es un codigo simple, es decir, 12312.
+     * @param texto el codigo 'puro'
+     * @return codigo del producto
+     */
     private String buscarCodigoProducto(String texto){
         char[] arregloCodigo = texto.toCharArray();
         for (int i = 0; i < arregloCodigo.length; i++) {
@@ -265,23 +283,41 @@ public class InterfazcajeroController implements Initializable {
         return texto;
     }
   
+    /**
+     * Renombra la etiqueta de NombreCajero con el nombre correspondiente
+     * al cajero que se encuentra utilizando el sistema
+     * @param nombre 
+     */
     public void setearNombreCajero(String nombre){
         this.etiquetaNombreCajero.setText(nombre);
     }
-    
+    /**
+     * Recibe y modifica el parametro rutCajero
+     * @param rut 
+     */
     public void setRutCajero(String rut){
         this.rutCajero = rut;
     }
 
-   private void actualizarTotal(){
+    /**
+     * Se encarga de Actualizar el total de una venta, se recorre todos los datos
+     * de la tabla y se calcula su total, que es modificado en su correspondiente
+     * etiqueta.
+     */
+    private void actualizarTotal(){
        int total =0;
        for (DetalleProducto dato : datos) {
            total+=dato.getSubtotal();
        }
        this.etiquetaTotal.setText(total+"");
-   }
+    }
     
-   private boolean buscarProductoBoleta(String codigo){
+    /**
+     * Verifica si unh producto ya se encuentra ingresado o no en una venta(Boleta)
+     * @param codigo
+     * @return true si está, false si NO está
+     */
+    private boolean buscarProductoBoleta(String codigo){
        for (DetalleProducto dato : datos) {
            if(codigo.equals(dato.getCodigoProducto())){
                return true;
@@ -290,17 +326,26 @@ public class InterfazcajeroController implements Initializable {
        return false;
    }
    
-   /*
-   flag true: Edito con los datos ingresados
-   flag false: Edito calculando los datos
-   */
+    /**
+     * Se encarga de modificar una fila de la tabla, tanto en su cantidad como subtotal.
+     * Si la modificacion proviene de la ventana Editar, se debe editar completamente
+     * los campos (sin realizar calculos). En cambio, si se agrega un producto que 
+     * ya existe en la tabla se debe modificar calculando la nueva cantidad y subtotal
+     * @param codigo codigo del producto a modificar
+     * @param cantidad cantidad nueva del producto a sumar/modificaar
+     * @param subtotal subtotal nuevo del producto a sumar/modificar
+     * @param flag  determina si es proveniente de la ventana Edicion (true) 
+     *              o de una agregacion (false) 
+     */
     public void modificarFila(String codigo, int cantidad, int subtotal, boolean flag){
         for (DetalleProducto dato : datos) {
             if(codigo.equals(dato.getCodigoProducto())){
+                //Si proviene de la ventana de edicion
                 if(flag){
                     dato.setCantidad(cantidad);
                     dato.setSubtotal(subtotal);
                 }
+                //Si proviene de una agregación.
                 else{
                     dato.setCantidad(dato.getCantidad()+cantidad);
                     dato.setSubtotal(dato.getSubtotal()+subtotal);
@@ -310,15 +355,22 @@ public class InterfazcajeroController implements Initializable {
         this.updateDatos();
     }
     
+    /**
+     * Se encarga de "refrescar" los datos ante posibles cambios.
+     */
     private void updateDatos(){
         if(!datos.isEmpty()){
+            //Se copian los datos en un ArrayList
             ArrayList<DetalleProducto> produ = new ArrayList<>();
             for (DetalleProducto pro : datos) 
             {
                 produ.add(pro);
             }
+            //Se eliminan los datos "oficiales"
             datos.removeAll(datos);
             ObservableList<DetalleProducto> data2 = FXCollections.observableArrayList();
+            
+            //Se copian los datos del Arraylist en los datos "oficiales"
             this.tablaBoleta.getItems().clear();
             for (DetalleProducto deta : produ) {
                 data2.add(deta);
@@ -331,6 +383,11 @@ public class InterfazcajeroController implements Initializable {
         
     }
 
+    /**
+     * Se encarga de eliminar una fila de la tabla con productos. Esto se realiza
+     * al seleccionar un producto y presionar la tecla DELETE
+     * @param event 
+     */
     @FXML
     private void accionEliminarFila(KeyEvent event) {
         if(event.getCode() == event.getCode().DELETE){
@@ -342,6 +399,10 @@ public class InterfazcajeroController implements Initializable {
         }
     }
     
+    /**
+     * Se encarga de eliminar un producto de la lista desde la ventana de edicion
+     * @param pro 
+     */
     public void eliminarProductoLista(DetalleProducto pro){
         
         for (DetalleProducto dato : datos) {
@@ -355,6 +416,10 @@ public class InterfazcajeroController implements Initializable {
         }
     }
     
+    /**
+     * Se encarga de reiniciar la ventana y los datos al terminar un ingreso de 
+     * una boleta
+     */
     private void limpiarVentana(){
         this.etiquetaNombreProducto.setText("");
         this.etiquetaTotal.setText("");
@@ -362,6 +427,11 @@ public class InterfazcajeroController implements Initializable {
         datos.removeAll(datos);
     }
     
+    /**
+     * Se encarga de mostrar un mensaje de alerta en pantalla
+     * @param text1 Es el titulo del mensaje
+     * @param texto2 Es el cuerpo del mensaje
+     */
     private void mostrarMensajeAlerta(String text1, String texto2) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -370,6 +440,11 @@ public class InterfazcajeroController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Se encarga de habilitar el boton de edicion cuando se selecciona un producto
+     * de la tabla
+     * @param event 
+     */
     @FXML
     private void accionClickTabla(MouseEvent event) {
         DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();

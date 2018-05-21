@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyectoconstru.interfazAdministrador;
 
 import java.net.URL;
@@ -25,9 +21,9 @@ import proyectoconstru.conexion.ConsultaReporte;
 
 
 /**
- * FXML Controller class
+ * Controlador de la ventana CompraProveedores
  *
- * @author Unknown
+ * @author Jose Nunnez
  */
 public class ReporteCompraProveedoresController implements Initializable {
 
@@ -62,7 +58,8 @@ public class ReporteCompraProveedoresController implements Initializable {
     private LocalDate fechaTermino;
 
     /**
-     * Initializes the controller class.
+     * Se inicializan las columnas de la tabla, tanto en tamanno como en los valores que
+     * van a tomar
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -86,6 +83,10 @@ public class ReporteCompraProveedoresController implements Initializable {
         columnaSubtotalProducto.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
     }    
     
+    /**
+     * Se encarga de llenar la tabla con los datos provenientes de la consulta
+     * a la base de datos
+     */
     public void llenarTablaCompra(){
         
         ConsultaReporte consulta = new ConsultaReporte();
@@ -98,7 +99,11 @@ public class ReporteCompraProveedoresController implements Initializable {
         this.tablaCompraProveedores.setItems(datos);
     }
     
-    
+    /**
+     * Se modifican las etiquetas de las fechas de inicio y termino 
+     * @param fechaInicio
+     * @param fechaTermino 
+     */
     public void modificarFechas(LocalDate fechaInicio, LocalDate fechaTermino){
         
         this.fechaInicio = fechaInicio;
@@ -109,11 +114,4 @@ public class ReporteCompraProveedoresController implements Initializable {
         this.etiquetaFechaTermino.setText(fechaT);
     }
     
-    private void warning(String text1, String texto2) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setGraphic(null);
-        alert.setHeaderText(text1);
-        alert.setContentText(texto2);
-        alert.showAndWait();
-    }
 }

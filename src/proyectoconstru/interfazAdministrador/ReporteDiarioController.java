@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyectoconstru.interfazAdministrador;
 
 import java.net.URL;
@@ -23,9 +19,9 @@ import modelodedatos.ReporteDeVentas;
 import proyectoconstru.conexion.ConsultaReporte;
 
 /**
- * FXML Controller class
+ * Controlador de la ventana reporte Diario
  *
- * @author Unknown
+ * @author Jose Nunnez
  */
 public class ReporteDiarioController implements Initializable {
 
@@ -46,7 +42,7 @@ public class ReporteDiarioController implements Initializable {
     private ObservableList<DetalleReporteDeVentas> datos = FXCollections.observableArrayList();
 
     /**
-     * Initializes the controller class.
+     * Se inicializan las variables correspondientes a las columnas de la tabla
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -62,18 +58,25 @@ public class ReporteDiarioController implements Initializable {
         columnaSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
     }    
-    
+    /**
+     * Se encarga de llenar la tabla con los datos que se reciben de la consulta
+     * a la base de datos
+     */
     public void llenarTabla(){
         ConsultaReporte consulta = new ConsultaReporte();
         ReporteDeVentas reporte = consulta.obtenerReporteDeVentas(this.fechaConsulta);
         ArrayList<DetalleReporteDeVentas> detallesReporte = reporte.obtenerDetallesDeReporte();
+        
         for (DetalleReporteDeVentas detalleReporte : detallesReporte) {
             datos.add(detalleReporte);
         }
         this.tablaProductosVendidos.setItems(datos);
     }
     
-    
+    /**
+     * Se modifica la etiqueta correspondiente a la fecha del reporte
+     * @param fechaPicker 
+     */
     public void modificarFecha(LocalDate fechaPicker){
         this.fechaConsulta = fechaPicker;
         String fecha = fechaPicker.format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));

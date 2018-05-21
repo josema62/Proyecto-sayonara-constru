@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyectoconstru.VentanaCajero;
 
 import java.net.URL;
@@ -17,9 +13,9 @@ import javafx.stage.Stage;
 import modelodedatos.DetalleProducto;
 
 /**
- * FXML Controller class
+ * Controlador de la ventana Edicion
  *
- * @author Unknown
+ * @author Jose Nunnez
  */
 public class VentanaEdicionController implements Initializable {
 
@@ -36,14 +32,18 @@ public class VentanaEdicionController implements Initializable {
     @FXML
     private Button botonEditar;
 
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.etiquetaNombreProducto.setWrapText(true);
     }    
 
+    /**
+     * Se encarga de recibir los parametros que son ingresados desde la ventana 
+     * del cajero
+     * @param producto producto a editar
+     * @param padre Controlador de la ventanaCajero
+     */
     public void recibirParametros(DetalleProducto producto, InterfazcajeroController padre){
         this.padre = padre;
         this.producto = producto;
@@ -51,18 +51,33 @@ public class VentanaEdicionController implements Initializable {
         this.campoDeTextoCantidad.setText(producto.getCantidad()+"");
     }
     
+    /**
+     * Accion del boton cancelar
+     * @param event 
+     */
     @FXML
     private void accionBotonCancelar(ActionEvent event) {
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Se encarga de llamar al metodo del controlador de la ventana cajero
+     * que elimina un producto
+     * @param event 
+     */
     @FXML
     private void accionBotonEliminar(ActionEvent event) {
         this.padre.eliminarProductoLista(producto);
         Stage stage = (Stage) this.botonEliminar.getScene().getWindow();
         stage.close();
     }
+    
+    /**
+     * Se encarga de ejecutar, segun el dato engresado en el campo, la cantidad
+     * del producto.
+     * @param event 
+     */
     @FXML
     private void accionBotonEditar(ActionEvent event) {
         //FALTA VERIFICAR QUE SE INGRESE UN NUMERO CORRECTO

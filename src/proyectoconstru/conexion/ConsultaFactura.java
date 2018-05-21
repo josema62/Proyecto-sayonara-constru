@@ -9,14 +9,11 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelodedatos.Boleta;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Factura;
 
@@ -70,7 +67,7 @@ public class ConsultaFactura extends Consulta{
             consultaST.setString(3, factura.getFechaEmision());
             consultaST.setInt(4, factura.getValorIva());
             consultaST.setInt(5, factura.getTotal());
-            //consultaST.setString(6, factura.getProveedor());
+            consultaST.setString(6, factura.getRutProveedor());
             ResultSet resultado = consultaST.executeQuery();
             
             resultado.next();

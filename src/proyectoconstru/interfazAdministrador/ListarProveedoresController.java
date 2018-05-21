@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableColumn;
@@ -119,7 +120,9 @@ public class ListarProveedoresController implements Initializable {
             listaProveedores.clear();         
             agregarProveedoresEnLista();         
             tablaProveedor.setItems(listaProveedores);
-        }  
+        }
+        else
+            warning("No ha seleccionado ningun proveedor", "Por favor, selecciones un proveedor de la lista");
     }
     
     /**
@@ -174,6 +177,15 @@ public class ListarProveedoresController implements Initializable {
             stage.showAndWait();
             stage.close();
         }  
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
     
 }

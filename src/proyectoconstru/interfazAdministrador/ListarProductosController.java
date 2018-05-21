@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -115,6 +116,8 @@ public class ListarProductosController implements Initializable {
             agregarProductosEnLista();         
             tablaProducto.setItems(listaProductos);
         }
+        else
+            warning("No ha seleccionado ningun producto", "Por favor seleccione un producto de la lista");
     }
     
     /**
@@ -147,5 +150,13 @@ public class ListarProductosController implements Initializable {
     private Producto obtenerProductoDesdeLista(){
         Producto producto = tablaProducto.getSelectionModel().getSelectedItem();
         return producto;
+    }
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 }

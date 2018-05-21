@@ -30,7 +30,7 @@ public class ConsultaFactura extends Consulta{
      *
      * @return true si existe, false en otro caso.
      */
-    private boolean existeFactura(int numeroFactura){
+    public boolean existeFactura(int numeroFactura){
         String consulta = "select existe_factura(?);";
         try (PreparedStatement consultaST
                                = conexion.prepareStatement(consulta)) {

@@ -13,7 +13,7 @@ import proyectoconstru.conexion.ConsultaFactura;
 
 /**
  *
- * @author Diego Matus
+ * @author Diego Matus, Ariel Cornejo
  */
 public class FacturaTest {
 
@@ -34,4 +34,16 @@ public class FacturaTest {
         assertTrue(resultado);
     }
 
+    @Test
+    public void consultaExisteFacturaFalse()
+    {
+        boolean resultado = this.consulta.existeFactura(-1);
+        assertFalse(resultado);
+    }
+    @Test
+    public void consultaExisteFacturaTrue()
+    {
+        boolean resultado = this.consulta.existeFactura(2);
+        assertTrue(resultado);
+    }
 }

@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -61,10 +62,15 @@ public class VentaDiariaController implements Initializable {
      @FXML
     private void accionBotonGenerarReporte(ActionEvent event) {
         LocalDate date = this.datePickerFecha.getValue();
+        if(date==null){
+            this.MostrarMensajeAlerta("ERROR DE INGRESO", "Por favor, ingrese una fecha");
+        }
+        else{
         controlador.modificarPaneDinamico2("ReporteDiario.fxml",date);
         
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();
+        }
     }
 
     @FXML
@@ -75,5 +81,12 @@ public class VentaDiariaController implements Initializable {
     
     public void recibirControlador(VentanaAdministradorController controlador){
         this.controlador = controlador;
+    }
+    private void MostrarMensajeAlerta(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 }

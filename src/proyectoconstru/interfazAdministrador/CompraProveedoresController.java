@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -69,14 +70,16 @@ public class CompraProveedoresController implements Initializable {
     private void accionGenerarReporte(ActionEvent event) {
         LocalDate fechaInicio = this.datePickerInicio.getValue();
         LocalDate fechaTermino = this.datePickerTermino.getValue();
-        
-        String fechaI = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"));
-        String fechaT = fechaTermino.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"));
-        
-        controlador.modificarPaneDinamicoCompra("ReporteCompraProveedores.fxml", fechaI, fechaT);
-        
-        Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-        stage.close();
+        if(fechaInicio==null || fechaTermino==null){
+            this.MostrarMensajeAlerta("ERROR DE INGRESO", "Por favor, ingrese una fecha");
+        }
+        else{
+            controlador.modificarPaneDinamicoCompra("ReporteCompraProveedores.fxml", 
+                                                    fechaInicio, fechaTermino);
+
+            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML
@@ -110,4 +113,11 @@ public class CompraProveedoresController implements Initializable {
         this.datePickerTermino.setDayCellFactory(celdaDia);
     }
 
+    private void MostrarMensajeAlerta(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setContentText(texto2);
+        alert.showAndWait();
+    }
 }

@@ -164,13 +164,13 @@ public class InterfazcajeroController implements Initializable {
         boleta.setCodigoProperty(new SimpleIntegerProperty(codigo));
         
         consultaBoleta.registrarBoleta(boleta);
-        this.warning("Boleta ingresada Exitosamente","Se ha ingresado la boleta "+boleta.getCodigo());
+        this.mostrarMensajeAlerta("Boleta ingresada Exitosamente","Se ha ingresado la boleta "+boleta.getCodigo());
         
         this.limpiarVentana();
 
         }
         else{
-            this.warning("ERROR","Debe ingresar productos para emitir la boleta");
+            this.mostrarMensajeAlerta("ERROR","Debe ingresar productos para emitir la boleta");
             
         }
     }
@@ -203,7 +203,7 @@ public class InterfazcajeroController implements Initializable {
             if(producto!=null){
                 if(!producto.getEstado()){
                     //EMITIR ALERTA DE QUE ESTA DESHABILITADO
-                    this.warning("ERROR DE INGRESO", "El producto ingresado se encuentra deshabilitado");
+                    this.mostrarMensajeAlerta("ERROR DE INGRESO", "El producto ingresado se encuentra deshabilitado");
                 }
                 else{
                     this.etiquetaNombreProducto.setText(producto.getNombre());
@@ -233,7 +233,7 @@ public class InterfazcajeroController implements Initializable {
                 }
             }
             else{
-                this.warning("El producto no existe!", "El producto con código "+ 
+                this.mostrarMensajeAlerta("El producto no existe!", "El producto con código "+ 
                              this.campoDeTextoCodigo.getText()+" no esta registrado en el sistema");
             }
         }
@@ -362,7 +362,7 @@ public class InterfazcajeroController implements Initializable {
         datos.removeAll(datos);
     }
     
-    private void warning(String text1, String texto2) {
+    private void mostrarMensajeAlerta(String text1, String texto2) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
         alert.setHeaderText(text1);

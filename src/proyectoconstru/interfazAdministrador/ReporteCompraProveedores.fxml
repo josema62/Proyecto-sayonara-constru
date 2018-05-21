@@ -49,10 +49,17 @@
                <children>
                   <TableView fx:id="tablaCompraProveedores" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn fx:id="columnaProveedor" prefWidth="204.0" text="Proveedor" />
-                      <TableColumn fx:id="columnaNFactura" prefWidth="149.0" text="n° Factura" />
-                        <TableColumn fx:id="columnaFechaDeEmision" prefWidth="128.0" text="Fecha de Emisión" />
-                        <TableColumn fx:id="columnaProductos" minWidth="4.0" prefWidth="98.0" text="Productos" />
+                      <TableColumn fx:id="columnaProveedor" prefWidth="100.0" text="Proveedor" />
+                      <TableColumn fx:id="columnaNFactura" prefWidth="62.0" text="n° Factura" />
+                        <TableColumn fx:id="columnaFechaDeEmision" text="Fecha de Emisión" />
+                        <TableColumn fx:id="columnaProductos" minWidth="4.0" prefWidth="369.0" text="Productos">
+                           <columns>
+                              <TableColumn fx:id="columnaCodigoProducto" prefWidth="75.0" text="Codigo" />
+                              <TableColumn fx:id="columnaNombreProducto" prefWidth="75.0" text="Nombre" />
+                              <TableColumn fx:id="columnaPrecioProducto" prefWidth="75.0" text="Precio" />
+                              <TableColumn fx:id="columnaCantidadProducto" prefWidth="39.0" text="Cantidad" />
+                              <TableColumn fx:id="columnaSubtotalProducto" prefWidth="75.0" text="Subtotal" />
+                           </columns></TableColumn>
                     </columns>
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" />

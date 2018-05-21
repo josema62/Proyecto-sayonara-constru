@@ -235,7 +235,7 @@ public class VentanaAdministradorController implements Initializable {
         paneDinamico.getChildren().add(pane);
     }
 
-    protected void modificarPaneDinamicoCompra(String ruta, String fechaI, String fechaT) {
+    protected void modificarPaneDinamicoCompra(String ruta, LocalDate fechaI, LocalDate fechaT) {
         paneDinamico.getChildren().clear();
         AnchorPane pane =null;
         try {
@@ -243,6 +243,7 @@ public class VentanaAdministradorController implements Initializable {
            pane = load.load();
            ReporteCompraProveedoresController repo =load.<ReporteCompraProveedoresController>getController();
             repo.modificarFechas(fechaI, fechaT);
+            repo.llenarTablaCompra();
         }
         catch (IOException e) {
             System.out.println("fallo:" + e);

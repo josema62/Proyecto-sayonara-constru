@@ -34,7 +34,7 @@ public class ProveedorTest {
     {
        List<Producto> resultado = this.consulta.obtenerProductosProveedor
                                                         ("76.432.692-k");
-      
+      System.out.println(resultado.size());
        assertNotNull(resultado);
     }
     
@@ -48,7 +48,7 @@ public class ProveedorTest {
      @Test
     public void pruebaAgregarProveedor()
     {
-        boolean resultado = this.consulta.registrarProveedor("79.608.923-5","Kelogs", "kelogs@gmail.com",
+        boolean resultado = this.consulta.registrarProveedor("79.708.923-5","Kelogs", "kelogs@gmail.com",
                                                              "Nestle LTDA",
                                                              "Mackena 901",
                                                              "901823456",

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarCajeroController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.EditarCajeroController">
    <children>
       <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -30,7 +30,11 @@
                         <Label text="Contraseña:" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonHabilitar" mnemonicParsing="false" onAction="#botonHabilitarCajero" text="Habilitar" />
+                     </children>
+                  </HBox>
                </children>
                <HBox.margin>
                   <Insets />
@@ -53,7 +57,11 @@
                         <PasswordField fx:id="campoContrasena" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="botonDarDeBaja" mnemonicParsing="false" onAction="#botonDarBaja" text="Dar de baja" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <VBox prefHeight="400.0" prefWidth="152.0">
@@ -71,7 +79,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#agregarCajero" text="Agregar" />
+                        <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#botonEditarCajero" text="Aceptar" />
                      </children>
                   </HBox>
                </children>

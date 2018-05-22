@@ -5,6 +5,7 @@
  */
 package proyectoconstru.VentanaLogin;
 
+import java.awt.Dialog;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import proyectoconstru.VentanaCajero.InterfazcajeroController;
 import proyectoconstru.conexion.ConsultaAutentificacion;
+import proyectoconstru.conexion.ConsultaCajero;
 
 /**
  * FXML Controller class
@@ -65,11 +67,12 @@ public class VentanaLoginController implements Initializable {
         String contraseniaVentana = this.campoDeTextoContrasenia.getText();
 
         if (rut.isEmpty()) {
-            this.warning("El campo RUN está vacío");
+            this.warning("El campo RUN está vacío","Por favor, ingrese el RUN");
         }
 
         else if (contraseniaVentana.isEmpty()) {
-            this.warning("El campo contraseña está vacío");
+            this.warning("El campo contraseña está vacío",
+                         "Por favor, ingrese la contraseña");
         }
         else {
             if (this.selectorAdmin.isSelected()) {
@@ -78,7 +81,8 @@ public class VentanaLoginController implements Initializable {
                this.contraseniaCorrecta = this.consulta.obtenerContaseniaAdministrador(
                        rut);
                 if (this.contraseniaCorrecta == null) {
-                    this.warning("El RUN ingresado NO esta registrado");
+                    this.warning("El RUN ingresado NO esta registrado",
+                                 "Por favor, ingrese un RUN válido");
                 }
 
                 else if (this.contraseniaCorrecta.equals(contraseniaVentana)) {
@@ -103,7 +107,8 @@ public class VentanaLoginController implements Initializable {
                      
                 }
                 else {
-                    this.warning("La contraseña ingresada es incorrecta");
+                    this.warning("La contraseña ingresada es incorrecta",
+                                 "Por favor, ingrese la contraseña correcta");
                 }
             }
             else if (this.selectorCajero.isSelected()) {
@@ -111,7 +116,8 @@ public class VentanaLoginController implements Initializable {
                        rut);
 
                 if (this.contraseniaCorrecta == null) {
-                    this.warning("El RUN ingresado NO esta registrado");
+                    this.warning("El RUN ingresado NO esta registrado",
+                                 "Por favor, ingrese un RUN válido");
                 }
 
                 else if (this.contraseniaCorrecta.equals(contraseniaVentana)) {
@@ -120,15 +126,24 @@ public class VentanaLoginController implements Initializable {
 
                         Stage stageVentanaCajero = new Stage();
 
-                        Parent root = FXMLLoader.load(getClass().getResource(
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource(
                                 "/proyectoconstru/VentanaCajero/interfazcajero.fxml"));
+                        
+                        Parent root = loader.load();
+                        
+                        InterfazcajeroController in = loader.<InterfazcajeroController>getController();
+                        ConsultaCajero consultaCajero = new ConsultaCajero();
+                        
+                        in.setearNombreCajero(consultaCajero.buscarCajero(rut).getNombre());
+                        in.setRutCajero(rut);
+                        
                         Scene scene = new Scene(root);
                         stageVentanaCajero.setScene(scene);
 
                         Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
                         stageActual.close();
 
-                        stageVentanaCajero.setTitle("ventana Cajero");
+                        stageVentanaCajero.setTitle("Ventana Cajero");
                         stageVentanaCajero.show();
                     }
                     catch (IOException ex) {
@@ -136,11 +151,13 @@ public class VentanaLoginController implements Initializable {
                     }
                 }
                 else {
-                    this.warning("La contraseña ingresada es incorrecta");
+                    this.warning("La contraseña ingresada es incorrecta",
+                                 "Por favor, ingrese la contraseña correcta");
                 }
             }
             else {
-                this.warning("Debe seleccionar el tipo de usuario!");
+                this.warning("Debe seleccionar el tipo de usuario!",
+                             "Seleccione al usuario correspondiente");
             }
         }
     }
@@ -161,10 +178,12 @@ public class VentanaLoginController implements Initializable {
         this.selectorAdmin.setSelected(false);
     }
 
-    private void warning(String text) {
+    private void warning(String text1, String texto2) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
         alert.setTitle("Error en Ingreso");
-        alert.setContentText(text);
+        alert.setContentText(texto2);
         alert.showAndWait();
     }
 

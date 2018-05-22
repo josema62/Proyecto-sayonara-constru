@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarProductosController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarProductosController">
    <children>
       <VBox layoutX="-2.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text="Seleccionar Filtro:" />
-                  <ComboBox fx:id="comboBoxFiltro" prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </ComboBox>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="99.0" prefWidth="109.0">
+                     <children>
+                        <Button fx:id="botonEditarProducto" mnemonicParsing="false" onAction="#botonEditarProducto" text="Editar Producto">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="99.0" prefWidth="385.0" />
                </children>
             </HBox>
-            <TableView fx:id="tablaProducto" prefHeight="303.0" prefWidth="600.0">
+            <TableView fx:id="tablaProducto" prefHeight="415.0" prefWidth="595.0">
               <columns>
                 <TableColumn fx:id="columnaCodigo" prefWidth="75.0" text="codigo" />
-                <TableColumn fx:id="columnaNombre" prefWidth="125.0" text="nombre" />
-                  <TableColumn fx:id="columnaStockDisponible" prefWidth="107.0" text="stock disponible" />
-                  <TableColumn fx:id="columnaStockMinimo" prefWidth="92.0" text="stock minimo" />
-                  <TableColumn fx:id="columnaPrecio" prefWidth="71.0" text="precio" />
-                  <TableColumn fx:id="columnaCategoria" prefWidth="129.0" text="categoria" />
+                <TableColumn fx:id="columnaNombre" prefWidth="66.0" text="nombre" />
+                  <TableColumn fx:id="columnaStockDisponible" prefWidth="109.0" text="stock disponible" />
+                  <TableColumn fx:id="columnaStockMinimo" prefWidth="98.0" text="stock minimo" />
+                  <TableColumn fx:id="columnaPrecio" prefWidth="50.0" text="precio" />
+                  <TableColumn fx:id="columnaCategoria" prefWidth="142.0" text="categoria" />
+                  <TableColumn fx:id="columnaEstado" prefWidth="56.0" text="estado" />
               </columns>
             </TableView>
          </children>

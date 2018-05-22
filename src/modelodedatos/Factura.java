@@ -6,7 +6,6 @@
 package modelodedatos;
 
 import java.util.HashMap;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,17 +22,19 @@ public class Factura {
     private IntegerProperty valorIva;
     private IntegerProperty valorNeto;
     private IntegerProperty total;
+    private StringProperty rutProveedor;
 
     //Llave: codigo de producto;    Valor: Detalle del producto (cantidad, precio unitario y subtotal)
     private HashMap<String, DetalleProducto> detalleProductos;
 
-    public Factura(int numeroFactura, String fechaEmision, int valorIva, int valorNeto, int total, HashMap<String, DetalleProducto> detalleProductos) {
+    public Factura(int numeroFactura, String fechaEmision, int valorIva, int valorNeto, int total, String rutProveedor, HashMap<String, DetalleProducto> detalleProductos) {
         this.numeroFactura = new SimpleIntegerProperty(numeroFactura);
         this.fechaEmision = new SimpleStringProperty(fechaEmision);
         this.valorIva = new SimpleIntegerProperty(valorIva);
         this.valorNeto = new SimpleIntegerProperty(valorNeto);
         this.detalleProductos = detalleProductos;
         this.total = new SimpleIntegerProperty(total);
+        this.rutProveedor = new SimpleStringProperty(rutProveedor);
     }
 
     
@@ -133,4 +134,19 @@ public class Factura {
         this.total = totalProperty;
     }
 
+    public String getRutProveedor() {
+        return rutProveedor.getValue();
+    }
+
+    public void setRutProveedor(String rutProveedor) {
+        this.rutProveedor.set(rutProveedor);
+    }
+    
+    public StringProperty getRutProveedorProperty(){
+        return this.rutProveedor;
+    }
+    
+    public void setRutProveedorProperty(StringProperty rutProveedorProperty){
+        this.rutProveedor = rutProveedorProperty;
+    }
 }

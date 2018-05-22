@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarFacturaController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarFacturaController">
    <children>
       <HBox prefHeight="123.0" prefWidth="600.0">
          <children>
@@ -30,7 +35,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonAgregarProducto" mnemonicParsing="false" text="Agregar Producto ">
+                        <Button fx:id="botonAgregarProducto" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar Producto ">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -60,7 +65,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonEditarProducto" mnemonicParsing="false" text="Editar Producto" />
+                        <Button fx:id="botonEditarProducto" mnemonicParsing="false" onAction="#editarProducto" text="Editar Producto" />
                      </children>
                   </HBox>
                </children>
@@ -89,12 +94,12 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoMontoNeto" />
+                        <TextField fx:id="campoTextoMontoNeto" disable="true" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="campoTextoIVA" />
+                        <TextField fx:id="campoTextoIVA" disable="true" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -127,11 +132,11 @@
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="300.0" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="300.0">
                      <children>
-                        <Button fx:id="botonAgregarFactura" mnemonicParsing="false" text="Agregar Factura">
+                        <Button fx:id="botonAgregarFactura" mnemonicParsing="false" onAction="#agregarFactura" text="Agregar Factura">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin></Button>
-                        <Button fx:id="botonCancelarFactura" mnemonicParsing="false" text="Cancelar" />
+                        <Button fx:id="botonCancelarFactura" mnemonicParsing="false" onAction="#cancelarFactura" text="Cancelar" />
                      </children>
                   </HBox>
                </children>

@@ -28,7 +28,7 @@ public class ConsultaAutentificacion {
      * @param conexion La conexion a la base de datos.
      */
     public ConsultaAutentificacion() {
-        this.bd = BD.obtenerBD("root","","3306");
+        this.bd = BD.obtenerBD();
         this.conexion = this.bd.obtenerConexion();
     }
     

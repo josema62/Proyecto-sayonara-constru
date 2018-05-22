@@ -28,13 +28,23 @@ public class Boleta {
     private StringProperty nombreCajero;
     private StringProperty rutCajero;
 
-    public Boleta(int total, HashMap<String, DetalleProducto> detalleProductos, boolean estado, String fechaEmision, String horaEmision, int codigo, String nombreCajero, String rutCajero) {
+    public Boleta(int total, boolean estado, String fechaEmision, String horaEmision, int codigo, String nombreCajero, String rutCajero) {
         this.total = new SimpleIntegerProperty(total);
-        this.detalleProductos = detalleProductos;
+        this.detalleProductos = new HashMap<>();
         this.estado = new SimpleBooleanProperty(estado);
         this.fechaEmision = new SimpleStringProperty(fechaEmision);
         this.horaEmision = new SimpleStringProperty(horaEmision);
         this.codigo = new SimpleIntegerProperty(codigo);
+        this.nombreCajero = new SimpleStringProperty(nombreCajero);
+        this.rutCajero = new SimpleStringProperty(rutCajero);
+    }
+    
+    public Boleta(int total, boolean estado, String fechaEmision, String horaEmision,String nombreCajero, String rutCajero) {
+        this.total = new SimpleIntegerProperty(total);
+        this.detalleProductos = new HashMap<>();
+        this.estado = new SimpleBooleanProperty(estado);
+        this.fechaEmision = new SimpleStringProperty(fechaEmision);
+        this.horaEmision = new SimpleStringProperty(horaEmision);
         this.nombreCajero = new SimpleStringProperty(nombreCajero);
         this.rutCajero = new SimpleStringProperty(rutCajero);
     }
@@ -48,12 +58,9 @@ public class Boleta {
         return detalleProductos;
     }
 
-    public void setDetalleProductos(HashMap<String, DetalleProducto> detalleProductos) {
-        this.detalleProductos = detalleProductos;
+    public void agregardetalles(String clave, DetalleProducto value){
+        this.detalleProductos.put(clave,value);
     }
-
-    
-    
     public int getTotal() {
         return this.total.getValue();
     }

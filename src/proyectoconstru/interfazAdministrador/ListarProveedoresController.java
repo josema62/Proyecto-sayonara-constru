@@ -167,9 +167,9 @@ public class ListarProveedoresController implements Initializable {
         if(tablaProveedor.getSelectionModel().getSelectedItem()!=null){
             Proveedor proveedor = obtenerProveedorDesdeLista();
             Stage stage = new Stage();
-            FXMLLoader loader = obtenerFXML("ListarProductos.fxml");
+            FXMLLoader loader = obtenerFXML("ListarProductosProveedor.fxml");
             Parent root = loader.load();  
-            ListarProductosController controlador = loader.getController();
+            ListarProductosProveedorController controlador = loader.getController();
             controlador.cargarLista(consulta.obtenerProductosProveedor(proveedor.getRut()));
             Scene scene = new Scene(root);
             

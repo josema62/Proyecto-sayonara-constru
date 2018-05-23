@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -48,7 +49,7 @@
             <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
               <children>
                 <Button fx:id="botonIngresar" mnemonicParsing="false" onAction="#accionIngresar" prefHeight="27.0" prefWidth="84.0" text="Ingresar" />
-                <Button fx:id="botonCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="27.0" prefWidth="84.0" text="Cancelar" />
+                <Button fx:id="botonCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#accionCancelar" prefHeight="27.0" prefWidth="84.0" text="Cerrar" />
               </children>
               <padding>
                 <Insets right="30.0" top="10.0" />
@@ -105,7 +106,7 @@
                 </Label>
               </children>
             </HBox>
-            <VBox prefHeight="144.0" prefWidth="157.0" spacing="10.0">
+            <VBox prefHeight="116.0" prefWidth="178.0" spacing="10.0">
               <children>
                 <Label fx:id="borrar" text="Código">
                   <font>
@@ -118,11 +119,15 @@
                 <Insets left="20.0" right="20.0" top="50.0" />
               </padding>
             </VBox>
-            <HBox id="HBox" alignment="CENTER" disable="false" prefHeight="39.0" prefWidth="157.0" spacing="5.0">
-              <children>
+                  <VBox alignment="CENTER" prefHeight="79.0" prefWidth="178.0" spacing="10.0">
+                     <children>
                 <Button fx:id="botonEditarProducto" disable="false" mnemonicParsing="false" onAction="#accionBotonEditarProducto" prefHeight="30.0" prefWidth="136.0" text="Editar Producto" textOverrun="CENTER_WORD_ELLIPSIS" underline="false" />
-              </children>
-            </HBox>
+                        <Button fx:id="botonCancelarBoleta" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accionBotonCancelarBoleta" prefHeight="32.0" prefWidth="139.0" text="Cancelar Boleta">
+                           <effect>
+                              <InnerShadow color="RED" height="4.7" radius="2.2175000000000002" width="6.17" />
+                           </effect></Button>
+                     </children>
+                  </VBox>
           </children>
           <padding>
             <Insets top="40.0" />

@@ -7,22 +7,26 @@ package proyectoconstru.interfazAdministrador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
  *
- * @author Roberto Ureta
+ * @author Roberto Ureta & Jose Nunnez
  */
 public class VentanaAdministradorController implements Initializable {
 
@@ -38,13 +42,11 @@ public class VentanaAdministradorController implements Initializable {
     private TreeItem agregarFactura;
     private TreeItem generarReportes;
     private TreeItem varios;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         TreeItem<String> root = new TreeItem<>("MENU");
         root.setExpanded(true);
         creadorGestionProductos();
@@ -137,10 +139,10 @@ public class VentanaAdministradorController implements Initializable {
             modificarPaneDinamico("ListarCajeros.fxml");
         }
         if (value.equals("Compras a proveedores")) {
-            mostrarStageSecundario("CompraProveedores.fxml");
+            mostrarStageSecundarioCompra();
         }
         if (value.equals("Venta Diaria")) {
-            mostrarStageSecundario("VentaDiaria.fxml");
+            mostrarStageSecundarioVentas();
         }
         if (value.equals("Anular Boleta")) {
             mostrarStageSecundario("AnularBoleta.fxml");
@@ -159,6 +161,70 @@ public class VentanaAdministradorController implements Initializable {
         stage2.showAndWait();
         stage2.close();
     }
+    
+      /**
+     * Genera un stage para mostrar una ventana secundaria de ventas
+     * @param ruta string con el nombre del archivo fxml que se va abrir.
+     */
+    private void mostrarStageSecundarioVentas() {
+        Stage stageVentanaVentas = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                    "VentaDiaria.fxml"));
+            Parent root = loader.load();
+
+            VentaDiariaController controlador = loader.<VentaDiariaController>getController();
+            controlador.recibirControlador(this);
+
+            Scene scene = new Scene(root);
+            stageVentanaVentas.setScene(scene);
+            stageVentanaVentas.setTitle("Fecha Venta");
+            stageVentanaVentas.initStyle(StageStyle.UTILITY);
+            
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stageVentanaVentas.initOwner(stageActual);
+            stageVentanaVentas.initModality(Modality.WINDOW_MODAL);
+            
+            stageVentanaVentas.showAndWait();
+
+        }catch(Exception e){
+            System.out.println("ERROR: "+e);
+        }
+    }
+    /**
+     * genera un stage para mostrar una ventana secundaria de compras a proveedores
+     * @param ruta string con el nombre del archivo fxml que se va abrir.
+     */
+    private void mostrarStageSecundarioCompra() {
+        Stage stageVentanaCompraProveedores = new Stage();
+        try{
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                    "CompraProveedores.fxml"));
+            Parent root = loader.load();
+
+            CompraProveedoresController controlador = loader.<CompraProveedoresController>getController();
+            controlador.recibirControlador(this);
+
+            Scene scene = new Scene(root);
+            stageVentanaCompraProveedores.setScene(scene);
+
+            stageVentanaCompraProveedores.initStyle(StageStyle.UTILITY);
+            stageVentanaCompraProveedores.setTitle("Periodo de compra");
+            
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stageVentanaCompraProveedores.initOwner(stageActual);
+            stageVentanaCompraProveedores.initModality(Modality.WINDOW_MODAL);
+
+            stageVentanaCompraProveedores.showAndWait();
+
+
+            
+        }catch(Exception e){
+            System.out.println("ERROR: "+e);
+        }
+    }
+    
     /**
      * Limpia los hijos que almacena paneDinamico y agrega el nuevo AnchorPane
      * que se obtiene de obtenerFXML(ruta).
@@ -167,6 +233,40 @@ public class VentanaAdministradorController implements Initializable {
     private void modificarPaneDinamico(String ruta) {
         paneDinamico.getChildren().clear();
         paneDinamico.getChildren().add(obtenerFXML(ruta));
+    }
+    
+    protected void modificarPaneDinamicoVentas(String ruta, LocalDate fecha) {
+        paneDinamico.getChildren().clear();
+        AnchorPane pane =null;
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            pane = load.load();
+            ReporteDiarioController r =load.<ReporteDiarioController>getController();
+            r.modificarFecha(fecha);
+            r.llenarTabla();
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+        paneDinamico.getChildren().add(pane);
+    }
+
+    protected void modificarPaneDinamicoCompra(String ruta, LocalDate fechaI, LocalDate fechaT) {
+        paneDinamico.getChildren().clear();
+        AnchorPane pane =null;
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+           pane = load.load();
+           ReporteCompraProveedoresController repo =load.<ReporteCompraProveedoresController>getController();
+            repo.modificarFechas(fechaI, fechaT);
+            repo.llenarTablaCompra();
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+        paneDinamico.getChildren().add(pane);
     }
     /**
      * abre un archivo fxml dado en la ruta

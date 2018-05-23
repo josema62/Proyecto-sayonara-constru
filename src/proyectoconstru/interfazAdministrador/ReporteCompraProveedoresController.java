@@ -97,6 +97,10 @@ public class ReporteCompraProveedoresController implements Initializable {
             datos.add(detalle);
         }
         this.tablaCompraProveedores.setItems(datos);
+        if(detallesReporte.isEmpty()){
+            this.mostrarMensajeAlerta("AVISO", "No existen compras realizadas en"
+                    + " este periodo de tiempo");
+        }
     }
     
     /**
@@ -114,4 +118,16 @@ public class ReporteCompraProveedoresController implements Initializable {
         this.etiquetaFechaTermino.setText(fechaT);
     }
     
+    /**
+     * Se encarga de mostrar un mensaje de alerta en pantalla
+     * @param text1 Es el titulo del mensaje
+     * @param texto2 Es el cuerpo del mensaje
+     */
+    private void mostrarMensajeAlerta(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setContentText(texto2);
+        alert.showAndWait();
+    }
 }

@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -63,6 +64,7 @@ public class ReporteDiarioController implements Initializable {
      * a la base de datos
      */
     public void llenarTabla(){
+        
         ConsultaReporte consulta = new ConsultaReporte();
         ReporteDeVentas reporte = consulta.obtenerReporteDeVentas(this.fechaConsulta);
         ArrayList<DetalleReporteDeVentas> detallesReporte = reporte.obtenerDetallesDeReporte();
@@ -71,6 +73,11 @@ public class ReporteDiarioController implements Initializable {
             datos.add(detalleReporte);
         }
         this.tablaProductosVendidos.setItems(datos);
+        if (detallesReporte.isEmpty()){
+            String fecha = fechaConsulta.format(DateTimeFormatter.ofPattern("dd-MM-YYYY"));
+            this.mostrarMensajeAlerta("AVISO", "No existen ventas de productos realizadas en"
+                    + " el dia "+fecha);
+        }
     }
     
     /**
@@ -83,4 +90,16 @@ public class ReporteDiarioController implements Initializable {
         this.fechaVenta.setText(fecha);
     }
     
+    /**
+     * Se encarga de mostrar un mensaje de alerta en pantalla
+     * @param text1 Es el titulo del mensaje
+     * @param texto2 Es el cuerpo del mensaje
+     */
+    private void mostrarMensajeAlerta(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setContentText(texto2);
+        alert.showAndWait();
+    }
 }

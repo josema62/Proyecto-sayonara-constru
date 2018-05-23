@@ -12,12 +12,14 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -40,13 +42,11 @@ public class VentanaAdministradorController implements Initializable {
     private TreeItem agregarFactura;
     private TreeItem generarReportes;
     private TreeItem varios;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         TreeItem<String> root = new TreeItem<>("MENU");
         root.setExpanded(true);
         creadorGestionProductos();
@@ -180,8 +180,13 @@ public class VentanaAdministradorController implements Initializable {
             stageVentanaVentas.setScene(scene);
             stageVentanaVentas.setTitle("Fecha Venta");
             stageVentanaVentas.initStyle(StageStyle.UTILITY);
-            stageVentanaVentas.show();
             
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stageVentanaVentas.initOwner(stageActual);
+            stageVentanaVentas.initModality(Modality.WINDOW_MODAL);
+            
+            stageVentanaVentas.showAndWait();
+
         }catch(Exception e){
             System.out.println("ERROR: "+e);
         }
@@ -193,6 +198,7 @@ public class VentanaAdministradorController implements Initializable {
     private void mostrarStageSecundarioCompra() {
         Stage stageVentanaCompraProveedores = new Stage();
         try{
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                                     "CompraProveedores.fxml"));
             Parent root = loader.load();
@@ -202,9 +208,17 @@ public class VentanaAdministradorController implements Initializable {
 
             Scene scene = new Scene(root);
             stageVentanaCompraProveedores.setScene(scene);
+
             stageVentanaCompraProveedores.initStyle(StageStyle.UTILITY);
-            stageVentanaCompraProveedores.setTitle("Fecha Venta");
-            stageVentanaCompraProveedores.show();
+            stageVentanaCompraProveedores.setTitle("Periodo de compra");
+            
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stageVentanaCompraProveedores.initOwner(stageActual);
+            stageVentanaCompraProveedores.initModality(Modality.WINDOW_MODAL);
+
+            stageVentanaCompraProveedores.showAndWait();
+
+
             
         }catch(Exception e){
             System.out.println("ERROR: "+e);
@@ -226,8 +240,8 @@ public class VentanaAdministradorController implements Initializable {
         AnchorPane pane =null;
         try {
             FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
-           pane = load.load();
-           ReporteDiarioController r =load.<ReporteDiarioController>getController();
+            pane = load.load();
+            ReporteDiarioController r =load.<ReporteDiarioController>getController();
             r.modificarFecha(fecha);
             r.llenarTabla();
         }

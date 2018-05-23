@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="154.0" prefWidth="295.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.VentaDiariaController">
+<AnchorPane id="AnchorPane" prefHeight="154.0" prefWidth="295.0" styleClass="hbox" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.VentaDiariaController">
    <children>
       <VBox prefHeight="160.0" prefWidth="300.0">
          <children>
@@ -22,7 +22,7 @@
                   </DatePicker>
                </children>
             </HBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="70.0" prefWidth="300.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="70.0" prefWidth="300.0" stylesheets="@theme.css">
                <children>
                   <Button fx:id="botonGenerarReporte" mnemonicParsing="false" onAction="#accionBotonGenerarReporte" text="Generar Reporte">
                      <HBox.margin>

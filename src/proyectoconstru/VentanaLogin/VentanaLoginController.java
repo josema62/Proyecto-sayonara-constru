@@ -96,6 +96,7 @@ public class VentanaLoginController implements Initializable {
                        Scene scene = new Scene(root);
                        stageVentanaAdmin.setScene(scene);
                        
+                       
                        Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
                        stageActual.close();
                        stageVentanaAdmin.setTitle("Ventana Administrador");

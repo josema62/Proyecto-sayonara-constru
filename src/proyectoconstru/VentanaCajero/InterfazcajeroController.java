@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -18,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +29,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import modelodedatos.Boleta;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Producto;
@@ -74,6 +77,8 @@ public class InterfazcajeroController implements Initializable {
     private Label etiquetaTotal;
     private String rutCajero;
     private ObservableList<DetalleProducto> datos = FXCollections.observableArrayList();
+    @FXML
+    private Button botonCancelarBoleta;
     
    
     @Override
@@ -98,6 +103,7 @@ public class InterfazcajeroController implements Initializable {
         columnaSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
         
         this.botonEditarProducto.setDisable(true);
+        this.botonCancelarBoleta.setDisable(true);
         // TODO
     }    
 
@@ -234,7 +240,7 @@ public class InterfazcajeroController implements Initializable {
                     }
                     //Se actualiza el valor total
                     actualizarTotal();
-
+                    this.botonCancelarBoleta.setDisable(false);
                     this.campoDeTextoCodigo.setText("");
                 }
             }
@@ -400,7 +406,7 @@ public class InterfazcajeroController implements Initializable {
     }
     
     /**
-     * Se encarga de eliminar un producto de la lista desde la ventana de edicion
+     * Se encarga de eliminar un producto
      * @param pro 
      */
     public void eliminarProductoLista(DetalleProducto pro){
@@ -411,6 +417,10 @@ public class InterfazcajeroController implements Initializable {
                 this.etiquetaNombreProducto.setText("");
                 this.etiquetaValorProducto.setText("");
                 this.updateDatos();
+                this.botonEditarProducto.setDisable(true);
+                if(datos.isEmpty()){
+                    this.botonCancelarBoleta.setDisable(true);
+                }
                 return;
             }
         }
@@ -448,9 +458,26 @@ public class InterfazcajeroController implements Initializable {
     @FXML
     private void accionClickTabla(MouseEvent event) {
         DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();
-            if(producto!=null){
-                this.botonEditarProducto.setDisable(false);
-            }
+        if(producto!=null){
+            this.botonEditarProducto.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void accionBotonCancelarBoleta(ActionEvent event) {
+        
+        Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        dialogoConfirmacion.setTitle("Confirmacion Cancelar Boleta");
+        dialogoConfirmacion.setHeaderText(null);
+        dialogoConfirmacion.initStyle(StageStyle.UTILITY);
+        dialogoConfirmacion.setContentText("¿Desea cancelar la boleta?");
+        
+        Optional<ButtonType> resultado = dialogoConfirmacion.showAndWait();
+        if(resultado.get() == ButtonType.OK){
+            this.limpiarVentana();
+            this.mostrarMensajeAlerta("Boleta Cancelada","La compra ha sido cancelada");
+        }
+        
     }
 
 }

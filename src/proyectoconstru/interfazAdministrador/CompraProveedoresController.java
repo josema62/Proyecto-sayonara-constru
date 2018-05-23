@@ -71,14 +71,14 @@ public class CompraProveedoresController implements Initializable {
         LocalDate fechaInicio = this.datePickerInicio.getValue();
         LocalDate fechaTermino = this.datePickerTermino.getValue();
         if(fechaInicio==null || fechaTermino==null){
+           
             this.MostrarMensajeAlerta("ERROR DE INGRESO", "Por favor, ingrese una fecha");
         }
         else{
-            controlador.modificarPaneDinamicoCompra("ReporteCompraProveedores.fxml", 
-                                                    fechaInicio, fechaTermino);
-
             Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
             stage.close();
+            controlador.modificarPaneDinamicoCompra("ReporteCompraProveedores.fxml", 
+                                                    fechaInicio, fechaTermino);
         }
     }
 
@@ -119,5 +119,6 @@ public class CompraProveedoresController implements Initializable {
         alert.setHeaderText(text1);
         alert.setContentText(texto2);
         alert.showAndWait();
+        
     }
 }

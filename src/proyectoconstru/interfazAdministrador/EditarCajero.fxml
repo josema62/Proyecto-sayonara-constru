@@ -79,7 +79,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#botonEditarCajero" text="Editar" />
+                        <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#botonEditarCajero" text="Aceptar" />
                      </children>
                   </HBox>
                </children>

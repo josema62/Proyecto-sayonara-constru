@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -103,6 +104,10 @@ public class ListarCajerosController implements Initializable {
             agregarCajeroEnLista();         
             tablaCajero.setItems(listaCajeros);
         }
+        else
+            warning("No ha seleccionado ningun cajero", "Por favor, seleccione un cajero");
+        
+         
     }
     
     
@@ -136,5 +141,14 @@ public class ListarCajerosController implements Initializable {
     private Cajero obtenerCajeroDesdeLista(){
         Cajero cajero = tablaCajero.getSelectionModel().getSelectedItem();
         return cajero;
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 }

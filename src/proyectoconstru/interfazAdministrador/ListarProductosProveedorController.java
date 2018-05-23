@@ -7,6 +7,7 @@ package proyectoconstru.interfazAdministrador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -32,7 +33,7 @@ import proyectoconstru.conexion.ConsultaProducto;
  *
  * @author Roberto Ureta
  */
-public class ListarProductosController implements Initializable {
+public class ListarProductosProveedorController implements Initializable {
 
     @FXML
     private TableView<Producto> tablaProducto;
@@ -53,7 +54,9 @@ public class ListarProductosController implements Initializable {
     
      private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
     
-    private ConsultaProducto consulta = new ConsultaProducto();
+     private List<Producto> lista;
+     private ConsultaProducto consulta = new ConsultaProducto();
+
 
     /**
      * Initializes the controller class.
@@ -61,23 +64,11 @@ public class ListarProductosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setearValorCeldas();
-        agregarProductosEnLista();
-        tablaProducto.setItems(listaProductos);
     }    
     
-        /**
-     * obtiene los productos registrados desde la bd para agregarlos
-     * a la ObservableList listaProductos.
-     */
-    private void agregarProductosEnLista(){
-        List<Producto> lista = consulta.listarProductos();
-        for (int i = 0; i < lista.size(); i++) {
-            listaProductos.add(lista.get(i));
-        }
     
-    }
-    
-    public void cargarLista(List<Producto> lista){
+    public void cargarLista(List<Producto> list){
+        lista = list;
         listaProductos.clear();
         for (int i = 0; i < lista.size(); i++) {
             listaProductos.add(lista.get(i));
@@ -112,8 +103,19 @@ public class ListarProductosController implements Initializable {
     private void botonEditarProducto(ActionEvent event) throws IOException {
         if(tablaProducto.getSelectionModel().getSelectedItem()!=null){
             mostrarStageSecundario("EditarProducto.fxml");
-            listaProductos.clear();         
-            agregarProductosEnLista();         
+            Producto producto = obtenerProductoDesdeLista();
+            String codigo = producto.getCodigo();
+            Producto nuevo = consulta.obtenerDatosProducto(codigo);
+            for (int i = 0; i < lista.size(); i++) {
+                if(lista.get(i).equals(codigo)){
+                    lista.remove(i);
+                    lista.add(nuevo);
+                }
+            }
+            listaProductos.clear();
+            for (int i = 0; i < lista.size(); i++) {
+                listaProductos.add(lista.get(i));
+            }
             tablaProducto.setItems(listaProductos);
         }
         else

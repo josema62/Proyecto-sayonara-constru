@@ -30,7 +30,7 @@ public class AnularBoletaController implements Initializable {
     @FXML
     private Button botonCancelar;
 
-    private ConsultaBoleta consulta;
+    private ConsultaBoleta consulta=new ConsultaBoleta();
     /**
      * Initializes the controller class.
      */

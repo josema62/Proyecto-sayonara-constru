@@ -21,15 +21,15 @@ public class CajeroTest {
         this.consulta = new ConsultaCajero();
     }
     
-    /*@Test
+    @Test
     public void agregarConsultaCajero()
     {
           boolean resultado = this.consulta.insertarCajero("19.008.993-5", "Matias Acevedo", "6520", "(09)87534512",
                                      "Villa", true);
         assertTrue(resultado);
-    }*/
+    }
     
-    /*@Test 
+    @Test 
     public void listarCajeros()
     {
        List<Cajero> lista = this.consulta.listarCajeros();
@@ -37,14 +37,14 @@ public class CajeroTest {
        Cajero cajero = lista.get(0);
       
         
-    }*/
+    }
     
-   /* @Test
+    @Test
     public void buscarCajeros()
     {
         Cajero cajero =this.consulta.buscarCajero("11.496.730-0");
         assertNotNull(cajero);
-    }*/
+    }
    
     @Test
     public void modificarCajero()

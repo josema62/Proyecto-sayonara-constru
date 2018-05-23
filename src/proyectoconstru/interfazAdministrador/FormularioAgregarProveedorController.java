@@ -7,10 +7,12 @@ package proyectoconstru.interfazAdministrador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import proyectoconstru.conexion.ConsultaProveedor;
 
 /**
  * FXML Controller class
@@ -37,6 +39,8 @@ public class FormularioAgregarProveedorController implements Initializable {
     private TextField campoTextoCorreoOpcional;
     @FXML
     private Button botonCancelar;
+    
+    private ConsultaProveedor consulta = new ConsultaProveedor();
 
     /**
      * Initializes the controller class.
@@ -44,6 +48,46 @@ public class FormularioAgregarProveedorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }   
+    
+    /**
+     * agrega el proveedor a la base de datos gracias a la consulta 
+     * de registrarProveedor.
+     * @param event 
+     */
+    @FXML
+    private void agregarProducto(ActionEvent event){
+        consulta.registrarProveedor(campoTextoRut.getText(), 
+                campoTextoNombre.getText(),
+                campoTextoCorreoOpcional.getText(),
+                campoTextoRazonSocial.getText(),
+                campoTextoDireccion.getText(),
+                campoTextoTelefono.getText(), 
+                campoTextoTelefonoOpcional.getText(),
+                true);            
+        limpiarCamposdeTexto();
+    }
+    
+    /**
+     * limpia los campos de texto de la interfaz agregar Proveedor
+     */
+    private void limpiarCamposdeTexto() {
+        campoTextoRut.clear();
+        campoTextoNombre.clear();
+        campoTextoCorreoOpcional.clear();
+        campoTextoRazonSocial.clear();
+        campoTextoDireccion.clear();
+        campoTextoTelefono.clear();
+        campoTextoTelefonoOpcional.clear();
+    }
+    
+    /**
+     * elimina todos los datos escritos en la ventana agregarProveedor
+     * @param event 
+     */
+    @FXML
+    private void botonCancelar(ActionEvent event) {
+        limpiarCamposdeTexto();
+    }
     
 }

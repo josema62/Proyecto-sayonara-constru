@@ -30,11 +30,12 @@ public class ConsultaFactura extends Consulta{
      *
      * @return true si existe, false en otro caso.
      */
-    public boolean existeFactura(int numeroFactura){
-        String consulta = "select existe_factura(?);";
+    public boolean existeFactura(int codigoFactura, String rut_proveedor){
+        String consulta = "select existe_factura(?,?);";
         try (PreparedStatement consultaST
                                = conexion.prepareStatement(consulta)) {
-            consultaST.setInt(1, numeroFactura);
+            consultaST.setInt(1, codigoFactura);
+            consultaST.setString(2, rut_proveedor);
             ResultSet respuesta = consultaST.executeQuery();
             while (respuesta.next()) {
                 return respuesta.getBoolean(1);

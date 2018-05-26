@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import proyectoconstru.conexion.ConsultaProducto;
 /**
  *
- * @author Ariel
+ * @author Ariel,Diego Matus
  */
 public class ProductoTest {
     
@@ -49,17 +49,14 @@ public class ProductoTest {
     @Test
     public void consultaModificarProducto()
     {
-        boolean resultado=this.consulta.modificarDatosDeProducto("123456789012", 
-                                                      "Leche Colun Sin Lactosa 1 L",
-                                                           5,"Lacteos", true, 62,
-                                                            100);
+        boolean resultado=this.consulta.modificarDatosDeProducto("901511", "Yogurt Nestle 50 g",10,"Lacteos", true, 220);
         assertTrue(resultado);
     }
     
     @Test
     public void consultaExisteProductoTrue()
     {
-        boolean resultado1 = this.consulta.existeProducto("123456789012");
+        boolean resultado1 = this.consulta.existeProducto("123456789012","Leche Colun Sin Lactosa");
         assertTrue(resultado1);
         
        
@@ -68,7 +65,7 @@ public class ProductoTest {
     @Test
     public void consultaExisteProductoFalse()
     {
-        boolean resultado2 = this.consulta.existeProducto("-1");
+        boolean resultado2 = this.consulta.existeProducto("123456789012","Leche");
         assertFalse(resultado2);
     }
     

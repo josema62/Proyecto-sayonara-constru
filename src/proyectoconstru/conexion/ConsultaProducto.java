@@ -152,12 +152,11 @@ public class ConsultaProducto extends Consulta{
      * @param stockMinimo El nuevo stock mínimo del producto. NO DEBERÍA ser menor a 0.
      * @param categoria La nueva categoría del producto.
      * @param estado El nuevo estado del producto.
-     * @param stock EL nuevo stock actual del producto. NO DEBERÍA ser menor a 0.
      * @param precio El nuevo precio del producto. DEBERÍA ser mayor a 0.
      * @return true si la modificación de los datos se realizó correctamente. false si es que hubo algún error y no se pudo concretar la consulta.
      */
-    public boolean modificarDatosDeProducto(String codigo, String nombre, int stockMinimo, String categoria, boolean estado, int stock, int precio) {
-        String consulta = "{CALL modificar_datos_de_producto(?,?,?,?,?,?,?)}";
+    public boolean modificarDatosDeProducto(String codigo, String nombre, int stockMinimo, String categoria, boolean estado, int precio) {
+        String consulta = "{CALL modificar_datos_de_producto(?,?,?,?,?,?)}";
         //nombre, stock mínimo, categoría, estado, stock, y precio
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){        
             
@@ -167,8 +166,7 @@ public class ConsultaProducto extends Consulta{
             declaracion.setInt(3, stockMinimo);
             declaracion.setString(4, categoria);
             declaracion.setBoolean(5, estado);
-            declaracion.setInt(6, stock);
-            declaracion.setInt(7, precio);
+            declaracion.setInt(6, precio);
             
             declaracion.executeQuery();
 
@@ -185,21 +183,25 @@ public class ConsultaProducto extends Consulta{
     }
     
     /**
-     * Este método verifica si existe algún producto ya registrado en la base datos con el código
-     * ingresado como parámetro de entrada.
+     * Este método verifica si existe algún producto ya registrado con el nombre o con el código que fue pasado
+     * como parámetro de entrada a éste metodo. Tanto código como nombre de un producto deben ser únicos para
+     * poder ser registrados en la base de datos.
      * @param codigo El codigo a comparar con los que hay registrados.
-     * @return true si hay algún producto registrado en la base de datos con el codigo pasado como parámetro de entrada. false si no lo hay.
+     * @param nombre El nombre a comparar con los que hay registrados.
+     * @return true si hay algún producto registrado en la base de datos con el codigo o nombre que fueron pasados como párametros. false si no lo hay.
      */
-    public boolean existeProducto(String codigo) {
+    public boolean existeProducto(String codigo, String nombre) {
         
-        Boolean existe = false;
+        boolean existe = false;
         //La rutina almacenada en la base de datos retornará verdadero o falso dependiendo si 
         //existe o no un producto ya registrado con ese código.
-        String consulta = "{? = call existe_producto(?)}";
+        String consulta = "{? = call existe_producto(?,?)}";
         try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
             
             declaracion.registerOutParameter(1, java.sql.Types.BOOLEAN);
             declaracion.setString(2, codigo);
+            declaracion.setString(3, nombre);
+            
             declaracion.execute();
             existe = declaracion.getBoolean(1);
             

@@ -269,4 +269,25 @@ public class ConsultaProveedor extends Consulta {
 
         return productos;
     }
+    
+    
+    
+    public boolean existeProveedor(String rut) {
+        String consulta = "{?=CALL existe_proveedor(?)}";
+        boolean existe = false;
+        
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
+           declaracion.registerOutParameter(1, java.sql.Types.BOOLEAN);
+           declaracion.setString(2, rut);
+           
+            
+           declaracion.execute();
+           existe = declaracion.getBoolean(1);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ConsultaProveedor.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return existe;
+    }
 }

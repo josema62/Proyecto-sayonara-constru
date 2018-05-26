@@ -91,14 +91,14 @@ public class EditarProductoController implements Initializable {
     private void botonEditarProducto(ActionEvent event) {
         System.out.println("editado");
         try{
-            consulta.modificarDatosDeProducto(campoTextoCodigo.getText(),
+            /*consulta.modificarDatosDeProducto(campoTextoCodigo.getText(),
                                           campoTextoNombre.getText(),
                                           Integer.parseInt(campoTextoStockMinimo.getText()),
                                           comboBoxCategoria.getValue(),
                                           producto.getEstado(),
                                           Integer.parseInt(campoTextoStockInicial.getText()),
                                           Integer.parseInt(campoTextoPrecio.getText())
-                                          );
+                                          );*/
             Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
             stage.close();
         }catch (Exception ex) {

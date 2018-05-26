@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import proyectoconstru.conexion.ConsultaProducto;
 /**
  *
- * @author Ariel
+ * @author Ariel,Diego Matus
  */
 public class ProductoTest {
     
@@ -53,6 +53,20 @@ public class ProductoTest {
         assertTrue(resultado);
     }
     
+    @Test
+    public void consultaExisteProductoTrue()
+    {
+        boolean resultado1 = this.consulta.existeProducto("123456789012","Leche Colun Sin Lactosa");
+        assertTrue(resultado1);
+        
+       
+    }
     
-   
+    @Test
+    public void consultaExisteProductoFalse()
+    {
+        boolean resultado2 = this.consulta.existeProducto("123456789012","Leche");
+        assertFalse(resultado2);
+    }
+    
 }

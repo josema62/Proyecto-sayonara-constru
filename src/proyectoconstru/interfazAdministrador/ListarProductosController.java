@@ -19,11 +19,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import modelodedatos.Cajero;
 import modelodedatos.Producto;
 import proyectoconstru.conexion.ConsultaProducto;
 
@@ -49,17 +53,28 @@ public class ListarProductosController implements Initializable {
     @FXML
     private TableColumn<Producto, String> columnaCategoria;
     @FXML
-    private TableColumn<Producto, String> columnaEstado;
+    private TableColumn<Producto, Boolean> columnaEstado;
     
      private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
     
     private ConsultaProducto consulta = new ConsultaProducto();
+    
+    private Stage stagePrincipal;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.tablaProducto.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        this.columnaCodigo.setMaxWidth(10000);
+        this.columnaNombre.setMaxWidth(20000);
+        this.columnaStockDisponible.setMaxWidth(10000);
+        this.columnaStockMinimo.setMaxWidth(5000);
+        this.columnaPrecio.setMaxWidth(10000);
+        this.columnaCategoria.setMaxWidth(10000);
+        this.columnaEstado.setMaxWidth(10000);
+        
         setearValorCeldas();
         agregarProductosEnLista();
         tablaProducto.setItems(listaProductos);
@@ -102,7 +117,18 @@ public class ListarProductosController implements Initializable {
         columnaCategoria.setCellValueFactory(
                 new PropertyValueFactory<Producto, String>("categoria"));
         columnaEstado.setCellValueFactory(
-                new PropertyValueFactory<Producto, String>("estado"));
+                new PropertyValueFactory<Producto, Boolean>("estado"));
+        columnaEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoProperty());
+        // or cellData -> new SimpleBooleanProperty(cellData.getValue().getGender())
+        // if your model class doesn't use JavaFX properties
+
+        columnaEstado.setCellFactory(col -> new TableCell<Producto, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty) ;
+                setText(empty ? null : item ? "Habilitado" : "Deshabilitado" );
+            }
+        });
     }
     /**
      * Le da funcionalidad al boton Editar Producto.
@@ -132,6 +158,12 @@ public class ListarProductosController implements Initializable {
         controlador.cargarProducto(obtenerProductoDesdeLista());
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Editar Producto");
+        stage.initStyle(StageStyle.UTILITY);
+           
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -158,5 +190,9 @@ public class ListarProductosController implements Initializable {
         alert.setTitle("ERROR");
         alert.setContentText(texto2);
         alert.showAndWait();
+    }
+
+    public void obtenerStage(Stage stage) {
+       stagePrincipal = stage;
     }
 }

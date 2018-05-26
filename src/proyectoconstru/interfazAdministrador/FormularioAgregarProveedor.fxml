@@ -82,7 +82,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar" />
+                        <Button fx:id="botonAgregar" mnemonicParsing="false" onAction="#agregarProveedor" text="Agregar" />
                      </children>
                   </HBox>
                </children>

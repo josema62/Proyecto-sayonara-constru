@@ -96,7 +96,7 @@ public class EditarProductoController implements Initializable {
                                           Integer.parseInt(campoTextoStockMinimo.getText()),
                                           comboBoxCategoria.getValue(),
                                           producto.getEstado(),
-                                          Integer.parseInt(campoTextoStockInicial.getText()),
+                                          //Integer.parseInt(campoTextoStockInicial.getText()),
                                           Integer.parseInt(campoTextoPrecio.getText())
                                           );
             Stage stage = (Stage) this.botonCancelar.getScene().getWindow();

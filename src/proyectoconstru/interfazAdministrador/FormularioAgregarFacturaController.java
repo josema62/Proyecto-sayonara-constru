@@ -29,7 +29,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Factura;
@@ -83,12 +85,19 @@ public class FormularioAgregarFacturaController implements Initializable {
     private ConsultaProveedor consultap = new ConsultaProveedor();
     
     private List<Proveedor> lista;
+    
+    private Stage stagePrincipal;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.tablaProductosFactura.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        this.columnaCodigoProducto.setMaxWidth(10000);
+        this.columnaNombreProducto.setMaxWidth(20000);
+        this.columnaCantidad.setMaxWidth(10000);
+        this.columnaSubtotal.setMaxWidth(10000);
         setearValorCeldas();
         lista = consultap.listarProveedores();
         for (int i = 0; i < lista.size(); i++) {
@@ -195,6 +204,12 @@ public class FormularioAgregarFacturaController implements Initializable {
         controlador.obtenerControlador(this);
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Agregar Producto");
+        stage.initStyle(StageStyle.UTILITY);
+           
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -212,6 +227,12 @@ public class FormularioAgregarFacturaController implements Initializable {
         controlador.cargarProducto(obtenerProductoDesdeLista());
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Editar Cantidad Producto");
+        stage.initStyle(StageStyle.UTILITY);
+           
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -284,5 +305,9 @@ public class FormularioAgregarFacturaController implements Initializable {
         alert.setTitle("ERROR");
         alert.setContentText(texto2);
         alert.showAndWait();
+    }
+
+    void obtenerStage(Stage stage) {
+        stagePrincipal = stage;
     }
 }

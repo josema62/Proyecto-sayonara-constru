@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import proyectoconstru.conexion.ConsultaProveedor;
@@ -56,8 +57,9 @@ public class FormularioAgregarProveedorController implements Initializable {
      * @param event 
      */
     @FXML
-    private void agregarProducto(ActionEvent event){
-        consulta.registrarProveedor(campoTextoRut.getText(), 
+    private void agregarProveedor(ActionEvent event){
+        if(!consulta.existeProveedor(campoTextoRut.getText())){
+            consulta.registrarProveedor(campoTextoRut.getText(), 
                 campoTextoNombre.getText(),
                 campoTextoCorreoOpcional.getText(),
                 campoTextoRazonSocial.getText(),
@@ -65,7 +67,11 @@ public class FormularioAgregarProveedorController implements Initializable {
                 campoTextoTelefono.getText(), 
                 campoTextoTelefonoOpcional.getText(),
                 true);            
-        limpiarCamposdeTexto();
+            limpiarCamposdeTexto();
+        }
+        else
+            warning("Este proveedor ya existe!", "Por favor, ingrese un proveedor valido!");
+        
     }
     
     /**
@@ -90,4 +96,12 @@ public class FormularioAgregarProveedorController implements Initializable {
         limpiarCamposdeTexto();
     }
     
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
+    }
 }

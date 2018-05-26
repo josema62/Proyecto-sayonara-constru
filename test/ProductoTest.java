@@ -46,7 +46,7 @@ public class ProductoTest {
         assertTrue(resultado);
     }
     
-    @Test
+    /*@Test
     public void consultaModificarProducto()
     {
         boolean resultado=this.consulta.modificarDatosDeProducto("123456789012", 
@@ -54,12 +54,12 @@ public class ProductoTest {
                                                            5,"Lacteos", true, 62,
                                                             100);
         assertTrue(resultado);
-    }
+    }*/
     
     @Test
     public void consultaExisteProductoTrue()
     {
-        boolean resultado1 = this.consulta.existeProducto("123456789012");
+        boolean resultado1 = this.consulta.existeProducto("123456789012","Leche Colun Sin Lactosa");
         assertTrue(resultado1);
         
        
@@ -68,7 +68,7 @@ public class ProductoTest {
     @Test
     public void consultaExisteProductoFalse()
     {
-        boolean resultado2 = this.consulta.existeProducto("-1");
+        boolean resultado2 = this.consulta.existeProducto("123456789012","Leche");
         assertFalse(resultado2);
     }
     

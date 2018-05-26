@@ -87,4 +87,18 @@ public class ProveedorTest {
                             ","+proveedor.getTelefonoObligatorio()+","+proveedor.getTelefonoOpcional());
          
      }
+     
+     @Test
+     public void pruebaExisteProveedorTrue()
+     {
+         boolean resultado = this.consulta.existeProveedor("76.432.692-k");
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaExisteProveedorFalse()
+     {
+         boolean resultado = this.consulta.existeProveedor("19.299.833-6");
+         assertFalse(resultado);
+     }
 }

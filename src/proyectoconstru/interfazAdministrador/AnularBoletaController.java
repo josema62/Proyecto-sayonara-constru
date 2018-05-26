@@ -44,8 +44,6 @@ public class AnularBoletaController implements Initializable {
         if(consulta.existeBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()))){
             consulta.darDeBajaBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()));
             warning("Boleta anulada", "boleta Anulada exitosamente!");
-            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-            stage.close();
         }
         else
             warning("Codigo de boleta incorrecto!", "Por favor, ingrese un numero de boleta valido!");

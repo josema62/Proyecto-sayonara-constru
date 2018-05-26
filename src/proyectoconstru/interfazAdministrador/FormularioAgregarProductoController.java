@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -67,14 +68,21 @@ public class FormularioAgregarProductoController implements Initializable {
      */
     @FXML
     private void agregarProducto(ActionEvent event){
-        consulta.registrarProducto(campoTextoCodigo.getText(), 
+        if(!consulta.existeProducto(campoTextoCodigo.getText(),campoTextoNombre.getText())){
+            consulta.registrarProducto(campoTextoCodigo.getText(), 
                 campoTextoNombre.getText(),
                 comboBoxCategoria.getValue(),
                 true,
                 Integer.parseInt(campoTextoPrecio.getText()),
                 Integer.parseInt(campoTextoStockInicial.getText()), 
                 Integer.parseInt(campoTextoStockMinimo.getText()));            
-        limpiarCamposdeTexto();
+            limpiarCamposdeTexto();
+        }
+        else
+            warning("Este producto ya existe!", "Por favor, ingrese un producto valido!");
+            
+        
+        
     }
     
     /**
@@ -96,5 +104,14 @@ public class FormularioAgregarProductoController implements Initializable {
     private void botonCancelar(ActionEvent event) {
         limpiarCamposdeTexto();
         comboBoxCategoria.setValue("Abarrotes");
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 }

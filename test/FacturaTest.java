@@ -23,7 +23,7 @@ public class FacturaTest {
         this.consulta = new ConsultaFactura();
     }
 
-    @Test
+    //@Test
     public void pruebaAgregarFacturas() {
         
         HashMap<String, DetalleProducto> detalleProductos =  new HashMap<String, DetalleProducto>();
@@ -37,13 +37,13 @@ public class FacturaTest {
     @Test
     public void consultaExisteFacturaFalse()
     {
-        boolean resultado = this.consulta.existeFactura(-1);
+        boolean resultado = this.consulta.existeFactura(1111211,"78.567.834-6");
         assertFalse(resultado);
     }
     @Test
     public void consultaExisteFacturaTrue()
     {
-        boolean resultado = this.consulta.existeFactura(2);
+        boolean resultado = this.consulta.existeFactura(1111111,"72.567.834-1");
         assertTrue(resultado);
     }
 }

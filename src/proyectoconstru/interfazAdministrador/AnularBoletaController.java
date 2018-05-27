@@ -5,6 +5,7 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -31,6 +32,9 @@ public class AnularBoletaController implements Initializable {
     private Button botonCancelar;
 
     private ConsultaBoleta consulta=new ConsultaBoleta();
+    
+    
+    private ValidacionCampo validacion = new ValidacionCampo();
     /**
      * Initializes the controller class.
      */
@@ -41,14 +45,27 @@ public class AnularBoletaController implements Initializable {
 
     @FXML
     private void anularBoleta(ActionEvent event) {
-        if(consulta.existeBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()))){
-            consulta.darDeBajaBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()));
-            warning("Boleta anulada", "boleta Anulada exitosamente!");
+        if (validacion.campoVacio(campoTextoCodigoBoleta.getText())) {
+            campoTextoCodigoBoleta.setPromptText("Inserte un codigo de boleta!");
         }
-        else
-            warning("Codigo de boleta incorrecto!", "Por favor, ingrese un numero de boleta valido!");
+        else{
+            if(validacion.isNumeros(campoTextoCodigoBoleta.getText())){
+                if(consulta.existeBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()))){
+                consulta.darDeBajaBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()));
+                warning("Boleta anulada", "boleta Anulada exitosamente!");
+                }
+                else
+                    warning("Codigo de boleta incorrecto!", "Por favor, ingrese un numero de boleta valido!");
+            }
+            else
+                warning("Codigo de boleta incorrecto!", 
+                        "Ingrese un numero de boleta valido!");
+        }
+        
        
     }
+    
+    
 
     @FXML
     private void botonCancelar(ActionEvent event) {

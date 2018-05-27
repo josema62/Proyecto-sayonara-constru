@@ -5,11 +5,13 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -50,6 +52,7 @@ public class EditarProveedorController implements Initializable {
     private Proveedor proveedor;
     
      private ConsultaProveedor consulta=new ConsultaProveedor();
+     private ValidacionCampo validacion = new ValidacionCampo();
 
     /**
      * Initializes the controller class.
@@ -81,23 +84,71 @@ public class EditarProveedorController implements Initializable {
  */
     @FXML
     private void botonEditarProveedor(ActionEvent event) {
-        System.out.println("editado");
-        try{
-            consulta.modificarDatosProveedor(campoTextoRut.getText(),
-                                      campoTextoNombre.getText(),
-                                      campoTextoCorreoOpcional.getText(),
-                                      campoTextoDireccion.getText(),
-                                      campoTextoTelefono.getText(),
-                                      campoTextoTelefonoOpcional.getText(),
-                                      proveedor.getEstado()
-                                      );
-            
-            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-            stage.close();
-        }catch (Exception ex) {
-            System.out.println("error boton EditarProveedor:"+ex);
+        if (verificaCampos()) {
+             try{
+                consulta.modificarDatosProveedor(campoTextoRut.getText(),
+                                          campoTextoNombre.getText(),
+                                          campoTextoCorreoOpcional.getText(),
+                                          campoTextoDireccion.getText(),
+                                          campoTextoTelefono.getText(),
+                                          campoTextoTelefonoOpcional.getText(),
+                                          proveedor.getEstado()
+                                          );
+
+                Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+                stage.close();
+            }catch (Exception ex) {
+                System.out.println("error boton EditarProveedor:"+ex);
+            }
         }
+       
         
+    }
+    
+    private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+        if(validacion.campoVacio(campoTextoNombre.getText())){
+            campoTextoNombre.setPromptText("Inserte un nombre valido");
+            verifica = false; 
+        }
+        if(!validacion.campoVacio(campoTextoCorreoOpcional.getText())){
+            if(!validacion.isEmail(campoTextoCorreoOpcional.getText())){
+                mensaje+=" Correo Invalido -";
+                verifica = false;
+            }
+        }
+        if(validacion.campoVacio(campoTextoDireccion.getText())){
+            campoTextoDireccion.setPromptText("Inserte una direccion valida");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoTelefono.getText())){
+            campoTextoTelefono.setPromptText("Inserte un telefono valido");
+            verifica = false; 
+        }
+        else if(!validacion.isCadenaNumeros(campoTextoTelefono.getText())){
+            mensaje+=" Telefono Invalido -";
+            verifica = false;
+        }
+        if(!validacion.campoVacio(campoTextoTelefonoOpcional.getText())){
+            if(!validacion.isCadenaNumeros(campoTextoTelefonoOpcional.getText())){
+                mensaje+=" Telefono Opcional Invalido -";
+                verifica = false;
+            }
+        }
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 
     /**

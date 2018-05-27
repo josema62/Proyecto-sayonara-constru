@@ -5,6 +5,7 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -87,6 +88,7 @@ public class FormularioAgregarFacturaController implements Initializable {
     private List<Proveedor> lista;
     
     private Stage stagePrincipal;
+    private ValidacionCampo validacion = new ValidacionCampo();
 
     /**
      * Initializes the controller class.
@@ -136,18 +138,47 @@ public class FormularioAgregarFacturaController implements Initializable {
                     proveedor = lista.get(i).getRut();
                 }
             }
-           Factura factura = new Factura(Integer.parseInt(
-                    campoTextoNumeroFactura.getText()), 
-                datePickerFechaEmision.getValue().format(
-                        DateTimeFormatter.ISO_LOCAL_DATE), 
-                Integer.parseInt(campoTextoMontoNeto.getText()),
-                Integer.parseInt(campoTextoIVA.getText()), 
-                Integer.parseInt(campoTextoTotal.getText()), 
-                proveedor,
-                detalleProductos);
-            consulta.registrarFactura(factura);
+            
+            if (verificaCampos() && !proveedor.isEmpty()) {
+                if(!consulta.existeFactura(Integer.parseInt(campoTextoNumeroFactura.getText()), proveedor)){
+                    Factura factura = new Factura(Integer.parseInt(
+                        campoTextoNumeroFactura.getText()), 
+                    datePickerFechaEmision.getValue().format(
+                            DateTimeFormatter.ISO_LOCAL_DATE), 
+                    Integer.parseInt(campoTextoMontoNeto.getText()),
+                    Integer.parseInt(campoTextoIVA.getText()), 
+                    Integer.parseInt(campoTextoTotal.getText()), 
+                    proveedor,
+                    detalleProductos);
+                    consulta.registrarFactura(factura);
+                    limpiarCampos();
+                }
+                else
+                    warning("Esta factura ya existe!", "Por favor, ingrese una factura valida!");
+                
+            }
+            
+           
         }
-        limpiarCampos();
+        
+    }
+    
+    private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+
+        if(validacion.campoVacio(campoTextoNumeroFactura.getText())){
+            campoTextoNumeroFactura.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoNumeroFactura.getText())){
+            mensaje+=" Numero de Factura Invalido -";
+            verifica = false;
+        }
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
     }
 
     private void limpiarCampos() {

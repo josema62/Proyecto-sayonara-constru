@@ -5,11 +5,13 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -48,6 +50,8 @@ public class EditarCajeroController implements Initializable {
     private Cajero cajero;
     
      private ConsultaCajero consulta=new ConsultaCajero();
+     
+     private ValidacionCampo validacion = new ValidacionCampo();
     
     /**
      * Initializes the controller class.
@@ -76,24 +80,56 @@ public class EditarCajeroController implements Initializable {
  */
     @FXML
     private void botonEditarCajero(ActionEvent event) {
-        System.out.println("editado");
-        try{
-            consulta.modificarCajero(campoTextoRut.getText(),
-                                     campoTextoNombre.getText(),
-                                     campoContrasena.getText(),
-                                     campoTextoTelefono.getText(),
-                                     campoTextoDireccion.getText(),
-                                     cajero.getEstado()
-                                      );
-            
-            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-            stage.close();
-        }catch (Exception ex) {
-            System.out.println("error boton EditarProveedor:"+ex);
-        }
-        
-    }
+        if (verificaCampos()) {
+            try{
+                consulta.modificarCajero(campoTextoRut.getText(),
+                                         campoTextoNombre.getText(),
+                                         campoContrasena.getText(),
+                                         campoTextoTelefono.getText(),
+                                         campoTextoDireccion.getText(),
+                                         cajero.getEstado()
+                                          );
 
+                Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+                stage.close();
+            }catch (Exception ex) {
+                System.out.println("error boton EditarProveedor:"+ex);
+            }
+        }
+    }
+    
+    private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+        if(validacion.campoVacio(campoTextoNombre.getText())){
+            campoTextoNombre.setPromptText("Inserte un nombre valido");
+            verifica = false; 
+        }
+        else if(!validacion.isAlpha(campoTextoNombre.getText())){
+            mensaje+=" Nombre Invalido -";
+            verifica = false;
+        }
+        if(validacion.campoVacio(campoContrasena.getText())){
+            campoContrasena.setPromptText("Inserte una contraseña valida");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoDireccion.getText())){
+            campoTextoDireccion.setPromptText("Inserte una direccion valida");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoTelefono.getText())){
+            campoTextoTelefono.setPromptText("Inserte un telefono valido");
+            verifica = false; 
+        }
+        else if(!validacion.isCadenaNumeros(campoTextoTelefono.getText())){
+            mensaje+=" Telefono Invalido -";
+            verifica = false;
+        }
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
+    }
     /**
      * Le da funcionalidad al boton Cancelar
      * cerrando la ventana.
@@ -135,5 +171,14 @@ public class EditarCajeroController implements Initializable {
         }catch (Exception ex) {
             System.out.println("Error en habilitar proveedor:"+ex);
         }
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 }

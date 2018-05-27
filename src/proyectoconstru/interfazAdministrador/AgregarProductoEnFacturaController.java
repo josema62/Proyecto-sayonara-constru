@@ -52,8 +52,6 @@ public class AgregarProductoEnFacturaController implements Initializable {
 
     void obtenerControlador(FormularioAgregarFacturaController aThis) {
         formularioFactura = aThis;
-        System.out.println("form"+aThis.toString());
-        System.out.println("form"+formularioFactura.toString());
     }
 
     @FXML

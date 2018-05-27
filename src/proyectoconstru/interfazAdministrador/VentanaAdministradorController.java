@@ -117,7 +117,9 @@ public class VentanaAdministradorController implements Initializable {
         varios = new TreeItem<>("Varios");
         anularBoleta = new TreeItem<>("Anular Boleta");
         agregarFactura = new TreeItem<>("Agregar Factura");
-        varios.getChildren().addAll(agregarFactura, anularBoleta);
+        TreeItem<String> notificacionProducto = new TreeItem<>("Productos bajos");
+        varios.getChildren().addAll(agregarFactura, anularBoleta,
+                                                    notificacionProducto);
 
     }
     /**

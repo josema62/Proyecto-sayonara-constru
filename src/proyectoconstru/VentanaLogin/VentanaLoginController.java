@@ -206,5 +206,5 @@ public class VentanaLoginController implements Initializable {
         alert.setContentText(texto2);
         alert.showAndWait();
     }
-
+    
 }

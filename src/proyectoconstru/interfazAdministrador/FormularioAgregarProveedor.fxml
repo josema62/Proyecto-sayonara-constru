@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarProveedorController">
    <children>
-      <HBox layoutY="-2.0" prefHeight="400.0" prefWidth="600.0">
+      <HBox alignment="CENTER" layoutY="-2.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="135.0">
                <children>
@@ -39,7 +39,7 @@
                   <Insets />
                </HBox.margin>
             </VBox>
-            <VBox prefHeight="400.0" prefWidth="150.0">
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="150.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -63,7 +63,7 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="400.0" prefWidth="152.0">
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="152.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -87,7 +87,7 @@
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="400.0" prefWidth="150.0">
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="150.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>

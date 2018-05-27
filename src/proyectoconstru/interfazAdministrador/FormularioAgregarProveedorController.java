@@ -5,6 +5,7 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import modelodedatos.ValidacionRut;
 import proyectoconstru.conexion.ConsultaProveedor;
 
 /**
@@ -42,6 +44,8 @@ public class FormularioAgregarProveedorController implements Initializable {
     private Button botonCancelar;
     
     private ConsultaProveedor consulta = new ConsultaProveedor();
+    
+    private ValidacionCampo validacion = new ValidacionCampo();
 
     /**
      * Initializes the controller class.
@@ -58,20 +62,75 @@ public class FormularioAgregarProveedorController implements Initializable {
      */
     @FXML
     private void agregarProveedor(ActionEvent event){
-        if(!consulta.existeProveedor(campoTextoRut.getText())){
-            consulta.registrarProveedor(campoTextoRut.getText(), 
-                campoTextoNombre.getText(),
-                campoTextoCorreoOpcional.getText(),
-                campoTextoRazonSocial.getText(),
-                campoTextoDireccion.getText(),
-                campoTextoTelefono.getText(), 
-                campoTextoTelefonoOpcional.getText(),
-                true);            
-            limpiarCamposdeTexto();
+        if (verificaCampos()) {
+            if(!consulta.existeProveedor(campoTextoRut.getText())){
+                consulta.registrarProveedor(campoTextoRut.getText(), 
+                    campoTextoNombre.getText(),
+                    campoTextoCorreoOpcional.getText(),
+                    campoTextoRazonSocial.getText(),
+                    campoTextoDireccion.getText(),
+                    campoTextoTelefono.getText(), 
+                    campoTextoTelefonoOpcional.getText(),
+                    true);            
+                limpiarCamposdeTexto();
+            }
+            else
+                warning("Este proveedor ya existe!", "Por favor, ingrese un proveedor valido!");
         }
-        else
-            warning("Este proveedor ya existe!", "Por favor, ingrese un proveedor valido!");
         
+        
+    }
+    
+    private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+        if(validacion.campoVacio(campoTextoRut.getText())){
+            campoTextoRut.setPromptText("Inserte un RUT valido");
+            verifica = false; 
+        }
+        else if(!campoTextoRut.getText().isEmpty()){
+            ValidacionRut validacionRut = new ValidacionRut(campoTextoRut.getText());
+            if(!validacionRut.validacion_rut()){
+                mensaje+=" Rut Invalido -";
+                verifica = false;
+            }
+        }
+        if(validacion.campoVacio(campoTextoNombre.getText())){
+            campoTextoNombre.setPromptText("Inserte un nombre valido");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoRazonSocial.getText())){
+            campoTextoRazonSocial.setPromptText("Inserte una razon social valida");
+            verifica = false; 
+        }
+        if(!validacion.campoVacio(campoTextoCorreoOpcional.getText())){
+            if(!validacion.isEmail(campoTextoCorreoOpcional.getText())){
+                mensaje+=" Correo Invalido -";
+                verifica = false;
+            }
+        }
+        if(validacion.campoVacio(campoTextoDireccion.getText())){
+            campoTextoDireccion.setPromptText("Inserte una direccion valida");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoTelefono.getText())){
+            campoTextoTelefono.setPromptText("Inserte un telefono valido");
+            verifica = false; 
+        }
+        else if(!validacion.isCadenaNumeros(campoTextoTelefono.getText())){
+            mensaje+=" Telefono Invalido -";
+            verifica = false;
+        }
+        if(!validacion.campoVacio(campoTextoTelefonoOpcional.getText())){
+            if(!validacion.isCadenaNumeros(campoTextoTelefonoOpcional.getText())){
+                mensaje+=" Telefono Opcional Invalido -";
+                verifica = false;
+            }
+        }
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
     }
     
     /**

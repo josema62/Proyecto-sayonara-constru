@@ -5,45 +5,54 @@
  */
 package modelodedatos;
 
+
 /**
  *
  * @author Josema
  */
 public class ValidacionRut {
 
-    String rut;
+    
+    ValidacionCampo validacionCampo;
 
-    public ValidacionRut(String rut) {
-        this.rut = rut;
+    public ValidacionRut() {
     }
 
-    public String getRut() {
-        return rut;
-    }
+   /**
+     * verifica que la cadena sea un rut valido, sin puntos y con digito verificador.
+     * @param cad cadena de texto
+     * @return true si es valido, false en caso contrario
+     */
 
-    public void setRut(String rut) {
-        this.rut = rut;
-    }
+    public boolean validacion_rut(String rut) {
+        
 
-    public boolean validacion_rut() {
-
+        if (validacionCampo.isCadenaNumeros(rut) == false){
+        
+        return false;
+        }
         Boolean lDevuelve = false;
-        int Ult = this.rut.length();
-        int Largo = this.rut.length() - 3;
+        int Ult = rut.length();
+        int Largo = rut.length() - 3;
         int Constante = 2;
         int Suma = 0;
         int Digito = 0;
+        
+        if(Ult>=12){
+        
+            return false;
+        }
 
         for (int i = Largo; i >= 0; i--) {
 
-            Suma = Suma + Integer.parseInt(this.rut.substring(i, i + 1))
+            Suma = Suma + Integer.parseInt(rut.substring(i, i + 1))
                           * Constante;
             Constante = Constante + 1;
             if (Constante == 8) {
                 Constante = 2;
             }
         }
-        String Ultimo = this.rut.substring(Ult - 1).toUpperCase();
+        String Ultimo = rut.substring(Ult - 1).toUpperCase();
         Digito = 11 - (Suma % 11);
         if (Digito == 10 && Ultimo.equals("K")) {
             lDevuelve = true;

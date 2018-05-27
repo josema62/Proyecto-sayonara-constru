@@ -87,8 +87,8 @@ public class FormularioAgregarCajeroController implements Initializable {
             verifica = false; 
         }
         else if(!campoTextoRut.getText().isEmpty()){
-            ValidacionRut validacionRut = new ValidacionRut(campoTextoRut.getText());
-            if(!validacionRut.validacion_rut()){
+            ValidacionRut validacionRut = new ValidacionRut();
+            if(!validacionRut.validacion_rut(campoTextoRut.getText())){
                 mensaje+=" Rut Invalido -";
                 verifica = false;
             }

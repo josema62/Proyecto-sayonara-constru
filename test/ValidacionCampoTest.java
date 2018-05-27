@@ -59,7 +59,34 @@ public class ValidacionCampoTest {
         boolean resultado = this.validacion.isNumeros("12jk[34 56-0");
         assertFalse(resultado);
     }
+     
+     @Test
+     public void pruebaIsCadenaNumerosTrue()
+     {
+         boolean resultado = this.validacion.isCadenaNumeros("1 12 3 4 6");
+         assertTrue(resultado);
+     }
     
+     @Test
+     public void pruebaIsCadenaNumerosFalse()
+     {
+         boolean resultado = this.validacion.isCadenaNumeros("1 3 a 4");
+         assertFalse(resultado);
+     }
+     
+     @Test
+     public void pruebaIsAlphaTrue()
+     {
+         boolean resultado = this.validacion.isAlpha("ariel andres");
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaIsAlphaFalse()
+     {
+         boolean resultado = this.validacion.isAlpha("4riel 4andres");
+         assertFalse(resultado);
+     }
 }
 
 

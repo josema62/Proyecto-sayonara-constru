@@ -68,7 +68,7 @@ public class ValidacionCampo {
      */
     public boolean isCadenaNumeros(String str){
         boolean respuesta = false;
-        if ((str).matches("([0-9]|\\-)+")) {
+        if ((str).matches("([0-9]|\\s)+")) {
             respuesta = true;
         }
         return respuesta;

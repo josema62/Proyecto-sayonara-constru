@@ -6,11 +6,14 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelodedatos.DetalleProducto;
+import modelodedatos.Producto;
+import proyectoconstru.conexion.ConsultaProducto;
 
 /**
  * Controlador de la ventana Edicion
@@ -22,16 +25,14 @@ public class VentanaEdicionController implements Initializable {
     @FXML
     private Button botonCancelar;
     @FXML
-    private Button botonEliminar;
-    @FXML
     private Label etiquetaNombreProducto;
-    private DetalleProducto producto;
-    private InterfazcajeroController padre;
     @FXML
     private TextField campoDeTextoCantidad;
     @FXML
     private Button botonEditar;
-
+    
+    private DetalleProducto producto;
+    private InterfazcajeroController padre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -61,17 +62,6 @@ public class VentanaEdicionController implements Initializable {
         stage.close();
     }
 
-    /**
-     * Se encarga de llamar al metodo del controlador de la ventana cajero
-     * que elimina un producto
-     * @param event 
-     */
-    @FXML
-    private void accionBotonEliminar(ActionEvent event) {
-        this.padre.eliminarProductoLista(producto);
-        Stage stage = (Stage) this.botonEliminar.getScene().getWindow();
-        stage.close();
-    }
     
     /**
      * Se encarga de ejecutar, segun el dato engresado en el campo, la cantidad
@@ -80,12 +70,37 @@ public class VentanaEdicionController implements Initializable {
      */
     @FXML
     private void accionBotonEditar(ActionEvent event) {
-        //FALTA VERIFICAR QUE SE INGRESE UN NUMERO CORRECTO
+        ConsultaProducto consulta = new ConsultaProducto();
+        Producto productoReal = consulta.obtenerDatosProducto(producto.getCodigoProducto());
         int cantidadNueva = Integer.parseInt(this.campoDeTextoCantidad.getText());
-        int valorSubtotal = cantidadNueva * producto.getPrecioUnitario();
-        this.padre.modificarFila(producto.getCodigoProducto(), cantidadNueva, valorSubtotal,true);
-        Stage stage = (Stage) this.botonEditar.getScene().getWindow();
-        stage.close();
+        if(cantidadNueva>0 && productoReal.getStockActual()>=cantidadNueva){
+            int valorSubtotal = cantidadNueva * producto.getPrecioUnitario();
+            this.padre.modificarFila(producto.getCodigoProducto(), cantidadNueva, valorSubtotal,true);
+            Stage stage = (Stage) this.botonEditar.getScene().getWindow();
+            stage.close();
+        }
+        else{
+            if(cantidadNueva<0){
+                this.mostrarMensajeAlerta("Error en Ingreso", "La cantidad debe ser mayor a 0");
+            }
+            else{
+                this.mostrarMensajeAlerta("Error en Ingreso", "No hay stock suficiente, solo hay "
+                                          + productoReal.getStockActual()+" productos");
+            }
+        }
+    }
+    /**
+     * Se encarga de mostrar un mensaje de alerta en pantalla
+     * @param text1 Es el titulo del mensaje
+     * @param texto2 Es el cuerpo del mensaje
+     */
+    private void mostrarMensajeAlerta(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setTitle(text1);
+        alert.setHeaderText(null);
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
     
 }

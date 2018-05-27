@@ -501,19 +501,22 @@ public class InterfazcajeroController implements Initializable {
 
     @FXML
     private void accionBotonCancelarBoleta(ActionEvent event) {
-        
-        Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        dialogoConfirmacion.setTitle("Confirmacion Cancelar Boleta");
-        dialogoConfirmacion.setHeaderText(null);
-        dialogoConfirmacion.initStyle(StageStyle.UTILITY);
-        dialogoConfirmacion.setContentText("¿Desea cancelar la boleta?");
-        
-        Optional<ButtonType> resultado = dialogoConfirmacion.showAndWait();
-        if(resultado.get() == ButtonType.OK){
-            this.limpiarVentana();
-            this.mostrarMensajeAlerta("Boleta Cancelada","La compra ha sido cancelada");
+        if(datos.isEmpty()){
+            this.mostrarMensajeAlerta("Error", "No existen productos ingresados");
         }
-        
+        else{
+            Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogoConfirmacion.setTitle("Confirmacion Cancelar Boleta");
+            dialogoConfirmacion.setHeaderText(null);
+            dialogoConfirmacion.initStyle(StageStyle.UTILITY);
+            dialogoConfirmacion.setContentText("¿Desea cancelar la boleta?");
+
+            Optional<ButtonType> resultado = dialogoConfirmacion.showAndWait();
+            if(resultado.get() == ButtonType.OK){
+                this.limpiarVentana();
+                this.mostrarMensajeAlerta("Boleta Cancelada","La compra ha sido cancelada");
+            }
+        }
     }
 
     @FXML

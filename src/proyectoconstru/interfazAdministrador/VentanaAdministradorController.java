@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
@@ -47,6 +48,7 @@ public class VentanaAdministradorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cambiarFabricaCeldas();
         TreeItem<String> root = new TreeItem<>("MENU");
         root.setExpanded(true);
         creadorGestionProductos();
@@ -54,16 +56,32 @@ public class VentanaAdministradorController implements Initializable {
         creadorGestionCajeros();
         creadorVarios();
         creadorGeneradorReportes();
-
         root.getChildren().addAll(gestionProductos, gestionProveedores,
                                   generarReportes, gestionCajeros, varios);
         raiz.setRoot(root);
-        
-        //Se agrega un Listener al TreeView raiz para obtener lo que el usuario esta marcando.
-        raiz.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) ->
-                determinarPanel(newValue.getValue()));
-        }
+    }
+    
+    private void cambiarFabricaCeldas(){
+        raiz.setCellFactory((treeview) ->
+        {
+            TreeCell<String> cell = new TreeCell<String>(){
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                    }
+                }
+            };
+            cell.setOnMouseClicked((event) -> {
+                determinarPanel(cell.getText());
+            });
+            return cell;
+        });
+    }
+    
     /**
      * crea el treeItem Gestion de Productos junto con sus hijos.
      */

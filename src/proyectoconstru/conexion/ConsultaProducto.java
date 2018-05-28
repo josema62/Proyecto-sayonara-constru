@@ -122,6 +122,58 @@ public class ConsultaProducto extends Consulta{
     }
     
     /**
+     * El sirve para obtener un listado de los productos registrados en la base de datos cuyo stock actual
+     * es menor que el stock mínimo permitido.
+     * 
+     * @return null si es que no hay productos que listar. Retorna el un objeto List con los productos que hay
+     * en la registrados que cumplan con la condición (en caso de que hayan).
+     */
+    public List<Producto> obtenerProductosConBajoStock() {
+        String consulta = "{CALL listar_productos_con_bajo_stock()}";
+        ArrayList<Producto> productos = null;
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
+            
+            ResultSet listado = declaracion.executeQuery();
+            
+            
+            productos = new ArrayList<Producto>();
+            Producto producto;
+            String codigo;
+            String nombre;
+            String categoria;
+            Boolean estado;
+            int precio;
+            int stockActual;
+            int stockMinimo;
+            
+            //Mientras hayan productos en el listado
+            while (listado.next()) {
+                //Se crean los productos con los respectivos datos.
+                codigo = listado.getString("codigo");
+                nombre = listado.getString("nombre");
+                categoria = listado.getString("categoria");
+                estado = listado.getBoolean("estado");
+                precio = listado.getInt("precio");
+                stockActual = listado.getInt("stock");
+                stockMinimo = listado.getInt("stockminimo");
+                
+                producto = new Producto(nombre, stockActual, codigo, categoria,
+                                        estado, stockMinimo, precio);
+                
+                productos.add(producto);
+            }
+            
+            listado.close();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ConsultaProducto.class.getName()).log(Level.SEVERE,
+                                                                   null, ex);
+            return null;
+        }
+        return productos;
+    }
+    
+    /**
      * Este método se encarga de dar de baja un producto registrado en la base de datos.
      * @param codigo El código del producto a dar de baja en la base de datos. DEBERÍA ser un código de algun producto registrado en la base de datos.
      * @return true si logró dar de baja al producto con éxito. false si no lo logró.

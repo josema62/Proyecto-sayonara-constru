@@ -22,14 +22,14 @@ public class ValidacionRutTest {
     public void pruebaValidacionRutTrue()
     {
         
-        assertTrue(this.validador.validacion_rut("15890747-k"));
+        assertTrue(this.validador.validaRut("15890747-k"));
     }
     
     @Test
     public void pruebaVlidacionRutFalse()
     {
         
-        assertFalse(this.validador.validacion_rut("19.299.833-6"));
+        assertFalse(this.validador.validaRut("19.299.833-6"));
     }
     
 }

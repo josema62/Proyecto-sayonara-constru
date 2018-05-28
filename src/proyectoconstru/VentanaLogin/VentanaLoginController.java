@@ -23,6 +23,7 @@ import javafx.stage.StageStyle;
 import proyectoconstru.VentanaCajero.InterfazcajeroController;
 import proyectoconstru.conexion.ConsultaAutentificacion;
 import proyectoconstru.conexion.ConsultaCajero;
+import proyectoconstru.interfazAdministrador.VentanaAdministradorController;
 
 /**
  * Controlador de la ventana de Login
@@ -92,7 +93,11 @@ public class VentanaLoginController implements Initializable {
                     try {
                        //ABRIR VENTANA ADMIN    
                        Stage stageVentanaAdmin = new Stage();
-                       Parent root = FXMLLoader.load(getClass().getResource("/proyectoconstru/interfazAdministrador/VentanaAdministrador.fxml"));
+                       FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                "/proyectoconstru/interfazAdministrador/VentanaAdministrador.fxml"));
+                        Parent root = loader.load();                
+                        VentanaAdministradorController in = loader.<VentanaAdministradorController>getController();
+                        
                        Scene scene = new Scene(root);
                        stageVentanaAdmin.setScene(scene);
                        
@@ -101,6 +106,7 @@ public class VentanaLoginController implements Initializable {
                        stageActual.close();
                        stageVentanaAdmin.setTitle("Ventana Administrador");
                        stageVentanaAdmin.show();
+                       in.mostrarBajaStock();
                     }
                    catch (IOException ex) {
                        Logger.getLogger(VentanaLoginController.class.getName()).log(Level.SEVERE,

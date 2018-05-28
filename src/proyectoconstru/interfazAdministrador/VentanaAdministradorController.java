@@ -23,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import proyectoconstru.conexion.ConsultaProducto;
 
 /**
  * FXML Controller class
@@ -43,6 +44,7 @@ public class VentanaAdministradorController implements Initializable {
     private TreeItem agregarFactura;
     private TreeItem generarReportes;
     private TreeItem varios;
+    private ConsultaProducto consulta = new ConsultaProducto();
     /**
      * Initializes the controller class.
      */
@@ -117,7 +119,7 @@ public class VentanaAdministradorController implements Initializable {
         varios = new TreeItem<>("Varios");
         anularBoleta = new TreeItem<>("Anular Boleta");
         agregarFactura = new TreeItem<>("Agregar Factura");
-        TreeItem<String> notificacionProducto = new TreeItem<>("Productos bajos");
+        TreeItem<String> notificacionProducto = new TreeItem<>("Prod. con bajo stock");
         varios.getChildren().addAll(agregarFactura, anularBoleta,
                                                     notificacionProducto);
 
@@ -165,6 +167,9 @@ public class VentanaAdministradorController implements Initializable {
         }
         if (value.equals("Anular Boleta")) {
             mostrarStageSecundario("AnularBoleta.fxml");
+        }
+        if (value.equals("Prod. con bajo stock")) {
+            listarProductosBajaStock("ListarProductosBajaStock.fxml");
         }
 
     }
@@ -319,6 +324,35 @@ public class VentanaAdministradorController implements Initializable {
         }
         
         paneDinamico.getChildren().add(pane);
+    }
+    
+    public void mostrarBajaStock(){
+        if(!consulta.obtenerProductosConBajoStock().isEmpty()){
+            listarProductosBajaStock("ListarProductosBajaStock.fxml");
+        }
+    }
+    
+    private void listarProductosBajaStock(String ruta) {
+         Stage stage = new Stage();
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            Parent root = load.load();
+            
+             Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Productos con baja de stock");
+            stage.initStyle(StageStyle.UTILITY);
+            
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stage.initOwner(stageActual);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
     }
     
     private void modificarPaneDinamicoAgregarFactura(String ruta) {

@@ -125,6 +125,10 @@ public class EditarCajeroController implements Initializable {
             mensaje+=" Telefono Invalido -";
             verifica = false;
         }
+        else if(!validacion.verificaCantidadNumeros(campoTextoTelefono.getText())){
+            mensaje+=" Telefono Invalido(Requerido 12 digitos) -";
+            verifica = false;
+        }
         if (!verifica) {
             warning("Algunos campos invalidos", mensaje);
         }

@@ -86,6 +86,25 @@ public class ValidacionCampo {
         }
         return respuesta;
     } 
-    
+    /**
+     * verifica cantidad de numeros de un string
+     * y es usado para ver la cantidad de numeros de un telefono(12)
+     * @param s cadena que contiene el telefono
+     * @return true si tiene 12 digitos, false en caso contrario.
+     */
+    public boolean verificaCantidadNumeros(String s){
+        s = s.replace(" ", "");
+        return s.length()==12;
+    }
+    /**
+     * verifica cantidad de numeros de un string
+     * y es usado para ver la cantidad de numeros de un codigo de producto.
+     * @param s cadena que contienete el codigo de producto
+     * @return true si tiene 7 digitos, false en caso contrario
+     */
+    public boolean verificaCantidadNumerosCodigoProducto(String s){
+        s = s.replace(" ", "");
+        return s.length()==7;
+    }
     
 }

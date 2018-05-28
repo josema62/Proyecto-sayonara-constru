@@ -102,6 +102,10 @@ public class FormularioAgregarProductoController implements Initializable {
             mensaje+=" Codigo Invalido -";
             verifica = false;
         }
+        else if(!validacion.verificaCantidadNumerosCodigoProducto(campoTextoCodigo.getText())){
+            mensaje+=" Telefono Invalido(Requerido 7 digitos) -";
+            verifica = false;
+        }
         if(validacion.campoVacio(campoTextoNombre.getText())){
             campoTextoNombre.setPromptText("Inserte un nombre valido");
             verifica = false; 

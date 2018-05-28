@@ -87,6 +87,38 @@ public class ValidacionCampoTest {
          boolean resultado = this.validacion.isAlpha("4riel 4andres");
          assertFalse(resultado);
      }
+     
+     @Test
+     public void pruebaVerificarCantidadNumerosTrue()
+     {
+         boolean resultado = this.validacion.verificaCantidadNumeros("569984775979");
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaVerificarCantidadNumerosFalse()
+     {
+         boolean resultado = this.validacion.verificaCantidadNumeros("5698477597990");
+         assertFalse(resultado);
+     }
+     
+     @Test
+     public void pruebaVerificarCantidadNumerosProductoTrue()
+     {
+         boolean resultado = this.validacion.verificaCantidadNumerosCodigoProducto(
+                 "1234567");
+         assertTrue(resultado);
+     }
+     
+      @Test
+     public void pruebaVerificarCantidadNumerosProductoFalse()
+     {
+         boolean resultado = this.validacion.verificaCantidadNumerosCodigoProducto(
+                 "12345600000");
+         assertFalse(resultado);
+     }
+     
+     
 }
 
 

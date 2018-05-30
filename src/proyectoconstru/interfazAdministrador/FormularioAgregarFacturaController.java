@@ -104,31 +104,7 @@ public class FormularioAgregarFacturaController implements Initializable {
         this.columnaCantidad.setMaxWidth(10000);
         this.columnaSubtotal.setMaxWidth(10000);
         setearValorCeldas();
-        //
-        Task<List<Proveedor>> tarea = new Task<List<Proveedor>>() {
-            @Override
-            protected List<Proveedor> call() throws Exception {
-                return consultap.listarProveedores();
-            }
-        };
-        tarea.setOnSucceeded(event -> {
-            List <Proveedor> lista = tarea.getValue();
-            for (int i = 0; i < lista.size(); i++) {
-                comboBoxProveedor.getItems().add(lista.get(i).getNombre());
-                comboBoxProveedor.setPromptText("");
-            }
-        });
-        
-        Thread thread = new Thread(tarea);
-        comboBoxProveedor.setPromptText("Cargando ...");
-        thread.setDaemon(true);
-        thread.start();
-        //
-        /*lista = consultap.listarProveedores();
-        for (int i = 0; i < lista.size(); i++) {
-            comboBoxProveedor.getItems().add(lista.get(i).getNombre());
-        }
-        */
+        rellenarComboBox();
         Callback<DatePicker,DateCell> celdaDia = new Callback<DatePicker, DateCell>()
         {
             public DateCell call(final DatePicker datePicker){
@@ -147,6 +123,27 @@ public class FormularioAgregarFacturaController implements Initializable {
         datePickerFechaEmision.setDayCellFactory(celdaDia);
     }    
     
+    
+    private void rellenarComboBox() {
+        Task<List<Proveedor>> tarea = new Task<List<Proveedor>>() {
+            @Override
+            protected List<Proveedor> call() throws Exception {
+                return consultap.listarProveedores();
+            }
+        };
+        tarea.setOnSucceeded(event -> {
+            List <Proveedor> lista = tarea.getValue();
+            for (int i = 0; i < lista.size(); i++) {
+                comboBoxProveedor.getItems().add(lista.get(i).getNombre());
+                comboBoxProveedor.setPromptText("");
+            }
+        });
+        
+        Thread thread = new Thread(tarea);
+        comboBoxProveedor.setPromptText("Cargando ...");
+        thread.setDaemon(true);
+        thread.start();    
+    }
     
     @FXML
     private void agregarFactura(ActionEvent event){
@@ -365,4 +362,5 @@ public class FormularioAgregarFacturaController implements Initializable {
     void obtenerStage(Stage stage) {
         stagePrincipal = stage;
     }
+
 }

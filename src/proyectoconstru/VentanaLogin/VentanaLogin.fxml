@@ -58,7 +58,7 @@
                     <Font size="13.0" fx:id="x1" />
                   </font>
                 </Label>
-                <TextField fx:id="campoDeTextoRUT" prefHeight="34.0" prefWidth="340.0" promptText="12.345.678-1" text="">
+                <TextField fx:id="campoDeTextoRUT" prefHeight="34.0" prefWidth="340.0" promptText="12345678-1" text="">
                            <effect>
                               <DropShadow color="#00000034" height="1.5" offsetX="1.0" offsetY="2.0" radius="0.125" width="1.0" />
                            </effect></TextField>

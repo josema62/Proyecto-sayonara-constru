@@ -35,6 +35,7 @@ import javafx.stage.StageStyle;
 import modelodedatos.Boleta;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Producto;
+import modelodedatos.ValidacionCampo;
 import proyectoconstru.conexion.ConsultaBoleta;
 import proyectoconstru.conexion.ConsultaProducto;
 
@@ -86,6 +87,7 @@ public class InterfazcajeroController implements Initializable {
     private Button botonModificarCantidad;
     @FXML
     private Button botonEliminarProducto;
+    private ValidacionCampo validacion;
     
    
     @Override
@@ -114,6 +116,7 @@ public class InterfazcajeroController implements Initializable {
         this.botonCancelarBoleta.setDisable(true);
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 1);
         spinnerCantidad.setValueFactory(valueFactory);
+        this.validacion = new ValidacionCampo();
     }    
 
 /**
@@ -144,7 +147,7 @@ public class InterfazcajeroController implements Initializable {
             stageVentanaEdicion.setTitle("Editar Producto");
             stageVentanaEdicion.show();
         }catch(Exception e){
-            System.out.println("paasodaps");
+            System.out.println("Error al abrir ventana Modificacion");
         }
         
         
@@ -219,6 +222,10 @@ public class InterfazcajeroController implements Initializable {
         }
         
         String codigoProducto = this.campoDeTextoCodigo.getText();
+        if(!this.validacion.isNumeros(codigoProducto)){
+            this.mostrarMensajeAlerta("Error en el codigo", "El código ingresado no es válido");
+            return;
+        }
         int cantidadProducto = this.spinnerCantidad.getValue();
         ConsultaProducto consultaProducto = new ConsultaProducto();
         Producto producto = consultaProducto.obtenerDatosProducto(codigoProducto);
@@ -376,7 +383,7 @@ public class InterfazcajeroController implements Initializable {
                     ConsultaProducto consulta = new ConsultaProducto();
                     Producto producto = consulta.obtenerDatosProducto(codigo);
                     if((dato.getCantidad()+cantidad)>producto.getStockActual()){
-                        this.mostrarMensajeAlerta("Error en ingreso", "No hay stock suficiente, existen"
+                        this.mostrarMensajeAlerta("Error en ingreso", "No hay stock suficiente, existen "
                 + producto.getStockActual()+" productos");
                     }
                     else{

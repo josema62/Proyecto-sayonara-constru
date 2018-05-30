@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Producto;
+import modelodedatos.ValidacionCampo;
 import proyectoconstru.conexion.ConsultaProducto;
 
 /**
@@ -33,10 +34,12 @@ public class VentanaEdicionController implements Initializable {
     
     private DetalleProducto producto;
     private InterfazcajeroController padre;
+    private ValidacionCampo validacion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.etiquetaNombreProducto.setWrapText(true);
+        this.validacion = new ValidacionCampo();
     }    
 
     /**
@@ -72,7 +75,12 @@ public class VentanaEdicionController implements Initializable {
     private void accionBotonEditar(ActionEvent event) {
         ConsultaProducto consulta = new ConsultaProducto();
         Producto productoReal = consulta.obtenerDatosProducto(producto.getCodigoProducto());
-        int cantidadNueva = Integer.parseInt(this.campoDeTextoCantidad.getText());
+        String cantidadIngresada = this.campoDeTextoCantidad.getText();
+        if(!validacion.isNumeros(cantidadIngresada)){
+            this.mostrarMensajeAlerta("Error de ingreso", "Por favor, ingrese un valor correcto");
+            return;
+        }
+        int cantidadNueva = Integer.parseInt(cantidadIngresada);
         if(cantidadNueva>0 && productoReal.getStockActual()>=cantidadNueva){
             int valorSubtotal = cantidadNueva * producto.getPrecioUnitario();
             this.padre.modificarFila(producto.getCodigoProducto(), cantidadNueva, valorSubtotal,true);
@@ -80,7 +88,7 @@ public class VentanaEdicionController implements Initializable {
             stage.close();
         }
         else{
-            if(cantidadNueva<0){
+            if(cantidadNueva<=0){
                 this.mostrarMensajeAlerta("Error en Ingreso", "La cantidad debe ser mayor a 0");
             }
             else{

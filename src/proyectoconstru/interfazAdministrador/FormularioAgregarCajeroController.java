@@ -56,7 +56,7 @@ public class FormularioAgregarCajeroController implements Initializable {
         campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoNombre.getText().length() == 40){
+            if(  campoTextoNombre.getText().length() == 50){
                 event.consume();
             }
 
@@ -72,7 +72,15 @@ public class FormularioAgregarCajeroController implements Initializable {
         campoTextoDireccion.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoRut.getText().length() == 40){
+            if(  campoTextoDireccion.getText().length() == 30){
+                event.consume();
+            }
+
+            }});
+        campoContrasena.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoContrasena.getText().length() == 12){
                 event.consume();
             }
 

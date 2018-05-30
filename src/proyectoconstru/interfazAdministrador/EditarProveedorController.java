@@ -64,7 +64,7 @@ public class EditarProveedorController implements Initializable {
         campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoNombre.getText().length() == 40){
+            if(  campoTextoNombre.getText().length() == 30){
                 event.consume();
             }
 
@@ -72,7 +72,7 @@ public class EditarProveedorController implements Initializable {
         campoTextoDireccion.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoDireccion.getText().length() == 40){
+            if(  campoTextoDireccion.getText().length() == 30){
                 event.consume();
             }
 

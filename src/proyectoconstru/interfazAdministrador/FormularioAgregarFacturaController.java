@@ -126,7 +126,7 @@ public class FormularioAgregarFacturaController implements Initializable {
         campoTextoNumeroFactura.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoNumeroFactura.getText().length() == 10){
+            if(  campoTextoNumeroFactura.getText().length() == 8){
                 event.consume();
             }
 

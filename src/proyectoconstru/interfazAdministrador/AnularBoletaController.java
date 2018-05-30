@@ -45,7 +45,7 @@ public class AnularBoletaController implements Initializable {
         campoTextoCodigoBoleta.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoCodigoBoleta.getText().length() == 11){
+            if(  campoTextoCodigoBoleta.getText().length() == 8){
                 event.consume();
             }
 

@@ -54,10 +54,18 @@ public class FormularioAgregarProveedorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        campoTextoRut.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoRut.getText().length() == 12){
+                event.consume();
+            }
+
+            }});
         campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoNombre.getText().length() == 40){
+            if(  campoTextoNombre.getText().length() == 30){
                 event.consume();
             }
 
@@ -73,7 +81,7 @@ public class FormularioAgregarProveedorController implements Initializable {
         campoTextoDireccion.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-            if(  campoTextoDireccion.getText().length() == 40){
+            if(  campoTextoDireccion.getText().length() == 30){
                 event.consume();
             }
 
@@ -82,6 +90,14 @@ public class FormularioAgregarProveedorController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
             if(  campoTextoTelefono.getText().length() == 12){
+                event.consume();
+            }
+
+            }});
+        campoTextoCorreoOpcional.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoCorreoOpcional.getText().length() == 40){
                 event.consume();
             }
 

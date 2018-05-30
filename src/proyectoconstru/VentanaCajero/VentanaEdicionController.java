@@ -4,15 +4,18 @@ package proyectoconstru.VentanaCajero;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Producto;
+import modelodedatos.ValidacionCampo;
 import proyectoconstru.conexion.ConsultaProducto;
 
 /**
@@ -33,10 +36,20 @@ public class VentanaEdicionController implements Initializable {
     
     private DetalleProducto producto;
     private InterfazcajeroController padre;
+    private ValidacionCampo validacion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.etiquetaNombreProducto.setWrapText(true);
+        this.validacion = new ValidacionCampo();
+        campoDeTextoCantidad.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoDeTextoCantidad.getText().length() == 5){
+                event.consume();
+    }
+            
+    }});
     }    
 
     /**
@@ -72,7 +85,16 @@ public class VentanaEdicionController implements Initializable {
     private void accionBotonEditar(ActionEvent event) {
         ConsultaProducto consulta = new ConsultaProducto();
         Producto productoReal = consulta.obtenerDatosProducto(producto.getCodigoProducto());
-        int cantidadNueva = Integer.parseInt(this.campoDeTextoCantidad.getText());
+        String cantidadIngresada = this.campoDeTextoCantidad.getText();
+        if(!validacion.isNumeros(cantidadIngresada)){
+            this.mostrarMensajeAlerta("Error de ingreso", "Por favor, ingrese un valor correcto");
+            return;
+        }
+        if(cantidadIngresada.length()>9){
+            this.mostrarMensajeAlerta("Error de Ingreso", "El número ingresado no es válido");
+            return;
+        }
+        int cantidadNueva = Integer.parseInt(cantidadIngresada);
         if(cantidadNueva>0 && productoReal.getStockActual()>=cantidadNueva){
             int valorSubtotal = cantidadNueva * producto.getPrecioUnitario();
             this.padre.modificarFila(producto.getCodigoProducto(), cantidadNueva, valorSubtotal,true);
@@ -80,7 +102,7 @@ public class VentanaEdicionController implements Initializable {
             stage.close();
         }
         else{
-            if(cantidadNueva<0){
+            if(cantidadNueva<=0){
                 this.mostrarMensajeAlerta("Error en Ingreso", "La cantidad debe ser mayor a 0");
             }
             else{

@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -91,17 +93,30 @@ public class ListarProveedoresController implements Initializable {
     }    
     
     
-        /**
+    /**
      * obtiene los productos registrados desde la bd para agregarlos
      * a la ObservableList listaProductos.
      */
     private void agregarProveedoresEnLista(){
-        List<Proveedor> lista = consulta.listarProveedores();
-        for (int i = 0; i < lista.size(); i++) {
-            listaProveedores.add(lista.get(i));
-        }
-        
+        Task<List<Proveedor>> tarea = new Task<List<Proveedor>>() {
+            @Override
+            protected List<Proveedor> call() throws Exception {
+                return consulta.listarProveedores();
+            }
+        };
+        tarea.setOnSucceeded(event -> {
+            List <Proveedor> lista = tarea.getValue();
+            for (int i = 0; i < lista.size(); i++) {
+                listaProveedores.add(lista.get(i));
+            }
+            tablaProveedor.setPlaceholder(new Label("La tabla esta vacia"));
+        });
+        Thread thread = new Thread(tarea);
+        tablaProveedor.setPlaceholder(new Label("Cargando ..."));
+        thread.setDaemon(true);
+        thread.start();   
     }
+    
     /**
      * setea las columnas con el objeto y el valor que ira en cada una de ellas.
      */

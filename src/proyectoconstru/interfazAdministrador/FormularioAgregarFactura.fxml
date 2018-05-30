@@ -9,145 +9,95 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarFacturaController">
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarFacturaController">
    <children>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="123.0" prefWidth="600.0">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="135.0">
+                  <GridPane prefHeight="125.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <Button fx:id="botonAgregarProducto" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar Producto " GridPane.rowIndex="3" />
+                        <TextField fx:id="campoTextoTotal" disable="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <TextField fx:id="campoTextoIVA" disable="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <TextField fx:id="campoTextoNumeroFactura" GridPane.columnIndex="1" />
+                        <TextField fx:id="campoTextoMontoNeto" disable="true" GridPane.columnIndex="3" />
+                        <Label text="Monto Neto:" GridPane.columnIndex="2" />
+                        <Label text="Proveedor:" GridPane.rowIndex="2" />
+                        <Label text="Num. de Factura:" />
+                        <Label text="Fecha de Emision:" GridPane.rowIndex="1" />
+                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label text="Num. de Factura:" />
+                              <DatePicker fx:id="datePickerFechaEmision" prefHeight="27.0" prefWidth="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        </AnchorPane>
+                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Label text="Fecha de Emision:" />
+                              <ComboBox fx:id="comboBoxProveedor" prefWidth="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Proveedor:" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Button fx:id="botonAgregarProducto" mnemonicParsing="false" onAction="#agregarProducto" text="Agregar Producto ">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
+                        </AnchorPane>
+                        <Button fx:id="botonEditarProducto" mnemonicParsing="false" onAction="#editarProducto" text="Editar Producto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="I.V.A:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="Total:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                      </children>
+                  </GridPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin>
+            </AnchorPane>
+         </top>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="botonAgregarFactura" mnemonicParsing="false" onAction="#agregarFactura" text="Agregar Factura">
                      <HBox.margin>
-                        <Insets />
+                        <Insets right="10.0" />
                      </HBox.margin>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="150.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <TextField fx:id="campoTextoNumeroFactura" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <DatePicker fx:id="datePickerFechaEmision" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <ComboBox fx:id="comboBoxProveedor" prefWidth="150.0" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Button fx:id="botonEditarProducto" mnemonicParsing="false" onAction="#editarProducto" text="Editar Producto" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="152.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Monto Neto:" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="I.V.A:" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Total:" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="150.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <TextField fx:id="campoTextoMontoNeto" disable="true" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <TextField fx:id="campoTextoIVA" disable="true" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <TextField fx:id="campoTextoTotal" disable="true" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
-                     </children>
-                  </VBox>
+                  </Button>
+                  <Button fx:id="botonCancelarFactura" mnemonicParsing="false" onAction="#cancelarFactura" text="Cancelar" />
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" right="10.0" top="10.0" />
+               </padding>
             </HBox>
-            <VBox alignment="CENTER" prefHeight="272.0" prefWidth="600.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="241.0" prefWidth="600.0">
-                     <children>
-                        <TableView fx:id="tablaProductosFactura" prefHeight="207.0" prefWidth="604.0">
-                          <columns>
-                            <TableColumn fx:id="columnaCodigoProducto" prefWidth="75.0" text="codigo" />
-                            <TableColumn fx:id="columnaNombreProducto" prefWidth="208.0" text="nombre" />
-                              <TableColumn fx:id="columnaPrecioUnitarioProducto" prefWidth="133.0" text="precio unitario" />
-                              <TableColumn fx:id="columnaCantidad" prefWidth="94.0" text="cantidad" />
-                              <TableColumn fx:id="columnaSubtotal" prefWidth="89.0" text="subtotal" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="66.0" prefWidth="300.0" />
-                        <HBox alignment="CENTER" prefHeight="66.0" prefWidth="300.0">
-                           <children>
-                              <Button fx:id="botonAgregarFactura" mnemonicParsing="false" onAction="#agregarFactura" text="Agregar Factura">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="botonCancelarFactura" mnemonicParsing="false" onAction="#cancelarFactura" text="Cancelar" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+         </bottom>
+         <center>
+            <TableView fx:id="tablaProductosFactura" prefHeight="225.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="columnaCodigoProducto" prefWidth="75.0" text="codigo" />
+                <TableColumn fx:id="columnaNombreProducto" prefWidth="200.0" text="nombre" />
+                  <TableColumn fx:id="columnaPrecioUnitarioProducto" prefWidth="119.0" text="precio unitario" />
+                  <TableColumn fx:id="columnaCantidad" text="cantidad" />
+                  <TableColumn fx:id="columnaSubtotal" prefWidth="125.0" text="subtotal" />
+              </columns>
+               <BorderPane.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </TableView>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

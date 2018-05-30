@@ -71,14 +71,15 @@ public class VentanaAdministradorController implements Initializable {
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
-                        setText(null);
+                        setText("");
                     } else {
                         setText(item);
                     }
                 }
             };
+            
             cell.setOnMouseClicked((event) -> {
-                determinarPanel(cell.getText());
+                    determinarPanel(cell.getText());
             });
             return cell;
         });

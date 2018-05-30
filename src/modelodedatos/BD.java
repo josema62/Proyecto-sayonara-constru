@@ -45,8 +45,8 @@ public class BD {
 
     public static BD obtenerBD() {
         if (BD.bd == null) {
-            BD.bd = new BD("200.27.120.172","sayonarateam", "sayonara123", "3306");
-           
+            //BD.bd = new BD("200.27.120.172","sayonarateam", "sayonara123", "3306");
+            BD.bd = new BD("172.16.37.62","sayonarateam", "sayonara123", "3306");
         }
         return BD.bd;
     }

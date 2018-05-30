@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -67,19 +68,24 @@ public class AgregarProductoEnFacturaController implements Initializable {
     @FXML
     private void agregarProducto(ActionEvent event) { 
         try{
+           
             Producto producto = consulta.obtenerDatosProducto(campoTextoCodigo.getText());
-            System.out.println("form:"+formularioFactura.getClass());
-            System.out.println("spinner:"+spinnerCantidad.getValue());
-            formularioFactura.agregarEnListaProductos(
-                    new DetalleProducto(producto.getCodigo(), 
-                            producto.getNombre(), 
-                            spinnerCantidad.getValue(), 
-                            producto.getPrecio(), 
-                            producto.getPrecio() * spinnerCantidad.getValue()));
-            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-            stage.close();
+            if(producto.getEstado()){
+                System.out.println("form:"+formularioFactura.getClass());
+                System.out.println("spinner:"+spinnerCantidad.getValue());
+                formularioFactura.agregarEnListaProductos(
+                        new DetalleProducto(producto.getCodigo(), 
+                                producto.getNombre(), 
+                                spinnerCantidad.getValue(), 
+                                producto.getPrecio(), 
+                                producto.getPrecio() * spinnerCantidad.getValue()));
+                Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+                stage.close();
+            }else
+                warning("Error de ingreso!", "Producto deshabilitado!");
+            
         }catch (Exception ex) {
-            System.out.println("error en agregarProducto factura:"+ex);
+            warning("Error de ingreso!", "Codigo no valido");
         }
         
     }
@@ -88,5 +94,12 @@ public class AgregarProductoEnFacturaController implements Initializable {
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();
     }
-    
+     private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
+    }
 }

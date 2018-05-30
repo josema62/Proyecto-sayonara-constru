@@ -5,6 +5,7 @@
  */
 package proyectoconstru.conexion;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -190,5 +191,81 @@ public class ConsultaCajero {
             return false;
         }
         return true;
+    }
+    
+    
+    /**
+     * Cambia el estado de conexión del cajero dependiente de lo que se ingrese.
+     * El estado 'conectado' indica si ahora figurará como "conectado o desconectado al sistema" en la base de datos. 
+     * @param conectado El estado nuevo de la conexión del cajero al sistema.
+     * @param rutCajero Rut del cajero al que se le quiere cambiar el estado de conexión.
+     * @return Retorna true si logra cambiarle el estado. Retorna false si hay algún fallo o no logra encontrar al cajero con el rut especificado.
+     */
+    private boolean cambiarEstadoDeConexionCajero(boolean conectado,String rutCajero) {
+        
+        String consulta = "{CALL cambiar_estado_conexion_cajero(?,?)}";
+        
+        try(CallableStatement declaracion = this.conexion.prepareCall(consulta)) {
+            
+            declaracion.setString(1, rutCajero);
+            declaracion.setBoolean(2, conectado);
+            declaracion.execute();
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ConsultaCajero.class.getName()).log(Level.SEVERE,
+                                                                        null,
+                                                                        ex);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    /**
+     * Cambia el estado de conexión del cajero a 'conectado'
+     * @param rutCajero El rut del cajero que se va a conectar.
+     * @return Retorna true si logra cambiarle el estado. Retorna false si hay algún fallo o no logra encontrar al cajero con el rut especificado.
+     */
+    public boolean conectarCajero(String rutCajero) {
+        boolean conectado = true;
+        return this.cambiarEstadoDeConexionCajero(conectado, rutCajero);
+    }
+    
+    /**
+     * Cambia el estado de conexión del cajero a 'desconectado'
+     * @param rutCajero El rut del cajero al que se va a desconectar.
+     * @return Retorna true si logra cambiarle el estado. Retorna false si hay algún fallo o no logra encontrar al cajero con el rut especificado.
+     */
+    public boolean desconectarCajero(String rutCajero) {
+        boolean conectado = false;
+        return this.cambiarEstadoDeConexionCajero(conectado, rutCajero);
+    }
+    
+    /**
+     * Verifica que si el cajero está conectado.
+     * @param rutCajero Rut del cajero que del que se requiere saber si está conectado o no.
+     * @return Retorna true si está conectado. Retorna false si no está conectado o no está registrado dicho cajero con el rut especificado.
+     */
+    public boolean estaCajeroConectado(String rutCajero) {
+        String consulta = "{?=CALL verificar_si_cajero_esta_conectado(?)}";
+        
+        boolean estaConectado = false;
+        try (CallableStatement declaracion = this.conexion.prepareCall(consulta)){
+            
+            declaracion.registerOutParameter(1, java.sql.Types.BOOLEAN);
+            declaracion.setString(2, rutCajero);
+            
+            
+            declaracion.execute();
+            estaConectado = declaracion.getBoolean(1);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ConsultaCajero.class.getName()).log(Level.SEVERE,
+                                                                        null,
+                                                                        ex);
+        }
+        
+        return estaConectado;
     }
 }

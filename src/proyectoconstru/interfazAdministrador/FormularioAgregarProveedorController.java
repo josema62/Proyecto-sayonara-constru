@@ -122,7 +122,7 @@ public class FormularioAgregarProveedorController implements Initializable {
             verifica = false;
         }
         else if(!validacion.verificaCantidadNumeros(campoTextoTelefono.getText())){
-            mensaje+=" Telefono Invalido(Requerido 12 digitos) -";
+            mensaje+=" Telefono Invalido(Requerido 9 a 12 digitos) -";
             verifica = false;
         }
         if(!validacion.campoVacio(campoTextoTelefonoOpcional.getText())){
@@ -131,7 +131,11 @@ public class FormularioAgregarProveedorController implements Initializable {
                 verifica = false;
             }
             else if(!validacion.verificaCantidadNumeros(campoTextoTelefonoOpcional.getText())){
-                mensaje+=" Telefono Invalido(Requerido 12 digitos) -";
+<<<<<<< HEAD
+                mensaje+=" Telefono Opcional Invalido(Requerido 9 a 12 digitos) -";
+=======
+                mensaje+=" Telefono Invalido(Requerido 9 a 12 digitos) -";
+>>>>>>> PequeñasModificaciones
                 verifica = false;
             }
         }
@@ -152,6 +156,13 @@ public class FormularioAgregarProveedorController implements Initializable {
         campoTextoDireccion.clear();
         campoTextoTelefono.clear();
         campoTextoTelefonoOpcional.clear();
+        campoTextoRut.setPromptText("");
+        campoTextoNombre.setPromptText("");
+        campoTextoCorreoOpcional.setPromptText("");
+        campoTextoRazonSocial.setPromptText("");
+        campoTextoDireccion.setPromptText("");
+        campoTextoTelefono.setPromptText("");
+        campoTextoTelefonoOpcional.setPromptText("");
     }
     
     /**

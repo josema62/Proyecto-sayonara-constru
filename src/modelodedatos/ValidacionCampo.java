@@ -94,7 +94,7 @@ public class ValidacionCampo {
      */
     public boolean verificaCantidadNumeros(String s){
         s = s.replace(" ", "");
-        return s.length()==12;
+        return s.length()>=9 && s.length()<=12;
     }
     /**
      * verifica cantidad de numeros de un string
@@ -104,7 +104,11 @@ public class ValidacionCampo {
      */
     public boolean verificaCantidadNumerosCodigoProducto(String s){
         s = s.replace(" ", "");
-        return s.length()==7;
+        return s.length()>=7 && s.length()<=12;
+    }
+    
+    public boolean verificaContrasena(String s){
+        return s.length()>=4 && s.length()<=10;
     }
     
 }

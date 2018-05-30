@@ -9,12 +9,14 @@ import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import modelodedatos.Producto;
 import proyectoconstru.conexion.ConsultaProducto;
@@ -70,7 +72,32 @@ public class EditarProductoController implements Initializable {
                 "Utiles de Aseo",
                 "Articulos de escritorio",
                 "Otros"
-        );     
+        );
+        
+        campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNombre.getText().length() == 40){
+                event.consume();
+            }
+
+            }});
+        campoTextoStockMinimo.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoStockMinimo.getText().length() == 5){
+                event.consume();
+            }
+
+            }});
+        campoTextoPrecio.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoPrecio.getText().length() == 10){
+                event.consume();
+            }
+
+            }});
     }  
     
     public void cargarProducto(Producto pr){

@@ -9,12 +9,14 @@ import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import proyectoconstru.conexion.ConsultaProducto;
 
 /**
@@ -63,6 +65,46 @@ public class FormularioAgregarProductoController implements Initializable {
                 "Otros"
         );
         comboBoxCategoria.setValue("Abarrotes");
+        campoTextoCodigo.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoCodigo.getText().length() == 12){
+                event.consume();
+            }
+
+            }});
+        campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNombre.getText().length() == 40){
+                event.consume();
+            }
+
+            }});
+        campoTextoStockInicial.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoStockInicial.getText().length() == 5){
+                event.consume();
+            }
+
+            }});
+        campoTextoStockMinimo.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoStockMinimo.getText().length() == 5){
+                event.consume();
+            }
+
+            }});
+        campoTextoPrecio.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoPrecio.getText().length() == 10){
+                event.consume();
+            }
+
+            }});
     }  
     /**
      * agrega el producto a la base de datos gracias a la consulta 
@@ -103,7 +145,7 @@ public class FormularioAgregarProductoController implements Initializable {
             verifica = false;
         }
         else if(!validacion.verificaCantidadNumerosCodigoProducto(campoTextoCodigo.getText())){
-            mensaje+=" Telefono Invalido(Requerido 7 a 12 digitos) -";
+            mensaje+=" Codigo Invalido(Requerido 7 a 12 digitos) -";
             verifica = false;
         }
         if(validacion.campoVacio(campoTextoNombre.getText())){

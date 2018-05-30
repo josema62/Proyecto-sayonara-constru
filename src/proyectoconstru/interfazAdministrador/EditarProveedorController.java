@@ -9,11 +9,13 @@ import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import modelodedatos.Proveedor;
 import proyectoconstru.conexion.ConsultaProducto;
@@ -59,7 +61,38 @@ public class EditarProveedorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNombre.getText().length() == 40){
+                event.consume();
+            }
+
+            }});
+        campoTextoDireccion.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoDireccion.getText().length() == 40){
+                event.consume();
+            }
+
+            }});
+        campoTextoTelefono.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoTelefono.getText().length() == 12){
+                event.consume();
+            }
+
+            }});
+        campoTextoTelefonoOpcional.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoTelefonoOpcional.getText().length() == 12){
+                event.consume();
+            }
+
+            }});
     }    
 
     public void cargarProveedor(Proveedor pr){

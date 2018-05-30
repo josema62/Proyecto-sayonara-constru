@@ -131,7 +131,7 @@ public class EditarProveedorController implements Initializable {
             verifica = false;
         }
         else if(!validacion.verificaCantidadNumeros(campoTextoTelefono.getText())){
-            mensaje+=" Telefono Invalido(Requerido 12 digitos) -";
+            mensaje+=" Telefono Invalido(Requerido 9 a 12 digitos) -";
             verifica = false;
         }
         if(!validacion.campoVacio(campoTextoTelefonoOpcional.getText())){
@@ -140,7 +140,7 @@ public class EditarProveedorController implements Initializable {
                 verifica = false;
             }
             else if(!validacion.verificaCantidadNumeros(campoTextoTelefonoOpcional.getText())){
-                mensaje+=" Telefono Invalido(Requerido 12 digitos) -";
+                mensaje+=" Telefono Opcional Invalido(Requerido 9 a 12 digitos) -";
                 verifica = false;
             }
         }

@@ -512,13 +512,9 @@ public class InterfazcajeroController implements Initializable {
             this.mostrarMensajeAlerta("Error", "No existen productos ingresados");
         }
         else{
-            Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-            dialogoConfirmacion.setTitle("Confirmacion Cancelar Boleta");
-            dialogoConfirmacion.setHeaderText(null);
-            dialogoConfirmacion.initStyle(StageStyle.UTILITY);
-            dialogoConfirmacion.setContentText("¿Desea cancelar la boleta?");
-
-            Optional<ButtonType> resultado = dialogoConfirmacion.showAndWait();
+            
+            Optional<ButtonType> resultado = mostrarConfirmacion("Confirmacion Cancelar Boleta",
+                                                                 "¿Desea cancelar la boleta?");
             if(resultado.get() == ButtonType.OK){
                 this.limpiarVentana();
                 this.mostrarMensajeAlerta("Boleta Cancelada","La compra ha sido cancelada");
@@ -531,6 +527,14 @@ public class InterfazcajeroController implements Initializable {
         
     }
 
+    public Optional<ButtonType> mostrarConfirmacion(String titulo,String pregunta){
+            Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogoConfirmacion.setTitle(titulo);
+            dialogoConfirmacion.setHeaderText(null);
+            dialogoConfirmacion.initStyle(StageStyle.UTILITY);
+            dialogoConfirmacion.setContentText(pregunta);
+            return dialogoConfirmacion.showAndWait();
+    }
     @FXML
     private void accionBotonEliminarProducto(ActionEvent event) {
         DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();
@@ -542,4 +546,17 @@ public class InterfazcajeroController implements Initializable {
         
     }
 
+    /**
+     * Verifica si se puede cerrar la ventana o no, esto ocurre si hay datos ingresados
+     * que posiblemente fueron olvidados
+     * true-> se puede cerrar
+     * false-> preguntar
+     * @return 
+     */
+    public boolean verificarCierre(){
+        if(datos.size()>0){
+            return false;
+        }
+        return true;
+    }
 }

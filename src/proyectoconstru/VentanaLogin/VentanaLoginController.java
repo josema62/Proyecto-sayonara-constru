@@ -4,6 +4,7 @@ package proyectoconstru.VentanaLogin;
 import java.awt.Dialog;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,8 +17,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -58,6 +61,20 @@ public class VentanaLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        campoDeTextoRUT.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoDeTextoRUT.getText().length() == 12){
+                event.consume();
+            }        
+        }});
+        campoDeTextoContrasenia.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoDeTextoContrasenia.getText().length() == 10){
+                event.consume();
+            }        
+        }});
     }
 
     
@@ -76,7 +93,7 @@ public class VentanaLoginController implements Initializable {
         if (rut.isEmpty()) {
             this.mostrarAlerta("El campo RUN está vacío","Por favor, ingrese el RUN");
         }
-
+        
         else if (contraseniaVentana.isEmpty()) {
             this.mostrarAlerta("El campo contraseña está vacío",
                          "Por favor, ingrese la contraseña");
@@ -182,7 +199,23 @@ public class VentanaLoginController implements Initializable {
                             //Desconecto al cajero cuando cierra la ventana
                             stageVentanaCajero.setOnCloseRequest(new EventHandler<WindowEvent>() {
                                   public void handle(WindowEvent we) {
+                                      //Preguntar antes de salir
+                                      /*
+                                      if(!in.verificarCierre()){
+                                        Optional<ButtonType> resultado = in.mostrarConfirmacion(
+                                                  "Confirmación",
+                                                  "¿Realmente Quiere Salir?");
+                                        if(resultado.get() == ButtonType.OK){
+                                            consultaCajero.desconectarCajero(rut);
+                                            stageVentanaCajero.close();
+                                        }
+                                        else{
+                                           
+                                        }
+                                      }
+                                      */
                                       consultaCajero.desconectarCajero(rut);
+                                      
                                   }
                               }); 
 

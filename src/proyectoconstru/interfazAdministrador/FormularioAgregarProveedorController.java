@@ -131,7 +131,11 @@ public class FormularioAgregarProveedorController implements Initializable {
                 verifica = false;
             }
             else if(!validacion.verificaCantidadNumeros(campoTextoTelefonoOpcional.getText())){
+<<<<<<< HEAD
                 mensaje+=" Telefono Opcional Invalido(Requerido 9 a 12 digitos) -";
+=======
+                mensaje+=" Telefono Invalido(Requerido 9 a 12 digitos) -";
+>>>>>>> PequeñasModificaciones
                 verifica = false;
             }
         }

@@ -11,7 +11,11 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.FormularioAgregarProductoController">
    <children>
+<<<<<<< HEAD
       <GridPane prefHeight="400.0" prefWidth="513.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="87.0" AnchorPane.topAnchor="0.0">
+=======
+      <GridPane prefHeight="400.0" prefWidth="592.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+>>>>>>> PequeñasModificaciones
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

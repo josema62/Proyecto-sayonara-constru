@@ -19,6 +19,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -121,6 +123,14 @@ public class FormularioAgregarFacturaController implements Initializable {
         };
         //se actualiza el pickerDate con las celdas deshabilitadas
         datePickerFechaEmision.setDayCellFactory(celdaDia);
+        campoTextoNumeroFactura.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNumeroFactura.getText().length() == 10){
+                event.consume();
+            }
+
+            }});
     }    
     
     

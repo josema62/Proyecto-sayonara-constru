@@ -103,7 +103,7 @@ public class FormularioAgregarProductoController implements Initializable {
             verifica = false;
         }
         else if(!validacion.verificaCantidadNumerosCodigoProducto(campoTextoCodigo.getText())){
-            mensaje+=" Telefono Invalido(Requerido 7 digitos) -";
+            mensaje+=" Telefono Invalido(Requerido 7 a 12 digitos) -";
             verifica = false;
         }
         if(validacion.campoVacio(campoTextoNombre.getText())){
@@ -158,6 +158,11 @@ public class FormularioAgregarProductoController implements Initializable {
         campoTextoPrecio.clear();
         campoTextoStockInicial.clear();
         campoTextoStockMinimo.clear();
+        campoTextoCodigo.setPromptText("");
+        campoTextoNombre.setPromptText("");
+        campoTextoPrecio.setPromptText("");
+        campoTextoStockInicial.setPromptText("");
+        campoTextoStockMinimo.setPromptText("");
     }
     
     /**

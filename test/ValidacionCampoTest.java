@@ -89,16 +89,23 @@ public class ValidacionCampoTest {
      }
      
      @Test
-     public void pruebaVerificarCantidadNumerosTrue()
+     public void pruebaVerificarCantidadNumerosDoceTrue()
      {
          boolean resultado = this.validacion.verificaCantidadNumeros("569984775979");
+         assertTrue(resultado);
+     }
+     
+      @Test
+     public void pruebaVerificarCantidadNumerosNueveTrue()
+     {
+         boolean resultado = this.validacion.verificaCantidadNumeros("984775979");
          assertTrue(resultado);
      }
      
      @Test
      public void pruebaVerificarCantidadNumerosFalse()
      {
-         boolean resultado = this.validacion.verificaCantidadNumeros("5698477597990");
+         boolean resultado = this.validacion.verificaCantidadNumeros("56984775979903");
          assertFalse(resultado);
      }
      
@@ -110,14 +117,48 @@ public class ValidacionCampoTest {
          assertTrue(resultado);
      }
      
+     public void pruebaVerificarCantidadNumerosProductoDoceTrue()
+     {
+         boolean resultado = this.validacion.verificaCantidadNumerosCodigoProducto(
+                 "123456798764");
+         assertTrue(resultado);
+     }
+     
       @Test
      public void pruebaVerificarCantidadNumerosProductoFalse()
      {
          boolean resultado = this.validacion.verificaCantidadNumerosCodigoProducto(
-                 "12345600000");
+                 "1234560000898980");
          assertFalse(resultado);
      }
      
+     @Test
+     public void pruebaVerificarContraseniaCuatroDigitosTrue()
+     {
+         boolean resultado = this.validacion.verificaContrasena("1234");
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaVerificarContraseniaDiezDigitosTrue()
+     {
+         boolean resultado = this.validacion.verificaContrasena("1234567892");
+         assertTrue(resultado);
+     }
+     
+     @Test
+     public void pruebaVerificarContraseniTresDigitosFalse()
+     {
+         boolean resultado = this.validacion.verificaContrasena("123");
+         assertFalse(resultado);
+     }
+     
+     @Test
+     public void pruebaVerificarContraseniDoceDigitosFalse()
+     {
+         boolean resultado = this.validacion.verificaContrasena("123456781023");
+         assertFalse(resultado);
+     }
      
 }
 

@@ -147,6 +147,7 @@ public class FormularioAgregarFacturaController implements Initializable {
                 comboBoxProveedor.getItems().add(lista.get(i).getNombre());
                 comboBoxProveedor.setPromptText("");
             }
+            this.lista = lista;
         });
         
         Thread thread = new Thread(tarea);

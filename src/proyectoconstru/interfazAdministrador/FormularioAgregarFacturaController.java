@@ -187,6 +187,7 @@ public class FormularioAgregarFacturaController implements Initializable {
         campoTextoIVA.clear();
         campoTextoTotal.clear();
         listaProductos.clear();
+        datePickerFechaEmision.setValue(null);
     }
     
     /**

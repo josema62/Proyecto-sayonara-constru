@@ -113,6 +113,14 @@ public class EditarCajeroController implements Initializable {
             campoContrasena.setPromptText("Inserte una contraseña valida");
             verifica = false; 
         }
+        else if(!validacion.isNumeros(campoContrasena.getText())){
+            mensaje+=" Contraseña Invalida -";
+            verifica = false;
+        }
+        else if(!validacion.verificaContrasena(campoContrasena.getText())){
+            mensaje+=" Contraseña Invalida(Requerido 4 a 10 digitos) -";
+            verifica = false;
+        }
         if(validacion.campoVacio(campoTextoDireccion.getText())){
             campoTextoDireccion.setPromptText("Inserte una direccion valida");
             verifica = false; 

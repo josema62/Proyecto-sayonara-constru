@@ -98,6 +98,14 @@ public class FormularioAgregarCajeroController implements Initializable {
             campoContrasena.setPromptText("Inserte una contraseña valida");
             verifica = false; 
         }
+        else if(!validacion.isNumeros(campoContrasena.getText())){
+            mensaje+=" Contraseña Invalida -";
+            verifica = false;
+        }
+        else if(!validacion.verificaContrasena(campoContrasena.getText())){
+            mensaje+=" Contraseña Invalida(Requerido 4 a 10 digitos) -";
+            verifica = false;
+        }
         if(validacion.campoVacio(campoTextoDireccion.getText())){
             campoTextoDireccion.setPromptText("Inserte una direccion valida");
             verifica = false; 
@@ -111,9 +119,9 @@ public class FormularioAgregarCajeroController implements Initializable {
             verifica = false;
         }
         else if(!validacion.verificaCantidadNumeros(campoTextoTelefono.getText())){
-            mensaje+=" Telefono Invalido(Requerido 12 digitos) -";
+            mensaje+=" Telefono Invalido(Requerido 9 a 12 digitos) -";
             verifica = false;
-        }
+        }    
         if (!verifica) {
              warning("Algunos campos invalidos", mensaje);
         }
@@ -130,6 +138,11 @@ public class FormularioAgregarCajeroController implements Initializable {
         campoContrasena.clear();
         campoTextoTelefono.clear();
         campoTextoDireccion.clear();
+        campoTextoRut.setPromptText("");
+        campoTextoNombre.setPromptText("");
+        campoContrasena.setPromptText("");
+        campoTextoTelefono.setPromptText("");
+        campoTextoDireccion.setPromptText("");
     }
     
    @FXML

@@ -21,6 +21,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -33,6 +35,7 @@ import javafx.stage.StageStyle;
 import modelodedatos.Boleta;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Producto;
+import modelodedatos.ValidacionCampo;
 import proyectoconstru.conexion.ConsultaBoleta;
 import proyectoconstru.conexion.ConsultaProducto;
 
@@ -52,14 +55,11 @@ public class InterfazcajeroController implements Initializable {
     @FXML
     private TextField campoDeTextoCodigo;
     @FXML
-    private Button botonEditarProducto;
-    @FXML
     private TableView<DetalleProducto> tablaBoleta;
     @FXML
     private Label etiquetaNombreCajero;
     @FXML
     private Button botonIngresar;
-    @FXML
     private Button botonCancelar;
     @FXML
     private TableColumn<DetalleProducto, String> columnaCodigo;
@@ -79,6 +79,15 @@ public class InterfazcajeroController implements Initializable {
     private ObservableList<DetalleProducto> datos = FXCollections.observableArrayList();
     @FXML
     private Button botonCancelarBoleta;
+    @FXML
+    private Spinner<Integer> spinnerCantidad;
+    @FXML
+    private Button botonIngresarProducto;
+    @FXML
+    private Button botonModificarCantidad;
+    @FXML
+    private Button botonEliminarProducto;
+    private ValidacionCampo validacion;
     
    
     @Override
@@ -102,9 +111,12 @@ public class InterfazcajeroController implements Initializable {
         columnaPrecioUnitario.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
         columnaSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
         
-        this.botonEditarProducto.setDisable(true);
+        this.botonModificarCantidad.setDisable(true);
+        this.botonEliminarProducto.setDisable(true);
         this.botonCancelarBoleta.setDisable(true);
-        // TODO
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 1);
+        spinnerCantidad.setValueFactory(valueFactory);
+        this.validacion = new ValidacionCampo();
     }    
 
 /**
@@ -113,7 +125,7 @@ public class InterfazcajeroController implements Initializable {
  * @param event 
  */
     @FXML
-    private void accionBotonEditarProducto(ActionEvent event) {
+    private void accionBotonModificarProducto(ActionEvent event) {
         try{
             Stage stageVentanaEdicion = new Stage();
 
@@ -124,7 +136,8 @@ public class InterfazcajeroController implements Initializable {
             VentanaEdicionController in = loader.<VentanaEdicionController>getController();
             DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();
                 if(producto!=null){
-                    this.botonEditarProducto.setDisable(false);
+                    this.botonModificarCantidad.setDisable(false);
+                    this.botonEliminarProducto.setDisable(false);
                      in.recibirParametros(producto, this);
                 }
 
@@ -134,7 +147,7 @@ public class InterfazcajeroController implements Initializable {
             stageVentanaEdicion.setTitle("Editar Producto");
             stageVentanaEdicion.show();
         }catch(Exception e){
-        
+            System.out.println("Error al abrir ventana Modificacion");
         }
         
         
@@ -187,7 +200,6 @@ public class InterfazcajeroController implements Initializable {
      * Solo se encarga de cerrar la actual ventana.
      * @param event 
      */
-    @FXML
     private void accionCancelar(ActionEvent event) {
         Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
         stage.close();
@@ -203,20 +215,25 @@ public class InterfazcajeroController implements Initializable {
      * @param event 
      */
     @FXML
-    private void accionIngresoCodigo(KeyEvent event) {
-        int cantidadProducto;
-        String codigoProducto;
-        if(event.getCode().ENTER==event.getCode()){
-            String codigoPuro = this.campoDeTextoCodigo.getText();
-            cantidadProducto = buscarCantidadProducto(codigoPuro);
-            codigoProducto = buscarCodigoProducto(codigoPuro);
-            
-            ConsultaProducto consultaProducto = new ConsultaProducto();
-            Producto producto = consultaProducto.obtenerDatosProducto(codigoProducto);
-            if(producto!=null){
+    private void accionBotonIngreso(ActionEvent event) {
+        if(this.campoDeTextoCodigo.getText().isEmpty()){
+            this.mostrarMensajeAlerta("Error de Ingreso", "El campo del código está vacío");
+            return;
+        }
+        
+        String codigoProducto = this.campoDeTextoCodigo.getText();
+        if(!this.validacion.isNumeros(codigoProducto)){
+            this.mostrarMensajeAlerta("Error en el codigo", "El código ingresado no es válido");
+            return;
+        }
+        int cantidadProducto = this.spinnerCantidad.getValue();
+        ConsultaProducto consultaProducto = new ConsultaProducto();
+        Producto producto = consultaProducto.obtenerDatosProducto(codigoProducto);
+        if(producto!=null){
+            if(producto.getStockActual()>cantidadProducto){
                 if(!producto.getEstado()){
                     //Emite alerta que está deshabilitado
-                    this.mostrarMensajeAlerta("ERROR DE INGRESO", "El producto ingresado se encuentra deshabilitado");
+                    this.mostrarMensajeAlerta("Error de Ingreso", "El producto ingresado se encuentra deshabilitado");
                 }
                 else{
                     this.etiquetaNombreProducto.setText(producto.getNombre());
@@ -242,16 +259,24 @@ public class InterfazcajeroController implements Initializable {
                     actualizarTotal();
                     this.botonCancelarBoleta.setDisable(false);
                     this.campoDeTextoCodigo.setText("");
+                    this.spinnerCantidad.getValueFactory().setValue(1);
                 }
             }
             else{
-                this.mostrarMensajeAlerta("El producto no existe!", "El producto con código "+ 
-                             this.campoDeTextoCodigo.getText()+" no esta registrado en el sistema");
+                this.mostrarMensajeAlerta("Cantidad Erronea", "No hay stock suficiente, existen "
+                + producto.getStockActual()+" productos");
             }
         }
+        else{
+            this.mostrarMensajeAlerta("El producto no existe!", "El producto con código "+ 
+                         this.campoDeTextoCodigo.getText()+" no esta registrado en el sistema");
+        }
+        
     }
 
+   
     /**
+     *                  CODIGO NO NECESARIO PARA ESTA IMPLEMENTACION
      * Metodo que se encarga de obtener la cantidad ingresada de un determinado producto.
      * Lo que hace es verificar si se ingresó la cantidad en el campo codigo, es decir,
      * si hay un codigo del tipo "2x12312" donde 2 sería la cantidad del producto
@@ -259,6 +284,7 @@ public class InterfazcajeroController implements Initializable {
      * @param texto el codigo 'puro'
      * @return La cantidad de un determinado producto
      */
+    /*
     private int buscarCantidadProducto(String texto){
         char[] arregloCodigo = texto.toCharArray();
         for (int i = 0; i < arregloCodigo.length; i++) {
@@ -269,8 +295,8 @@ public class InterfazcajeroController implements Initializable {
         }
         return 1;
     }
-    
-    /**
+    */
+    /**         CODIGO NO NECESARIO PARA ESTA VERSION
      * Metodo que se encarga de obtener el codigo de un producto.
      * Lo que hace es verificar si el codigo es simple o compuesto, es decir,
      * si hay un codigo del tipo "2x12312" donde 2 sería la cantidad del producto
@@ -278,6 +304,7 @@ public class InterfazcajeroController implements Initializable {
      * @param texto el codigo 'puro'
      * @return codigo del producto
      */
+    /*
     private String buscarCodigoProducto(String texto){
         char[] arregloCodigo = texto.toCharArray();
         for (int i = 0; i < arregloCodigo.length; i++) {
@@ -288,7 +315,7 @@ public class InterfazcajeroController implements Initializable {
         }
         return texto;
     }
-  
+    
     /**
      * Renombra la etiqueta de NombreCajero con el nombre correspondiente
      * al cajero que se encuentra utilizando el sistema
@@ -353,8 +380,16 @@ public class InterfazcajeroController implements Initializable {
                 }
                 //Si proviene de una agregación.
                 else{
-                    dato.setCantidad(dato.getCantidad()+cantidad);
-                    dato.setSubtotal(dato.getSubtotal()+subtotal);
+                    ConsultaProducto consulta = new ConsultaProducto();
+                    Producto producto = consulta.obtenerDatosProducto(codigo);
+                    if((dato.getCantidad()+cantidad)>producto.getStockActual()){
+                        this.mostrarMensajeAlerta("Error en ingreso", "No hay stock suficiente, existen "
+                + producto.getStockActual()+" productos");
+                    }
+                    else{
+                        dato.setCantidad(dato.getCantidad()+cantidad);
+                        dato.setSubtotal(dato.getSubtotal()+subtotal);
+                    }
                 }
            }
         }
@@ -383,7 +418,8 @@ public class InterfazcajeroController implements Initializable {
             }
             datos = data2;
             this.tablaBoleta.setItems(datos);
-            this.botonEditarProducto.setDisable(true);
+            this.botonModificarCantidad.setDisable(true);
+            this.botonEliminarProducto.setDisable(true);
         }
         actualizarTotal();
         
@@ -400,6 +436,8 @@ public class InterfazcajeroController implements Initializable {
             DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();
             if(producto!=null){
                 this.eliminarProductoLista(producto);
+                this.mostrarMensajeAlerta("Producto Eliminado", "El producto seleccionado ha sido eliminado");
+
             }
             
         }
@@ -417,7 +455,9 @@ public class InterfazcajeroController implements Initializable {
                 this.etiquetaNombreProducto.setText("");
                 this.etiquetaValorProducto.setText("");
                 this.updateDatos();
-                this.botonEditarProducto.setDisable(true);
+                this.botonModificarCantidad.setDisable(true);
+                this.botonEliminarProducto.setDisable(true);
+                this.spinnerCantidad.getValueFactory().setValue(1);
                 if(datos.isEmpty()){
                     this.botonCancelarBoleta.setDisable(true);
                 }
@@ -434,6 +474,7 @@ public class InterfazcajeroController implements Initializable {
         this.etiquetaNombreProducto.setText("");
         this.etiquetaTotal.setText("");
         this.etiquetaValorProducto.setText("");
+        this.spinnerCantidad.getValueFactory().setValue(1);
         datos.removeAll(datos);
     }
     
@@ -445,7 +486,8 @@ public class InterfazcajeroController implements Initializable {
     private void mostrarMensajeAlerta(String text1, String texto2) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
-        alert.setHeaderText(text1);
+        alert.setTitle(text1);
+        alert.setHeaderText(null);
         alert.setContentText(texto2);
         alert.showAndWait();
     }
@@ -459,25 +501,62 @@ public class InterfazcajeroController implements Initializable {
     private void accionClickTabla(MouseEvent event) {
         DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();
         if(producto!=null){
-            this.botonEditarProducto.setDisable(false);
+            this.botonModificarCantidad.setDisable(false);
+            this.botonEliminarProducto.setDisable(false);
         }
     }
 
     @FXML
     private void accionBotonCancelarBoleta(ActionEvent event) {
-        
-        Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        dialogoConfirmacion.setTitle("Confirmacion Cancelar Boleta");
-        dialogoConfirmacion.setHeaderText(null);
-        dialogoConfirmacion.initStyle(StageStyle.UTILITY);
-        dialogoConfirmacion.setContentText("¿Desea cancelar la boleta?");
-        
-        Optional<ButtonType> resultado = dialogoConfirmacion.showAndWait();
-        if(resultado.get() == ButtonType.OK){
-            this.limpiarVentana();
-            this.mostrarMensajeAlerta("Boleta Cancelada","La compra ha sido cancelada");
+        if(datos.isEmpty()){
+            this.mostrarMensajeAlerta("Error", "No existen productos ingresados");
         }
+        else{
+            
+            Optional<ButtonType> resultado = mostrarConfirmacion("Confirmacion Cancelar Boleta",
+                                                                 "¿Desea cancelar la boleta?");
+            if(resultado.get() == ButtonType.OK){
+                this.limpiarVentana();
+                this.mostrarMensajeAlerta("Boleta Cancelada","La compra ha sido cancelada");
+            }
+        }
+    }
+
+    @FXML
+    private void accionIngresoCodigo(KeyEvent event) {
         
     }
 
+    public Optional<ButtonType> mostrarConfirmacion(String titulo,String pregunta){
+            Alert dialogoConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogoConfirmacion.setTitle(titulo);
+            dialogoConfirmacion.setHeaderText(null);
+            dialogoConfirmacion.initStyle(StageStyle.UTILITY);
+            dialogoConfirmacion.setContentText(pregunta);
+            return dialogoConfirmacion.showAndWait();
+    }
+    @FXML
+    private void accionBotonEliminarProducto(ActionEvent event) {
+        DetalleProducto producto = this.tablaBoleta.getSelectionModel().getSelectedItem();
+            if(producto!=null){
+                this.eliminarProductoLista(producto);
+                this.mostrarMensajeAlerta("Producto Eliminado", "El producto seleccionado ha sido eliminado");
+            }
+        
+        
+    }
+
+    /**
+     * Verifica si se puede cerrar la ventana o no, esto ocurre si hay datos ingresados
+     * que posiblemente fueron olvidados
+     * true-> se puede cerrar
+     * false-> preguntar
+     * @return 
+     */
+    public boolean verificarCierre(){
+        if(datos.size()>0){
+            return false;
+        }
+        return true;
+    }
 }

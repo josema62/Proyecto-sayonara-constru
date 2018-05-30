@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import proyectoconstru.conexion.ConsultaProducto;
 
 /**
  * FXML Controller class
@@ -42,11 +44,13 @@ public class VentanaAdministradorController implements Initializable {
     private TreeItem agregarFactura;
     private TreeItem generarReportes;
     private TreeItem varios;
+    private ConsultaProducto consulta = new ConsultaProducto();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cambiarFabricaCeldas();
         TreeItem<String> root = new TreeItem<>("MENU");
         root.setExpanded(true);
         creadorGestionProductos();
@@ -54,17 +58,33 @@ public class VentanaAdministradorController implements Initializable {
         creadorGestionCajeros();
         creadorVarios();
         creadorGeneradorReportes();
-
         root.getChildren().addAll(gestionProductos, gestionProveedores,
                                   generarReportes, gestionCajeros, varios);
         raiz.setRoot(root);
-        
-        //Se agrega un Listener al TreeView raiz para obtener lo que el usuario esta marcando.
-        raiz.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) ->
-                determinarPanel(newValue.getValue()));
-
     }
+    
+    private void cambiarFabricaCeldas(){
+        raiz.setCellFactory((treeview) ->
+        {
+            TreeCell<String> cell = new TreeCell<String>(){
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText("");
+                    } else {
+                        setText(item);
+                    }
+                }
+            };
+            
+            cell.setOnMouseClicked((event) -> {
+                    determinarPanel(cell.getText());
+            });
+            return cell;
+        });
+    }
+    
     /**
      * crea el treeItem Gestion de Productos junto con sus hijos.
      */
@@ -100,7 +120,9 @@ public class VentanaAdministradorController implements Initializable {
         varios = new TreeItem<>("Varios");
         anularBoleta = new TreeItem<>("Anular Boleta");
         agregarFactura = new TreeItem<>("Agregar Factura");
-        varios.getChildren().addAll(agregarFactura, anularBoleta);
+        TreeItem<String> notificacionProducto = new TreeItem<>("Prod. con bajo stock");
+        varios.getChildren().addAll(agregarFactura, anularBoleta,
+                                                    notificacionProducto);
 
     }
     /**
@@ -121,22 +143,22 @@ public class VentanaAdministradorController implements Initializable {
             modificarPaneDinamico("FormularioAgregarProducto.fxml");
         }
         if (value.equals("Listar Productos")) {
-            modificarPaneDinamico("ListarProductos.fxml");
+            modificarPaneDinamicoListarProductos("ListarProductos.fxml");
         }
         if (value.equals("Agregar Proveedor")) {
             modificarPaneDinamico("FormularioAgregarProveedor.fxml");
         }
         if (value.equals("Listar Proveedor")) {
-            modificarPaneDinamico("ListarProveedores.fxml");
+            modificarPaneDinamicoListarProveedores("ListarProveedores.fxml");
         }
         if (value.equals("Agregar Factura")) {
-            modificarPaneDinamico("FormularioAgregarFactura.fxml");
+            modificarPaneDinamicoAgregarFactura("FormularioAgregarFactura.fxml");
         }
         if (value.equals("Agregar Cajero")) {
             modificarPaneDinamico("FormularioAgregarCajero.fxml");
         }
         if (value.equals("Listar Cajeros")) {
-            modificarPaneDinamico("ListarCajeros.fxml");
+            modificarPaneDinamicoListarCajeros("ListarCajeros.fxml");
         }
         if (value.equals("Compras a proveedores")) {
             mostrarStageSecundarioCompra();
@@ -147,6 +169,9 @@ public class VentanaAdministradorController implements Initializable {
         if (value.equals("Anular Boleta")) {
             mostrarStageSecundario("AnularBoleta.fxml");
         }
+        if (value.equals("Prod. con bajo stock")) {
+            listarProductosBajaStock("ListarProductosBajaStock.fxml");
+        }
 
     }
     /**
@@ -154,13 +179,32 @@ public class VentanaAdministradorController implements Initializable {
      * @param ruta string con el nombre del archivo fxml que se va abrir.
      */
     private void mostrarStageSecundario(String ruta) {
-        Stage stage2 = new Stage();
-        Parent root = obtenerFXML(ruta);
-        Scene scene = new Scene(root);
-        stage2.setScene(scene);
-        stage2.showAndWait();
-        stage2.close();
+        
+        Stage stageVentanaAnularBoleta = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                    ruta));
+            Parent root = loader.load();
+
+            //AnularBoletaController controlador = loader.<AnularBoletaController>getController();
+
+            Scene scene = new Scene(root);
+            stageVentanaAnularBoleta.setScene(scene);
+            stageVentanaAnularBoleta.setTitle("Anular Boleta");
+            stageVentanaAnularBoleta.initStyle(StageStyle.UTILITY);
+            
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stageVentanaAnularBoleta.initOwner(stageActual);
+            stageVentanaAnularBoleta.initModality(Modality.WINDOW_MODAL);
+            stageVentanaAnularBoleta.setResizable(false);
+            stageVentanaAnularBoleta.showAndWait();
+
+        }catch(Exception e){
+            System.out.println("ERROR: "+e);
+        }
     }
+    
+    
     
       /**
      * Genera un stage para mostrar una ventana secundaria de ventas
@@ -235,6 +279,98 @@ public class VentanaAdministradorController implements Initializable {
         paneDinamico.getChildren().add(obtenerFXML(ruta));
     }
     
+    private void modificarPaneDinamicoListarCajeros(String ruta) {
+        paneDinamico.getChildren().clear();
+        AnchorPane pane =null;
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            pane = load.load();
+            ListarCajerosController r =load.<ListarCajerosController>getController();
+            r.obtenerStage((Stage)this.paneDinamico.getScene().getWindow());
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+        paneDinamico.getChildren().add(pane);
+    }
+    
+    private void modificarPaneDinamicoListarProveedores(String ruta) {
+        paneDinamico.getChildren().clear();
+        AnchorPane pane =null;
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            pane = load.load();
+            ListarProveedoresController r =load.<ListarProveedoresController>getController();
+            r.obtenerStage((Stage)this.paneDinamico.getScene().getWindow());
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+        paneDinamico.getChildren().add(pane);
+    }
+    
+    private void modificarPaneDinamicoListarProductos(String ruta) {
+        paneDinamico.getChildren().clear();
+        AnchorPane pane =null;
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            pane = load.load();
+            ListarProductosController r =load.<ListarProductosController>getController();
+            r.obtenerStage((Stage)this.paneDinamico.getScene().getWindow());
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+        paneDinamico.getChildren().add(pane);
+    }
+    
+    public void mostrarBajaStock(){
+        if(!consulta.obtenerProductosConBajoStock().isEmpty()){
+            listarProductosBajaStock("ListarProductosBajaStock.fxml");
+        }
+    }
+    
+    private void listarProductosBajaStock(String ruta) {
+         Stage stage = new Stage();
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            Parent root = load.load();
+            
+             Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Productos con baja de stock");
+            stage.initStyle(StageStyle.UTILITY);
+            
+            Stage stageActual = (Stage) this.paneDinamico.getScene().getWindow();
+            stage.initOwner(stageActual);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.showAndWait();
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+    }
+    
+    private void modificarPaneDinamicoAgregarFactura(String ruta) {
+        paneDinamico.getChildren().clear();
+        AnchorPane pane =null;
+        try {
+            FXMLLoader load = new FXMLLoader(getClass().getResource(ruta));
+            pane = load.load();
+            FormularioAgregarFacturaController r =load.<FormularioAgregarFacturaController>getController();
+            r.obtenerStage((Stage)this.paneDinamico.getScene().getWindow());
+        }
+        catch (IOException e) {
+            System.out.println("fallo:" + e);
+        }
+        
+        paneDinamico.getChildren().add(pane);
+    }
     protected void modificarPaneDinamicoVentas(String ruta, LocalDate fecha) {
         paneDinamico.getChildren().clear();
         AnchorPane pane =null;

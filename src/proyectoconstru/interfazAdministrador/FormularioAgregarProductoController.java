@@ -5,14 +5,18 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import proyectoconstru.conexion.ConsultaProducto;
 
 /**
@@ -39,6 +43,8 @@ public class FormularioAgregarProductoController implements Initializable {
     @FXML
     private Button botonCancelar;
     private ConsultaProducto consulta = new ConsultaProducto();
+    private ValidacionCampo validacion=new ValidacionCampo();
+            
 
     /**
      * Initializes the controller class.
@@ -59,6 +65,46 @@ public class FormularioAgregarProductoController implements Initializable {
                 "Otros"
         );
         comboBoxCategoria.setValue("Abarrotes");
+        campoTextoCodigo.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoCodigo.getText().length() == 12){
+                event.consume();
+            }
+
+            }});
+        campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNombre.getText().length() == 50){
+                event.consume();
+            }
+
+            }});
+        campoTextoStockInicial.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoStockInicial.getText().length() == 5){
+                event.consume();
+            }
+
+            }});
+        campoTextoStockMinimo.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoStockMinimo.getText().length() == 5){
+                event.consume();
+            }
+
+            }});
+        campoTextoPrecio.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoPrecio.getText().length() == 8){
+                event.consume();
+            }
+
+            }});
     }  
     /**
      * agrega el producto a la base de datos gracias a la consulta 
@@ -67,16 +113,84 @@ public class FormularioAgregarProductoController implements Initializable {
      */
     @FXML
     private void agregarProducto(ActionEvent event){
-        consulta.registrarProducto(campoTextoCodigo.getText(), 
-                campoTextoNombre.getText(),
-                comboBoxCategoria.getValue(),
-                true,
-                Integer.parseInt(campoTextoPrecio.getText()),
-                Integer.parseInt(campoTextoStockInicial.getText()), 
-                Integer.parseInt(campoTextoStockMinimo.getText()));            
-        limpiarCamposdeTexto();
+        if (verificaCampos()) {
+            if(!consulta.existeProducto(campoTextoCodigo.getText(),campoTextoNombre.getText())){
+                consulta.registrarProducto(campoTextoCodigo.getText(), 
+                    campoTextoNombre.getText(),
+                    comboBoxCategoria.getValue(),
+                    true,
+                    Integer.parseInt(campoTextoPrecio.getText()),
+                    Integer.parseInt(campoTextoStockInicial.getText()), 
+                    Integer.parseInt(campoTextoStockMinimo.getText()));            
+                limpiarCamposdeTexto();
+            }
+            else
+                warning("Este producto ya existe!", "Por favor, ingrese un producto valido!");
+        }
+        
+            
+        
+        
     }
     
+     private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+        if(validacion.campoVacio(campoTextoCodigo.getText())){
+            campoTextoCodigo.setPromptText("Inserte un codigo valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoCodigo.getText())){
+            mensaje+=" Codigo Invalido -";
+            verifica = false;
+        }
+        else if(!validacion.verificaCantidadNumerosCodigoProducto(campoTextoCodigo.getText())){
+            mensaje+=" Codigo Invalido(Requerido 7 a 12 digitos) -";
+            verifica = false;
+        }
+        if(validacion.campoVacio(campoTextoNombre.getText())){
+            campoTextoNombre.setPromptText("Inserte un nombre valido");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoStockMinimo.getText())){
+            campoTextoStockMinimo.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoStockMinimo.getText())){
+            mensaje+=" Stock Minimo Invalido -";
+            verifica = false;
+        }
+        if(validacion.campoVacio(campoTextoStockInicial.getText())){
+            campoTextoStockInicial.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoStockInicial.getText())){
+            mensaje+=" Stock Inicial Invalido -";
+            verifica = false;
+        }
+        if(validacion.campoVacio(campoTextoPrecio.getText())){
+            campoTextoPrecio.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoPrecio.getText())){
+            mensaje+=" Precio Invalido -";
+            verifica = false;
+        }
+        
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
+    }
     /**
      * limpia los campos de texto de la interfaz agregar Producto
      */
@@ -86,6 +200,11 @@ public class FormularioAgregarProductoController implements Initializable {
         campoTextoPrecio.clear();
         campoTextoStockInicial.clear();
         campoTextoStockMinimo.clear();
+        campoTextoCodigo.setPromptText("");
+        campoTextoNombre.setPromptText("");
+        campoTextoPrecio.setPromptText("");
+        campoTextoStockInicial.setPromptText("");
+        campoTextoStockMinimo.setPromptText("");
     }
     
     /**
@@ -97,4 +216,5 @@ public class FormularioAgregarProductoController implements Initializable {
         limpiarCamposdeTexto();
         comboBoxCategoria.setValue("Abarrotes");
     }
+    
 }

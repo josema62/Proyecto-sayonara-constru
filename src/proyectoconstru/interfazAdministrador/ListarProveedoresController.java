@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +22,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import modelodedatos.Cajero;
 import modelodedatos.Producto;
 import modelodedatos.Proveedor;
 import proyectoconstru.conexion.ConsultaProveedor;
@@ -55,7 +61,7 @@ public class ListarProveedoresController implements Initializable {
     @FXML
     private TableColumn<Proveedor,String> columnaCorreo;
     @FXML
-    private TableColumn<Proveedor,String> columnaEstado;//revisar
+    private TableColumn<Proveedor,Boolean> columnaEstado;//revisar
     @FXML
     private Button editarProveedor;
     
@@ -64,28 +70,53 @@ public class ListarProveedoresController implements Initializable {
     private final ObservableList<Proveedor> listaProveedores = FXCollections.observableArrayList();
     
     private ConsultaProveedor consulta = new ConsultaProveedor();
+    
+    private Stage stagePrincipal;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.tablaProveedor.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        this.columnaRut.setMaxWidth(10000);
+        this.columnaRazonSocial.setMaxWidth(20000);
+        this.columnaNombre.setMaxWidth(20000);
+        this.columnaDireccion.setMaxWidth(15000);
+        this.columnaTelefono.setMaxWidth(10000);
+        this.columnaTelefonoOpcional.setMaxWidth(10000);
+        this.columnaCorreo.setMaxWidth(10000);
+        this.columnaEstado.setMaxWidth(10000);
+        
         setearValorCeldas();
         agregarProveedoresEnLista();
         tablaProveedor.setItems(listaProveedores);  
     }    
     
     
-        /**
+    /**
      * obtiene los productos registrados desde la bd para agregarlos
      * a la ObservableList listaProductos.
      */
     private void agregarProveedoresEnLista(){
-        List<Proveedor> lista = consulta.listarProveedores();
-        for (int i = 0; i < lista.size(); i++) {
-            listaProveedores.add(lista.get(i));
-        }
-        
+        Task<List<Proveedor>> tarea = new Task<List<Proveedor>>() {
+            @Override
+            protected List<Proveedor> call() throws Exception {
+                return consulta.listarProveedores();
+            }
+        };
+        tarea.setOnSucceeded(event -> {
+            List <Proveedor> lista = tarea.getValue();
+            for (int i = 0; i < lista.size(); i++) {
+                listaProveedores.add(lista.get(i));
+            }
+            tablaProveedor.setPlaceholder(new Label("La tabla esta vacia"));
+        });
+        Thread thread = new Thread(tarea);
+        tablaProveedor.setPlaceholder(new Label("Cargando ..."));
+        thread.setDaemon(true);
+        thread.start();   
     }
+    
     /**
      * setea las columnas con el objeto y el valor que ira en cada una de ellas.
      */
@@ -105,7 +136,18 @@ public class ListarProveedoresController implements Initializable {
         columnaCorreo.setCellValueFactory(
                 new PropertyValueFactory<Proveedor, String>("correo"));
         columnaEstado.setCellValueFactory(
-                new PropertyValueFactory<Proveedor, String>("estado"));
+                new PropertyValueFactory<Proveedor, Boolean>("estado"));
+        columnaEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoProperty());
+        // or cellData -> new SimpleBooleanProperty(cellData.getValue().getGender())
+        // if your model class doesn't use JavaFX properties
+
+        columnaEstado.setCellFactory(col -> new TableCell<Proveedor, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty) ;
+                setText(empty ? null : item ? "Habilitado" : "Deshabilitado" );
+            }
+        });
         
     }
     
@@ -137,6 +179,11 @@ public class ListarProveedoresController implements Initializable {
         controlador.cargarProveedor(obtenerProveedorDesdeLista());
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Editar Proveedor");
+        stage.initStyle(StageStyle.UTILITY);         
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -174,6 +221,12 @@ public class ListarProveedoresController implements Initializable {
             Scene scene = new Scene(root);
             
             stage.setScene(scene);
+            stage.setTitle("Productos Asociados de "+ proveedor.getNombre());
+            stage.initStyle(StageStyle.UTILITY);         
+            stage.initOwner(stagePrincipal);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            controlador.obtenerStage(stage);
             stage.showAndWait();
             stage.close();
         }  
@@ -186,6 +239,10 @@ public class ListarProveedoresController implements Initializable {
         alert.setTitle("ERROR");
         alert.setContentText(texto2);
         alert.showAndWait();
+    }
+
+    public void obtenerStage(Stage stage) {
+        stagePrincipal = stage;
     }
     
 }

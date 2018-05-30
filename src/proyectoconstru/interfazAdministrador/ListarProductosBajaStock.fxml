@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarProductosBajaStockController">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="99.0" prefWidth="385.0">
+                     <children>
+                        <Label text="Productos con baja de stock" textAlignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <TableView fx:id="tablaProducto" prefHeight="415.0" prefWidth="595.0">
+               <columns>
+                  <TableColumn fx:id="columnaCodigo" prefWidth="75.0" text="codigo" />
+                  <TableColumn fx:id="columnaNombre" prefWidth="66.0" text="nombre" />
+                  <TableColumn fx:id="columnaStockDisponible" prefWidth="109.0" text="stock disponible" />
+                  <TableColumn fx:id="columnaStockMinimo" prefWidth="98.0" text="stock minimo" />
+                  <TableColumn fx:id="columnaPrecio" prefWidth="50.0" text="precio" />
+                  <TableColumn fx:id="columnaCategoria" prefWidth="142.0" text="categoria" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -5,14 +5,18 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import modelodedatos.Producto;
 import proyectoconstru.conexion.ConsultaProducto;
@@ -48,6 +52,8 @@ public class EditarProductoController implements Initializable {
     private Producto producto;
     
     private ConsultaProducto consulta=new ConsultaProducto();
+    
+    private ValidacionCampo validacion = new ValidacionCampo();
 
     /**
      * Initializes the controller class.
@@ -66,7 +72,32 @@ public class EditarProductoController implements Initializable {
                 "Utiles de Aseo",
                 "Articulos de escritorio",
                 "Otros"
-        );     
+        );
+        
+        campoTextoNombre.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNombre.getText().length() == 50){
+                event.consume();
+            }
+
+            }});
+        campoTextoStockMinimo.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoStockMinimo.getText().length() == 5){
+                event.consume();
+            }
+
+            }});
+        campoTextoPrecio.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoPrecio.getText().length() == 8){
+                event.consume();
+            }
+
+            }});
     }  
     
     public void cargarProducto(Producto pr){
@@ -89,22 +120,61 @@ public class EditarProductoController implements Initializable {
  */
     @FXML
     private void botonEditarProducto(ActionEvent event) {
-        System.out.println("editado");
-        try{
-            consulta.modificarDatosDeProducto(campoTextoCodigo.getText(),
-                                          campoTextoNombre.getText(),
-                                          Integer.parseInt(campoTextoStockMinimo.getText()),
-                                          comboBoxCategoria.getValue(),
-                                          producto.getEstado(),
-                                          Integer.parseInt(campoTextoStockInicial.getText()),
-                                          Integer.parseInt(campoTextoPrecio.getText())
-                                          );
-            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-            stage.close();
-        }catch (Exception ex) {
-            System.out.println("error boton EditarProducto:"+ex);
+        if (verificaCampos()) {
+            try{
+                consulta.modificarDatosDeProducto(campoTextoCodigo.getText(),
+                                              campoTextoNombre.getText(),
+                                              Integer.parseInt(campoTextoStockMinimo.getText()),
+                                              comboBoxCategoria.getValue(),
+                                              producto.getEstado(),
+                                              Integer.parseInt(campoTextoPrecio.getText())
+                                              );
+                Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
+                stage.close();
+            }catch (Exception ex) {
+                System.out.println("error boton EditarProducto:"+ex);
+            }
         }
+       
         
+    }
+    
+    private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+        if(validacion.campoVacio(campoTextoNombre.getText())){
+            campoTextoNombre.setPromptText("Inserte un nombre valido");
+            verifica = false; 
+        }
+        if(validacion.campoVacio(campoTextoStockMinimo.getText())){
+            campoTextoStockMinimo.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoStockMinimo.getText())){
+            mensaje+=" Stock Minimo Invalido -";
+            verifica = false;
+        }
+        if(validacion.campoVacio(campoTextoPrecio.getText())){
+            campoTextoPrecio.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoPrecio.getText())){
+            mensaje+=" Precio Invalido -";
+            verifica = false;
+        }
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
+    }
+    
+    private void warning(String text1, String texto2) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(text1);
+        alert.setTitle("ERROR");
+        alert.setContentText(texto2);
+        alert.showAndWait();
     }
 
     /**

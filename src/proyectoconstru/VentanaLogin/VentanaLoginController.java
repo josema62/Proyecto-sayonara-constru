@@ -4,10 +4,12 @@ package proyectoconstru.VentanaLogin;
 import java.awt.Dialog;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,14 +17,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
+import modelodedatos.ValidacionRut;
 import proyectoconstru.VentanaCajero.InterfazcajeroController;
+import proyectoconstru.conexion.ConsultaAdministrador;
 import proyectoconstru.conexion.ConsultaAutentificacion;
 import proyectoconstru.conexion.ConsultaCajero;
+import proyectoconstru.interfazAdministrador.VentanaAdministradorController;
 
 /**
  * Controlador de la ventana de Login
@@ -48,10 +56,25 @@ public class VentanaLoginController implements Initializable {
     private TextField campoDeTextoContrasenia;
     
     private ConsultaAutentificacion consulta = new ConsultaAutentificacion();
+    private ValidacionRut validarRut = new ValidacionRut();
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        campoDeTextoRUT.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoDeTextoRUT.getText().length() == 12){
+                event.consume();
+            }        
+        }});
+        campoDeTextoContrasenia.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoDeTextoContrasenia.getText().length() == 10){
+                event.consume();
+            }        
+        }});
     }
 
     
@@ -65,16 +88,20 @@ public class VentanaLoginController implements Initializable {
     @FXML
     private void accionBotonAcceder(ActionEvent event) {
         String rut = this.campoDeTextoRUT.getText();
-        //AQUI FALTARIA CORROBORAR QUE ES UN INGRESO CORRECTO
         String contraseniaVentana = this.campoDeTextoContrasenia.getText();
 
         if (rut.isEmpty()) {
             this.mostrarAlerta("El campo RUN está vacío","Por favor, ingrese el RUN");
         }
-
+        
         else if (contraseniaVentana.isEmpty()) {
             this.mostrarAlerta("El campo contraseña está vacío",
                          "Por favor, ingrese la contraseña");
+        }
+        
+        else if (!this.validarRut.validaRut(rut)){
+            this.mostrarAlerta("RUN Incorrecto",
+                         "Por favor, ingrese un RUN válido (sin puntos y con guión)");
         }
         else {
             if (this.selectorAdmin.isSelected()) {
@@ -83,24 +110,45 @@ public class VentanaLoginController implements Initializable {
                        rut);
                //Se muestra en pantalla si el rut no es valido
                 if (this.contraseniaCorrecta == null) {
-                    this.mostrarAlerta("El RUN ingresado NO esta registrado",
-                                 "Por favor, ingrese un RUN válido");
+                 this.mostrarAlerta("Error en campo RUN",
+                                 "El RUN ingresado no está registrado, por favor, "
+                                         + "ingrese un RUN correcto");
                 }
 
                 else if (this.contraseniaCorrecta.equals(contraseniaVentana)) {
-                    //Si la contrasenia es correta, se abre la ventana del administrador
+                    //Si la contrasenia es correta
                     try {
-                       //ABRIR VENTANA ADMIN    
-                       Stage stageVentanaAdmin = new Stage();
-                       Parent root = FXMLLoader.load(getClass().getResource("/proyectoconstru/interfazAdministrador/VentanaAdministrador.fxml"));
-                       Scene scene = new Scene(root);
-                       stageVentanaAdmin.setScene(scene);
-                       
-                       
-                       Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
-                       stageActual.close();
-                       stageVentanaAdmin.setTitle("Ventana Administrador");
-                       stageVentanaAdmin.show();
+                        ConsultaAdministrador consultaAdmin = new ConsultaAdministrador();
+                        if(!consultaAdmin.estaAdministradorConectado(rut)){
+                           //ABRIR VENTANA ADMIN    
+                           
+                           Stage stageVentanaAdmin = new Stage();
+                           FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                    "/proyectoconstru/interfazAdministrador/VentanaAdministrador.fxml"));
+                            Parent root = loader.load();                
+                            VentanaAdministradorController in = loader.<VentanaAdministradorController>getController();
+
+                           Scene scene = new Scene(root);
+                           stageVentanaAdmin.setScene(scene);
+
+
+                           Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
+                           stageActual.close();
+                           //Dejo al administrador como conectado
+                           consultaAdmin.conectarAdministrador(rut);
+                           stageVentanaAdmin.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                  public void handle(WindowEvent we) {
+                                      consultaAdmin.desconectarAdministrador(rut);
+                                  }
+                              }); 
+
+                           stageVentanaAdmin.setTitle("Ventana Administrador");
+                           stageVentanaAdmin.show();
+                           in.mostrarBajaStock();
+                        }
+                        else{
+                            this.mostrarAlerta("Error en Ingreso", "El administrador ya posee una sesión iniciada");
+                        }
                     }
                    catch (IOException ex) {
                        Logger.getLogger(VentanaLoginController.class.getName()).log(Level.SEVERE,
@@ -110,7 +158,7 @@ public class VentanaLoginController implements Initializable {
                      
                 }
                 else {
-                    this.mostrarAlerta("La contraseña ingresada es incorrecta",
+                    this.mostrarAlerta("Contraseña Incorrecta",
                                  "Por favor, ingrese la contraseña correcta");
                 }
             }
@@ -119,35 +167,68 @@ public class VentanaLoginController implements Initializable {
                        rut);
 
                 if (this.contraseniaCorrecta == null) {
-                    this.mostrarAlerta("El RUN ingresado NO esta registrado",
-                                 "Por favor, ingrese un RUN válido");
+                    this.mostrarAlerta("Error en campo RUN",
+                                 "El RUN ingresado no está registrado, por favor, "
+                                         + "ingrese un RUN correcto");
                 }
 
                 else if (this.contraseniaCorrecta.equals(contraseniaVentana)) {
                     //Si la contrasenia es correcta, se abre la ventana cajero
                     try {
-                        //ABRIR VENTANA CAJERO
-                        Stage stageVentanaCajero = new Stage();
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                                "/proyectoconstru/VentanaCajero/interfazcajero.fxml"));
-                        
-                        Parent root = loader.load();
-                        
-                        InterfazcajeroController in = loader.<InterfazcajeroController>getController();
                         ConsultaCajero consultaCajero = new ConsultaCajero();
-                        
-                        in.setearNombreCajero(consultaCajero.buscarCajero(rut).getNombre());
-                        in.setRutCajero(rut);
-                        
-                        Scene scene = new Scene(root);
-                        stageVentanaCajero.setScene(scene);
+                        if (!consultaCajero.estaCajeroConectado(rut)){
+                            //ABRIR VENTANA CAJERO
+                            Stage stageVentanaCajero = new Stage();
 
-                        Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
-                        stageActual.close();
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                    "/proyectoconstru/VentanaCajero/interfazcajero.fxml"));
 
-                        stageVentanaCajero.setTitle("Ventana Cajero");
-                        stageVentanaCajero.show();
+                            Parent root = loader.load();
+
+                            InterfazcajeroController in = loader.<InterfazcajeroController>getController();
+
+                            in.setearNombreCajero(consultaCajero.buscarCajero(rut).getNombre());
+                            in.setRutCajero(rut);
+
+                            Scene scene = new Scene(root);
+                            stageVentanaCajero.setScene(scene);
+
+                            //Dejo al cejero como conectado
+                            consultaCajero.conectarCajero(rut);
+                            
+                            //Desconecto al cajero cuando cierra la ventana
+                            stageVentanaCajero.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                  public void handle(WindowEvent we) {
+                                      //Preguntar antes de salir
+                                      /*
+                                      if(!in.verificarCierre()){
+                                        Optional<ButtonType> resultado = in.mostrarConfirmacion(
+                                                  "Confirmación",
+                                                  "¿Realmente Quiere Salir?");
+                                        if(resultado.get() == ButtonType.OK){
+                                            consultaCajero.desconectarCajero(rut);
+                                            stageVentanaCajero.close();
+                                        }
+                                        else{
+                                           
+                                        }
+                                      }
+                                      */
+                                      consultaCajero.desconectarCajero(rut);
+                                      
+                                  }
+                              }); 
+
+                            Stage stageActual = (Stage) this.botonAcceder.getScene().getWindow();
+                            stageActual.close();
+
+                            stageVentanaCajero.setTitle("Ventana Cajero");
+                            stageVentanaCajero.show();
+                        }
+                        else{
+                            this.mostrarAlerta("Error de ingreso", "El cajero con rut " +rut + 
+                                                " ya posee una sesión iniciada");
+                        }
                     }
                     catch (IOException ex) {
 
@@ -159,8 +240,8 @@ public class VentanaLoginController implements Initializable {
                 }
             }
             else {
-                this.mostrarAlerta("Debe seleccionar el tipo de usuario!",
-                             "Seleccione al usuario correspondiente");
+                this.mostrarAlerta("Error de Ingreso",
+                             "Seleccione el tipo de usuario correspondiente");
             }
         }
     }
@@ -201,10 +282,10 @@ public class VentanaLoginController implements Initializable {
     private void mostrarAlerta(String text1, String texto2) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
-        alert.setHeaderText(text1);
-        alert.setTitle("Error en Ingreso");
+        alert.setHeaderText(null);
+        alert.setTitle(text1);
         alert.setContentText(texto2);
         alert.showAndWait();
     }
-
+    
 }

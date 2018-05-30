@@ -15,16 +15,21 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import proyectoconstru.conexion.ConsultaCajero;
 
 /**
@@ -47,19 +52,26 @@ public class ListarCajerosController implements Initializable {
     @FXML
     private TableColumn<Cajero, String> columnaContrasena;
     @FXML
-    private TableColumn<Cajero, String> columnaEstado;
+    private TableColumn<Cajero, Boolean> columnaEstado;
     
     private final ObservableList<Cajero> listaCajeros = FXCollections.observableArrayList();
     
     private ConsultaCajero consulta = new ConsultaCajero();
     
-   
+    private Stage stagePrincipal;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.tablaCajero.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        this.columnaRut.setMaxWidth(10000);
+        this.columnaNombre.setMaxWidth(20000);
+        this.columnaDireccion.setMaxWidth(15000);
+        this.columnaTelefono.setMaxWidth(10000);
+        this.columnaContrasena.setMaxWidth(10000);
+        this.columnaEstado.setMaxWidth(10000);
         setearValorCeldas();
         agregarCajeroEnLista();
         tablaCajero.setItems(listaCajeros);
@@ -92,8 +104,18 @@ public class ListarCajerosController implements Initializable {
         columnaContrasena.setCellValueFactory(
                 new PropertyValueFactory<Cajero, String>("contrasenia"));
         columnaEstado.setCellValueFactory(
-                new PropertyValueFactory<Cajero, String>("estado"));
-    
+                new PropertyValueFactory<Cajero, Boolean>("estado"));
+        columnaEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoProperty());
+        // or cellData -> new SimpleBooleanProperty(cellData.getValue().getGender())
+        // if your model class doesn't use JavaFX properties
+
+        columnaEstado.setCellFactory(col -> new TableCell<Cajero, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty) ;
+                setText(empty ? null : item ? "Habilitado" : "Deshabilitado" );
+            }
+        });
     }
     
     @FXML
@@ -123,6 +145,12 @@ public class ListarCajerosController implements Initializable {
         controlador.cargarCajero(obtenerCajeroDesdeLista());
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Editar Cajero");
+        stage.initStyle(StageStyle.UTILITY);
+           
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -150,5 +178,9 @@ public class ListarCajerosController implements Initializable {
         alert.setTitle("ERROR");
         alert.setContentText(texto2);
         alert.showAndWait();
+    }
+
+    public void obtenerStage(Stage stage) {
+        stagePrincipal = stage;
     }
 }

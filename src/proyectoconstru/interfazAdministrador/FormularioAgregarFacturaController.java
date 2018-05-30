@@ -5,6 +5,7 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -14,7 +15,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +34,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import modelodedatos.DetalleProducto;
 import modelodedatos.Factura;
@@ -83,17 +91,22 @@ public class FormularioAgregarFacturaController implements Initializable {
     private ConsultaProveedor consultap = new ConsultaProveedor();
     
     private List<Proveedor> lista;
+    
+    private Stage stagePrincipal;
+    private ValidacionCampo validacion = new ValidacionCampo();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.tablaProductosFactura.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        this.columnaCodigoProducto.setMaxWidth(10000);
+        this.columnaNombreProducto.setMaxWidth(20000);
+        this.columnaCantidad.setMaxWidth(10000);
+        this.columnaSubtotal.setMaxWidth(10000);
         setearValorCeldas();
-        lista = consultap.listarProveedores();
-        for (int i = 0; i < lista.size(); i++) {
-            comboBoxProveedor.getItems().add(lista.get(i).getNombre());
-        }
+        rellenarComboBox();
         Callback<DatePicker,DateCell> celdaDia = new Callback<DatePicker, DateCell>()
         {
             public DateCell call(final DatePicker datePicker){
@@ -110,8 +123,38 @@ public class FormularioAgregarFacturaController implements Initializable {
         };
         //se actualiza el pickerDate con las celdas deshabilitadas
         datePickerFechaEmision.setDayCellFactory(celdaDia);
+        campoTextoNumeroFactura.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoNumeroFactura.getText().length() == 8){
+                event.consume();
+            }
+
+            }});
     }    
     
+    
+    private void rellenarComboBox() {
+        Task<List<Proveedor>> tarea = new Task<List<Proveedor>>() {
+            @Override
+            protected List<Proveedor> call() throws Exception {
+                return consultap.listarProveedores();
+            }
+        };
+        tarea.setOnSucceeded(event -> {
+            List <Proveedor> lista = tarea.getValue();
+            for (int i = 0; i < lista.size(); i++) {
+                comboBoxProveedor.getItems().add(lista.get(i).getNombre());
+                comboBoxProveedor.setPromptText("");
+            }
+            this.lista = lista;
+        });
+        
+        Thread thread = new Thread(tarea);
+        comboBoxProveedor.setPromptText("Cargando ...");
+        thread.setDaemon(true);
+        thread.start();    
+    }
     
     @FXML
     private void agregarFactura(ActionEvent event){
@@ -127,18 +170,47 @@ public class FormularioAgregarFacturaController implements Initializable {
                     proveedor = lista.get(i).getRut();
                 }
             }
-           Factura factura = new Factura(Integer.parseInt(
-                    campoTextoNumeroFactura.getText()), 
-                datePickerFechaEmision.getValue().format(
-                        DateTimeFormatter.ISO_LOCAL_DATE), 
-                Integer.parseInt(campoTextoMontoNeto.getText()),
-                Integer.parseInt(campoTextoIVA.getText()), 
-                Integer.parseInt(campoTextoTotal.getText()), 
-                proveedor,
-                detalleProductos);
-            consulta.registrarFactura(factura);
+            
+            if (verificaCampos() && !proveedor.isEmpty()) {
+                if(!consulta.existeFactura(Integer.parseInt(campoTextoNumeroFactura.getText()), proveedor)){
+                    Factura factura = new Factura(Integer.parseInt(
+                        campoTextoNumeroFactura.getText()), 
+                    datePickerFechaEmision.getValue().format(
+                            DateTimeFormatter.ISO_LOCAL_DATE), 
+                    Integer.parseInt(campoTextoMontoNeto.getText()),
+                    Integer.parseInt(campoTextoIVA.getText()), 
+                    Integer.parseInt(campoTextoTotal.getText()), 
+                    proveedor,
+                    detalleProductos);
+                    consulta.registrarFactura(factura);
+                    limpiarCampos();
+                }
+                else
+                    warning("Esta factura ya existe!", "Por favor, ingrese una factura valida!");
+                
+            }
+            
+           
         }
-        limpiarCampos();
+        
+    }
+    
+    private boolean verificaCampos(){
+        boolean verifica = true;
+        String mensaje = "";
+
+        if(validacion.campoVacio(campoTextoNumeroFactura.getText())){
+            campoTextoNumeroFactura.setPromptText("Inserte un numero valido");
+            verifica = false; 
+        }
+        else if(!validacion.isNumeros(campoTextoNumeroFactura.getText())){
+            mensaje+=" Numero de Factura Invalido -";
+            verifica = false;
+        }
+        if (!verifica) {
+            warning("Algunos campos invalidos", mensaje);
+        }
+        return verifica;
     }
 
     private void limpiarCampos() {
@@ -147,6 +219,7 @@ public class FormularioAgregarFacturaController implements Initializable {
         campoTextoIVA.clear();
         campoTextoTotal.clear();
         listaProductos.clear();
+        datePickerFechaEmision.setValue(null);
     }
     
     /**
@@ -195,6 +268,12 @@ public class FormularioAgregarFacturaController implements Initializable {
         controlador.obtenerControlador(this);
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Agregar Producto");
+        stage.initStyle(StageStyle.UTILITY);
+           
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -212,6 +291,12 @@ public class FormularioAgregarFacturaController implements Initializable {
         controlador.cargarProducto(obtenerProductoDesdeLista());
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Editar Cantidad Producto");
+        stage.initStyle(StageStyle.UTILITY);
+           
+        stage.initOwner(stagePrincipal);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.showAndWait();
         stage.close();
     }
@@ -285,4 +370,9 @@ public class FormularioAgregarFacturaController implements Initializable {
         alert.setContentText(texto2);
         alert.showAndWait();
     }
+
+    void obtenerStage(Stage stage) {
+        stagePrincipal = stage;
+    }
+
 }

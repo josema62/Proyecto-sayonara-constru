@@ -5,6 +5,7 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -38,6 +39,8 @@ public class EditarProductoEnFacturaController implements Initializable {
     private FormularioAgregarFacturaController formulario;
     
     private DetalleProducto producto;
+    
+    private ValidacionCampo validacion;
     /**
      * Initializes the controller class.
      */
@@ -63,7 +66,6 @@ public class EditarProductoEnFacturaController implements Initializable {
 
     @FXML
     private void aceptarEditar(ActionEvent event) {
-        System.out.println("editado");
         try{
             producto.setCantidad(spinnerCantidad.getValue());
             formulario.agregarCambioEnListaProducto(producto);

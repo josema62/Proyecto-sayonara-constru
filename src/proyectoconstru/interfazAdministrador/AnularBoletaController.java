@@ -5,14 +5,17 @@
  */
 package proyectoconstru.interfazAdministrador;
 
+import modelodedatos.ValidacionCampo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import proyectoconstru.conexion.ConsultaBoleta;
 
@@ -31,26 +34,47 @@ public class AnularBoletaController implements Initializable {
     private Button botonCancelar;
 
     private ConsultaBoleta consulta=new ConsultaBoleta();
+    
+    
+    private ValidacionCampo validacion = new ValidacionCampo();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        campoTextoCodigoBoleta.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            if(  campoTextoCodigoBoleta.getText().length() == 8){
+                event.consume();
+            }
+
+            }});
     }    
 
     @FXML
     private void anularBoleta(ActionEvent event) {
-        if(consulta.existeBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()))){
-            consulta.darDeBajaBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()));
-            warning("Boleta anulada", "boleta Anulada exitosamente!");
-            Stage stage = (Stage) this.botonCancelar.getScene().getWindow();
-            stage.close();
+        if (validacion.campoVacio(campoTextoCodigoBoleta.getText())) {
+            campoTextoCodigoBoleta.setPromptText("Inserte un codigo de boleta!");
         }
-        else
-            warning("Codigo de boleta incorrecto!", "Por favor, ingrese un numero de boleta valido!");
+        else{
+            if(validacion.isNumeros(campoTextoCodigoBoleta.getText())){
+                if(consulta.existeBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()))){
+                consulta.darDeBajaBoleta(Integer.parseInt(campoTextoCodigoBoleta.getText()));
+                warning("Boleta anulada", "boleta Anulada exitosamente!");
+                }
+                else
+                    warning("Codigo de boleta incorrecto!", "Por favor, ingrese un numero de boleta valido!");
+            }
+            else
+                warning("Codigo de boleta incorrecto!", 
+                        "Ingrese un numero de boleta valido!");
+        }
+        
        
     }
+    
+    
 
     @FXML
     private void botonCancelar(ActionEvent event) {

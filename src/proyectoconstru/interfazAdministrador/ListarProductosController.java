@@ -52,9 +52,9 @@ public class ListarProductosController implements Initializable {
     private TableColumn<Producto, String> columnaPrecio;
     @FXML
     private TableColumn<Producto, String> columnaCategoria;
-    @FXML
+    /*@FXML
     private TableColumn<Producto, Boolean> columnaEstado;
-    
+    */
      private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
     
     private ConsultaProducto consulta = new ConsultaProducto();
@@ -73,7 +73,7 @@ public class ListarProductosController implements Initializable {
         this.columnaStockMinimo.setMaxWidth(5000);
         this.columnaPrecio.setMaxWidth(10000);
         this.columnaCategoria.setMaxWidth(10000);
-        this.columnaEstado.setMaxWidth(10000);
+        //this.columnaEstado.setMaxWidth(10000);
         
         setearValorCeldas();
         agregarProductosEnLista();
@@ -116,7 +116,7 @@ public class ListarProductosController implements Initializable {
                 new PropertyValueFactory<Producto, String>("precio"));
         columnaCategoria.setCellValueFactory(
                 new PropertyValueFactory<Producto, String>("categoria"));
-        columnaEstado.setCellValueFactory(
+        /*columnaEstado.setCellValueFactory(
                 new PropertyValueFactory<Producto, Boolean>("estado"));
         columnaEstado.setCellValueFactory(cellData -> cellData.getValue().getEstadoProperty());
         // or cellData -> new SimpleBooleanProperty(cellData.getValue().getGender())
@@ -128,7 +128,7 @@ public class ListarProductosController implements Initializable {
                 super.updateItem(item, empty) ;
                 setText(empty ? null : item ? "Habilitado" : "Deshabilitado" );
             }
-        });
+        });*/
     }
     /**
      * Le da funcionalidad al boton Editar Producto.

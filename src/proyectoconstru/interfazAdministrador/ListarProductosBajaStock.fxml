@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="proyectoconstru.interfazAdministrador.ListarProductosBajaStockController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoconstru.interfazAdministrador.ListarProductosBajaStockController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -34,7 +33,6 @@
                   <TableColumn fx:id="columnaStockMinimo" prefWidth="98.0" text="stock minimo" />
                   <TableColumn fx:id="columnaPrecio" prefWidth="50.0" text="precio" />
                   <TableColumn fx:id="columnaCategoria" prefWidth="142.0" text="categoria" />
-                  <TableColumn fx:id="columnaEstado" prefWidth="56.0" text="estado" />
                </columns>
             </TableView>
          </children>
